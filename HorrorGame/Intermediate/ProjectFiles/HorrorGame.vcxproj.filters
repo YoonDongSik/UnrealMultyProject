@@ -45,5 +45,11 @@
     <ClCompile Include="..\..\Source\HorrorGame\MainCharacter.h">
       <Filter>Source\HorrorGame</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\HorrorGame\MainPlayerController.cpp">
+      <Filter>Source\HorrorGame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\HorrorGame\MainPlayerController.h">
+      <Filter>Source\HorrorGame</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

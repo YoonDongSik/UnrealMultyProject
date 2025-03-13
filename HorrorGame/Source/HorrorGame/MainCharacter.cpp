@@ -13,6 +13,18 @@ AMainCharacter::AMainCharacter()
 
 	FootMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Foot"));
 	FootMesh->SetupAttachment(CharacterMesh);
+	NeckMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Neck"));
+	NeckMesh->SetupAttachment(CharacterMesh);
+	HoodMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Hood"));
+	HoodMesh->SetupAttachment(CharacterMesh);
+	JarketMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Jarket"));
+	JarketMesh->SetupAttachment(CharacterMesh);
+	PantsMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Pants"));
+	PantsMesh->SetupAttachment(CharacterMesh);
+	SweaterMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Sweater"));
+	SweaterMesh->SetupAttachment(CharacterMesh);
+	GlassesMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Glasses"));
+	GlassesMesh->SetupAttachment(CharacterMesh);
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(RootComponent);
@@ -25,6 +37,11 @@ AMainCharacter::AMainCharacter()
 	Camera->SetRelativeLocation(FVector(-20.0f, 0.0f, 0.0f));
 
 	Tags.Add("Player");
+}
+
+void AMainCharacter::Movement(const FVector& MoveValue)
+{
+	AddMovementInput(MoveValue);
 }
 
 // Called when the game starts or when spawned

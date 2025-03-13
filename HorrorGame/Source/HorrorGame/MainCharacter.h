@@ -17,6 +17,7 @@ public:
 	// Sets default values for this character's properties
 	AMainCharacter();
 
+	void Movement(const FVector& MoveValue);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -38,4 +39,21 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Mesh")
 	USkeletalMeshComponent* FootMesh = nullptr;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Mesh")
+	USkeletalMeshComponent* NeckMesh = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Mesh")
+	USkeletalMeshComponent* HoodMesh = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Mesh")
+	USkeletalMeshComponent* JarketMesh = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Mesh")
+	USkeletalMeshComponent* PantsMesh = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Mesh")
+	USkeletalMeshComponent* SweaterMesh = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Mesh")
+	USkeletalMeshComponent* GlassesMesh = nullptr;
 };
