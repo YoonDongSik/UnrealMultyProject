@@ -1,0 +1,72 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\UnrealMultyProject\\HorrorGame\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainCharacter.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\MainCharacter.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainCharacter.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\MainCharacter.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D06CFB1F-EE5A-3E42-94AF-131F96032AB6}|Intermediate\\ProjectFiles\\UE5.vcxproj|C:\\Program Files\\Epic Games\\UE_5.5\\Engine\\Source\\Runtime\\Engine\\Classes\\GameFramework\\Character.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Character.h",
+              "DocumentMoniker": "C:\\Program Files\\Epic Games\\UE_5.5\\Engine\\Source\\Runtime\\Engine\\Classes\\GameFramework\\Character.h",
+              "ToolTip": "C:\\Program Files\\Epic Games\\UE_5.5\\Engine\\Source\\Runtime\\Engine\\Classes\\GameFramework\\Character.h [\uC77D\uAE30 \uC804\uC6A9]",
+              "ViewState": "AgIAAO8AAAAAAAAAAAAhwP4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-03-11T08:45:47.36Z",
+              "EditorCaption": " [\uC77D\uAE30 \uC804\uC6A9]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainCharacter.cpp",
+              "DocumentMoniker": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainCharacter.cpp",
+              "RelativeDocumentMoniker": "Source\\HorrorGame\\MainCharacter.cpp",
+              "ToolTip": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainCharacter.cpp",
+              "RelativeToolTip": "Source\\HorrorGame\\MainCharacter.cpp",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABEAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-11T08:27:33.628Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainCharacter.h",
+              "DocumentMoniker": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainCharacter.h",
+              "RelativeDocumentMoniker": "Source\\HorrorGame\\MainCharacter.h",
+              "ToolTip": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainCharacter.h",
+              "RelativeToolTip": "Source\\HorrorGame\\MainCharacter.h",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAwCYAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-03-11T08:27:33.055Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

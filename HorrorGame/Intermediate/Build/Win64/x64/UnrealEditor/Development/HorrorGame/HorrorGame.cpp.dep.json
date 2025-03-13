@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\unrealmultyproject\\horrorgame\\source\\horrorgame\\horrorgame.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\unrealmultyproject\\horrorgame\\intermediate\\build\\win64\\x64\\horrorgameeditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.cpp20.h.pch",
+        "Includes": [
+            "d:\\unrealmultyproject\\horrorgame\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\horrorgame\\definitions.horrorgame.h",
+            "d:\\unrealmultyproject\\horrorgame\\source\\horrorgame\\horrorgame.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

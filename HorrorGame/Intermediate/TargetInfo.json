@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "HorrorGame",
+			"Path": "..\\Source\\HorrorGame.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "HorrorGameEditor",
+			"Path": "..\\Source\\HorrorGameEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
