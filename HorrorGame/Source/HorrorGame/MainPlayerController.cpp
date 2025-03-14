@@ -34,6 +34,8 @@ void AMainPlayerController::SetupInputComponent()
 	if (EnhancedInputComponent)
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMainPlayerController::InputMove);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AMainPlayerController::InputLook);
+		EnhancedInputComponent->BindAction(LookOffsetMoveAction, ETriggerEvent::Started, this, &AMainPlayerController::InputLookOffsetMove);
 	}
 }
 
@@ -63,6 +65,34 @@ void AMainPlayerController::InputMove(const FInputActionValue& Value)
 
 		FVector MoveDirection = FVector(MoveValue.Y, MoveValue.X, 0.0f);
 
+		FQuat YawRotation = FRotator(0.0f, GetControlRotation().Yaw, 0.0f).Quaternion();
+		MoveDirection = YawRotation.RotateVector(MoveDirection);
+
 		MainCharacter->Movement(MoveDirection);
 	}
+}
+
+void AMainPlayerController::InputLook(const FInputActionValue& Value)
+{
+	FVector2D InputValue = Value.Get<FVector2D>();
+
+	AddYawInput(InputValue.X);
+	AddPitchInput(InputValue.Y);
+}
+
+void AMainPlayerController::InputLookOffsetMove(const FInputActionValue& Value)
+{
+	bLookOffsetMove = !bLookOffsetMove;
+	if (bLookOffsetMove)
+	{
+	USpringArmComponent* SpringArmOffset = MainCharacter->GetSpringArm();
+	SpringArmOffset->TargetArmLength = 300.0f;
+
+	}
+	else
+	{
+		USpringArmComponent* SpringArmOffset = MainCharacter->GetSpringArm();
+		SpringArmOffset->TargetArmLength = 100.0f;
+	}
+
 }

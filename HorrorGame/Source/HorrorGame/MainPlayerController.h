@@ -26,6 +26,8 @@ protected:
 	virtual void OnUnPossess() override;
 
 	void InputMove(const FInputActionValue& Value);
+	void InputLook(const FInputActionValue& Value);
+	void InputLookOffsetMove(const FInputActionValue& Value);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mapping")
@@ -34,6 +36,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mapping")
 	class UInputAction* MoveAction = nullptr;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mapping")
+	class UInputAction* LookAction = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mapping")
+	class UInputAction* LookOffsetMoveAction = nullptr;
 private:
 	class AMainCharacter* MainCharacter = nullptr;
+
+	bool bLookOffsetMove = false;
 };
