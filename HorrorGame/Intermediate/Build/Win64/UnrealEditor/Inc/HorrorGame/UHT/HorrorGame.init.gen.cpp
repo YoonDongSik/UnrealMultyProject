@@ -17,13 +17,13 @@ void EmptyLinkFunctionForGeneratedCodeHorrorGame_init() {}
 				nullptr,
 				0,
 				PKG_CompiledIn | 0x00000000,
-				0xD668F602,
-				0xD62ECB35,
+				0xE90C7716,
+				0xC1D571A1,
 				METADATA_PARAMS(0, nullptr)
 			};
 			UECodeGen_Private::ConstructUPackage(Z_Registration_Info_UPackage__Script_HorrorGame.OuterSingleton, PackageParams);
 		}
 		return Z_Registration_Info_UPackage__Script_HorrorGame.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_HorrorGame(Z_Construct_UPackage__Script_HorrorGame, TEXT("/Script/HorrorGame"), Z_Registration_Info_UPackage__Script_HorrorGame, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0xD668F602, 0xD62ECB35));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_HorrorGame(Z_Construct_UPackage__Script_HorrorGame, TEXT("/Script/HorrorGame"), Z_Registration_Info_UPackage__Script_HorrorGame, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0xE90C7716, 0xC1D571A1));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

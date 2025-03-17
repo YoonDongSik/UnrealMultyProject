@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "MainCharacter.generated.h"
@@ -31,7 +32,19 @@ public:
 
 	USpringArmComponent* GetSpringArm() const { return SpringArm; }
 
+	UFUNCTION(BlueprintCallable, Category = "Player Movement")
+	inline void SetRunMode() { GetCharacterMovement()->MaxWalkSpeed = RunSpeed; };
+
+	UFUNCTION(BlueprintCallable, Category = "Player Movement")
+	inline void SetWalkMode() { GetCharacterMovement()->MaxWalkSpeed = WalkSpeed; };
+
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Move")
+	float WalkSpeed = 600;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Move")
+	float RunSpeed = 1200;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Camera")
 	USpringArmComponent* SpringArm = nullptr;
 
