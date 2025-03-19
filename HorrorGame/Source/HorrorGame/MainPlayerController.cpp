@@ -33,9 +33,26 @@ void AMainPlayerController::SetupInputComponent()
 	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
 	if (EnhancedInputComponent)
 	{
+		if (MoveAction)
+		{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMainPlayerController::InputMove);
+		}
+
+		if (LookAction)
+		{
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AMainPlayerController::InputLook);
+		}
+
+		if (LookOffsetMoveAction)
+		{
 		EnhancedInputComponent->BindAction(LookOffsetMoveAction, ETriggerEvent::Started, this, &AMainPlayerController::InputLookOffsetMove);
+		}
+
+		if (RunAction)
+		{
+		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Started, this, &AMainPlayerController::InputRun);
+		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &AMainPlayerController::InputRun);
+		}
 	}
 }
 
@@ -95,4 +112,18 @@ void AMainPlayerController::InputLookOffsetMove(const FInputActionValue& Value)
 		SpringArmOffset->TargetArmLength = 100.0f;
 	}
 
+}
+
+void AMainPlayerController::InputRun(const FInputActionValue& Value)
+{
+	bool bIsPressed = false;
+	bIsPressed = !bIsPressed;
+	if (bIsPressed)
+	{
+		MainCharacter->SetRunMode();
+	}
+	else
+	{
+		MainCharacter->SetWalkMode();
+	}
 }
