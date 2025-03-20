@@ -40,10 +40,10 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Move")
-	float WalkSpeed = 600;
+	float WalkSpeed = 400;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Move")
-	float RunSpeed = 1200;
+	float RunSpeed = 800;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Camera")
 	USpringArmComponent* SpringArm = nullptr;

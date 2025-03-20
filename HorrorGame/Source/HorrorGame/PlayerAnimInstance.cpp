@@ -14,4 +14,8 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 	
+	if (PlayerCharacter)
+	{
+	Speed = PlayerCharacter->GetVelocity().Size();
+	}
 }

@@ -109,21 +109,22 @@ void AMainPlayerController::InputLookOffsetMove(const FInputActionValue& Value)
 	else
 	{
 		USpringArmComponent* SpringArmOffset = MainCharacter->GetSpringArm();
-		SpringArmOffset->TargetArmLength = 100.0f;
+		SpringArmOffset->TargetArmLength = 50.0f;
 	}
 
 }
 
 void AMainPlayerController::InputRun(const FInputActionValue& Value)
 {
-	bool bIsPressed = false;
 	bIsPressed = !bIsPressed;
 	if (bIsPressed)
 	{
 		MainCharacter->SetRunMode();
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("RunMode")));
 	}
 	else
 	{
 		MainCharacter->SetWalkMode();
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("WalkMode")));
 	}
 }

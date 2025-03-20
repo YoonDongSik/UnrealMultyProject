@@ -49,4 +49,6 @@ private:
 	class AMainCharacter* MainCharacter = nullptr;
 
 	bool bLookOffsetMove = false;
+
+	bool bIsPressed = false;
 };
