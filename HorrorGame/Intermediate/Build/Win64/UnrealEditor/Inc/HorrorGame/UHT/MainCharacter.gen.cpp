@@ -155,6 +155,14 @@ struct Z_Construct_UClass_AMainCharacter_Statics
 		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "MainCharacter.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bIsRunning_MetaData[] = {
+		{ "Category", "Player|State" },
+		{ "ModuleRelativePath", "MainCharacter.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Stemina_MetaData[] = {
+		{ "Category", "Player|Stat" },
+		{ "ModuleRelativePath", "MainCharacter.h" },
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_WalkSpeed;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_RunSpeed;
@@ -167,6 +175,9 @@ struct Z_Construct_UClass_AMainCharacter_Statics
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_PantsMesh;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_SweaterMesh;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_GlassesMesh;
+	static void NewProp_bIsRunning_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsRunning;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_Stemina;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
@@ -190,6 +201,12 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AMainCharacter
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AMainCharacter_Statics::NewProp_PantsMesh = { "PantsMesh", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AMainCharacter, PantsMesh), Z_Construct_UClass_USkeletalMeshComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PantsMesh_MetaData), NewProp_PantsMesh_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AMainCharacter_Statics::NewProp_SweaterMesh = { "SweaterMesh", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AMainCharacter, SweaterMesh), Z_Construct_UClass_USkeletalMeshComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SweaterMesh_MetaData), NewProp_SweaterMesh_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AMainCharacter_Statics::NewProp_GlassesMesh = { "GlassesMesh", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AMainCharacter, GlassesMesh), Z_Construct_UClass_USkeletalMeshComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GlassesMesh_MetaData), NewProp_GlassesMesh_MetaData) };
+void Z_Construct_UClass_AMainCharacter_Statics::NewProp_bIsRunning_SetBit(void* Obj)
+{
+	((AMainCharacter*)Obj)->bIsRunning = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_AMainCharacter_Statics::NewProp_bIsRunning = { "bIsRunning", nullptr, (EPropertyFlags)0x0020080000020015, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(AMainCharacter), &Z_Construct_UClass_AMainCharacter_Statics::NewProp_bIsRunning_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bIsRunning_MetaData), NewProp_bIsRunning_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AMainCharacter_Statics::NewProp_Stemina = { "Stemina", nullptr, (EPropertyFlags)0x0020080000000015, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AMainCharacter, Stemina), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Stemina_MetaData), NewProp_Stemina_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AMainCharacter_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AMainCharacter_Statics::NewProp_WalkSpeed,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AMainCharacter_Statics::NewProp_RunSpeed,
@@ -202,6 +219,8 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AMainChar
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AMainCharacter_Statics::NewProp_PantsMesh,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AMainCharacter_Statics::NewProp_SweaterMesh,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AMainCharacter_Statics::NewProp_GlassesMesh,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AMainCharacter_Statics::NewProp_bIsRunning,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AMainCharacter_Statics::NewProp_Stemina,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AMainCharacter_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_AMainCharacter_Statics::DependentSingletons[])() = {
@@ -244,10 +263,10 @@ AMainCharacter::~AMainCharacter() {}
 struct Z_CompiledInDeferFile_FID_HorrorGame_Source_HorrorGame_MainCharacter_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AMainCharacter, AMainCharacter::StaticClass, TEXT("AMainCharacter"), &Z_Registration_Info_UClass_AMainCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AMainCharacter), 3993817907U) },
+		{ Z_Construct_UClass_AMainCharacter, AMainCharacter::StaticClass, TEXT("AMainCharacter"), &Z_Registration_Info_UClass_AMainCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AMainCharacter), 3357563175U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_HorrorGame_Source_HorrorGame_MainCharacter_h_3356959864(TEXT("/Script/HorrorGame"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_HorrorGame_Source_HorrorGame_MainCharacter_h_1203219996(TEXT("/Script/HorrorGame"),
 	Z_CompiledInDeferFile_FID_HorrorGame_Source_HorrorGame_MainCharacter_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_HorrorGame_Source_HorrorGame_MainCharacter_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

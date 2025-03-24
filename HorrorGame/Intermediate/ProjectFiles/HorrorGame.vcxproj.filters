@@ -57,5 +57,11 @@
     <ClCompile Include="..\..\Source\HorrorGame\PlayerAnimInstance.h">
       <Filter>Source\HorrorGame</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\HorrorGame\SteminaWidget.cpp">
+      <Filter>Source\HorrorGame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\HorrorGame\SteminaWidget.h">
+      <Filter>Source\HorrorGame</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

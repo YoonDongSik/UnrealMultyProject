@@ -60,6 +60,24 @@ void AMainCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (bIsRunning)
+	{
+		Stemina -= 10 * DeltaTime;
+		if (Stemina < 0)
+		{
+			Stemina = 0;
+			SetWalkMode();
+		}
+	}
+	else
+	{
+		Stemina += 5 * DeltaTime;
+		if (Stemina > 100)
+		{
+			Stemina = 100;
+		}
+	}
+	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, FString::Printf(TEXT("Current Stemina : %.f"), Stemina));
 }
 
 // Called to bind functionality to input

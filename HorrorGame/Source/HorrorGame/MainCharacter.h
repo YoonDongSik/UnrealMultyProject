@@ -33,10 +33,12 @@ public:
 	USpringArmComponent* GetSpringArm() const { return SpringArm; }
 
 	UFUNCTION(BlueprintCallable, Category = "Player Movement")
-	inline void SetRunMode() { GetCharacterMovement()->MaxWalkSpeed = RunSpeed; };
+	inline void SetRunMode() { GetCharacterMovement()->MaxWalkSpeed = RunSpeed; bIsRunning = true; };
 
 	UFUNCTION(BlueprintCallable, Category = "Player Movement")
-	inline void SetWalkMode() { GetCharacterMovement()->MaxWalkSpeed = WalkSpeed; };
+	inline void SetWalkMode() { GetCharacterMovement()->MaxWalkSpeed = WalkSpeed; bIsRunning = false; };
+
+	inline float GetStemina() { return Stemina; };
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Move")
@@ -71,4 +73,11 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Mesh")
 	USkeletalMeshComponent* GlassesMesh = nullptr;
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|State")
+	bool bIsRunning = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Stat")
+	float Stemina = 100;
 };
