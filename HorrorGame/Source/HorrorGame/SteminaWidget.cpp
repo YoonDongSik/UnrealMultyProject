@@ -3,3 +3,10 @@
 
 #include "SteminaWidget.h"
 
+void USteminaWidget::SteminaUpdate(float SteminaPercent)
+{
+	if (SteminaBar)
+	{
+		SteminaBar->SetPercent(SteminaPercent);
+	}
+}

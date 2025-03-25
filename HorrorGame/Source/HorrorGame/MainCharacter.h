@@ -9,6 +9,8 @@
 #include "Camera/CameraComponent.h"
 #include "MainCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStaminaChanged, float, NewStaminaPercent);
+
 UCLASS()
 class HORRORGAME_API AMainCharacter : public ACharacter
 {
@@ -19,6 +21,8 @@ public:
 	AMainCharacter();
 
 	void Movement(const FVector& MoveValue);
+
+	FOnStaminaChanged OnStaminaChanged;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -38,7 +42,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player Movement")
 	inline void SetWalkMode() { GetCharacterMovement()->MaxWalkSpeed = WalkSpeed; bIsRunning = false; };
 
-	inline float GetStemina() { return Stemina; };
+	inline float GetSteminaPercent() const { return Stemina / 100.0f; };
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Move")

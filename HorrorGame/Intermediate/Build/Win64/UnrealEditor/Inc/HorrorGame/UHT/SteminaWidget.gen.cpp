@@ -12,6 +12,7 @@ void EmptyLinkFunctionForGeneratedCodeSteminaWidget() {}
 // Begin Cross Module References
 HORRORGAME_API UClass* Z_Construct_UClass_USteminaWidget();
 HORRORGAME_API UClass* Z_Construct_UClass_USteminaWidget_NoRegister();
+UMG_API UClass* Z_Construct_UClass_UProgressBar_NoRegister();
 UMG_API UClass* Z_Construct_UClass_UUserWidget();
 UPackage* Z_Construct_UPackage__Script_HorrorGame();
 // End Cross Module References
@@ -35,13 +36,26 @@ struct Z_Construct_UClass_USteminaWidget_Statics
 		{ "IncludePath", "SteminaWidget.h" },
 		{ "ModuleRelativePath", "SteminaWidget.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_SteminaBar_MetaData[] = {
+		{ "BindWidget", "" },
+		{ "Category", "Stat" },
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "SteminaWidget.h" },
+	};
 #endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_SteminaBar;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
 		TCppClassTypeTraits<USteminaWidget>::IsAbstract,
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_USteminaWidget_Statics::NewProp_SteminaBar = { "SteminaBar", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(USteminaWidget, SteminaBar), Z_Construct_UClass_UProgressBar_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SteminaBar_MetaData), NewProp_SteminaBar_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_USteminaWidget_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_USteminaWidget_Statics::NewProp_SteminaBar,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_USteminaWidget_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_USteminaWidget_Statics::DependentSingletons[])() = {
 	(UObject* (*)())Z_Construct_UClass_UUserWidget,
 	(UObject* (*)())Z_Construct_UPackage__Script_HorrorGame,
@@ -53,11 +67,11 @@ const UECodeGen_Private::FClassParams Z_Construct_UClass_USteminaWidget_Statics:
 	&StaticCppClassTypeInfo,
 	DependentSingletons,
 	nullptr,
-	nullptr,
+	Z_Construct_UClass_USteminaWidget_Statics::PropPointers,
 	nullptr,
 	UE_ARRAY_COUNT(DependentSingletons),
 	0,
-	0,
+	UE_ARRAY_COUNT(Z_Construct_UClass_USteminaWidget_Statics::PropPointers),
 	0,
 	0x00B010A0u,
 	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_USteminaWidget_Statics::Class_MetaDataParams), Z_Construct_UClass_USteminaWidget_Statics::Class_MetaDataParams)
@@ -83,10 +97,10 @@ USteminaWidget::~USteminaWidget() {}
 struct Z_CompiledInDeferFile_FID_HorrorGame_Source_HorrorGame_SteminaWidget_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_USteminaWidget, USteminaWidget::StaticClass, TEXT("USteminaWidget"), &Z_Registration_Info_UClass_USteminaWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(USteminaWidget), 3610360057U) },
+		{ Z_Construct_UClass_USteminaWidget, USteminaWidget::StaticClass, TEXT("USteminaWidget"), &Z_Registration_Info_UClass_USteminaWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(USteminaWidget), 4205887689U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_HorrorGame_Source_HorrorGame_SteminaWidget_h_2378905283(TEXT("/Script/HorrorGame"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_HorrorGame_Source_HorrorGame_SteminaWidget_h_2256160607(TEXT("/Script/HorrorGame"),
 	Z_CompiledInDeferFile_FID_HorrorGame_Source_HorrorGame_SteminaWidget_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_HorrorGame_Source_HorrorGame_SteminaWidget_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

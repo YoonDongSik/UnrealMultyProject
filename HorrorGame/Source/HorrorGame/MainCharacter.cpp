@@ -78,6 +78,7 @@ void AMainCharacter::Tick(float DeltaTime)
 		}
 	}
 	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, FString::Printf(TEXT("Current Stemina : %.f"), Stemina));
+	OnStaminaChanged.Broadcast(Stemina);
 }
 
 // Called to bind functionality to input

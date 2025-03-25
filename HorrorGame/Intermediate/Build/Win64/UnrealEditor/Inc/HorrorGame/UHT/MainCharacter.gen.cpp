@@ -16,8 +16,53 @@ ENGINE_API UClass* Z_Construct_UClass_USkeletalMeshComponent_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_USpringArmComponent_NoRegister();
 HORRORGAME_API UClass* Z_Construct_UClass_AMainCharacter();
 HORRORGAME_API UClass* Z_Construct_UClass_AMainCharacter_NoRegister();
+HORRORGAME_API UFunction* Z_Construct_UDelegateFunction_HorrorGame_OnStaminaChanged__DelegateSignature();
 UPackage* Z_Construct_UPackage__Script_HorrorGame();
 // End Cross Module References
+
+// Begin Delegate FOnStaminaChanged
+struct Z_Construct_UDelegateFunction_HorrorGame_OnStaminaChanged__DelegateSignature_Statics
+{
+	struct _Script_HorrorGame_eventOnStaminaChanged_Parms
+	{
+		float NewStaminaPercent;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "MainCharacter.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_NewStaminaPercent;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UDelegateFunction_HorrorGame_OnStaminaChanged__DelegateSignature_Statics::NewProp_NewStaminaPercent = { "NewStaminaPercent", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_HorrorGame_eventOnStaminaChanged_Parms, NewStaminaPercent), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_HorrorGame_OnStaminaChanged__DelegateSignature_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_HorrorGame_OnStaminaChanged__DelegateSignature_Statics::NewProp_NewStaminaPercent,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_HorrorGame_OnStaminaChanged__DelegateSignature_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UDelegateFunction_HorrorGame_OnStaminaChanged__DelegateSignature_Statics::FuncParams = { (UObject*(*)())Z_Construct_UPackage__Script_HorrorGame, nullptr, "OnStaminaChanged__DelegateSignature", nullptr, nullptr, Z_Construct_UDelegateFunction_HorrorGame_OnStaminaChanged__DelegateSignature_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_HorrorGame_OnStaminaChanged__DelegateSignature_Statics::PropPointers), sizeof(Z_Construct_UDelegateFunction_HorrorGame_OnStaminaChanged__DelegateSignature_Statics::_Script_HorrorGame_eventOnStaminaChanged_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00130000, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_HorrorGame_OnStaminaChanged__DelegateSignature_Statics::Function_MetaDataParams), Z_Construct_UDelegateFunction_HorrorGame_OnStaminaChanged__DelegateSignature_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UDelegateFunction_HorrorGame_OnStaminaChanged__DelegateSignature_Statics::_Script_HorrorGame_eventOnStaminaChanged_Parms) < MAX_uint16);
+UFunction* Z_Construct_UDelegateFunction_HorrorGame_OnStaminaChanged__DelegateSignature()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UDelegateFunction_HorrorGame_OnStaminaChanged__DelegateSignature_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+void FOnStaminaChanged_DelegateWrapper(const FMulticastScriptDelegate& OnStaminaChanged, float NewStaminaPercent)
+{
+	struct _Script_HorrorGame_eventOnStaminaChanged_Parms
+	{
+		float NewStaminaPercent;
+	};
+	_Script_HorrorGame_eventOnStaminaChanged_Parms Parms;
+	Parms.NewStaminaPercent=NewStaminaPercent;
+	OnStaminaChanged.ProcessMulticastDelegate<UObject>(&Parms);
+}
+// End Delegate FOnStaminaChanged
 
 // Begin Class AMainCharacter Function SetRunMode
 struct Z_Construct_UFunction_AMainCharacter_SetRunMode_Statics

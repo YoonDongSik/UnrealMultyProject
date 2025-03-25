@@ -14,12 +14,16 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define HORRORGAME_MainCharacter_generated_h
 
-#define FID_HorrorGame_Source_HorrorGame_MainCharacter_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_HorrorGame_Source_HorrorGame_MainCharacter_h_12_DELEGATE \
+HORRORGAME_API void FOnStaminaChanged_DelegateWrapper(const FMulticastScriptDelegate& OnStaminaChanged, float NewStaminaPercent);
+
+
+#define FID_HorrorGame_Source_HorrorGame_MainCharacter_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execSetWalkMode); \
 	DECLARE_FUNCTION(execSetRunMode);
 
 
-#define FID_HorrorGame_Source_HorrorGame_MainCharacter_h_15_INCLASS_NO_PURE_DECLS \
+#define FID_HorrorGame_Source_HorrorGame_MainCharacter_h_17_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAMainCharacter(); \
 	friend struct Z_Construct_UClass_AMainCharacter_Statics; \
@@ -28,7 +32,7 @@ public: \
 	DECLARE_SERIALIZER(AMainCharacter)
 
 
-#define FID_HorrorGame_Source_HorrorGame_MainCharacter_h_15_ENHANCED_CONSTRUCTORS \
+#define FID_HorrorGame_Source_HorrorGame_MainCharacter_h_17_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	AMainCharacter(AMainCharacter&&); \
@@ -40,13 +44,13 @@ public: \
 	NO_API virtual ~AMainCharacter();
 
 
-#define FID_HorrorGame_Source_HorrorGame_MainCharacter_h_12_PROLOG
-#define FID_HorrorGame_Source_HorrorGame_MainCharacter_h_15_GENERATED_BODY \
+#define FID_HorrorGame_Source_HorrorGame_MainCharacter_h_14_PROLOG
+#define FID_HorrorGame_Source_HorrorGame_MainCharacter_h_17_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_HorrorGame_Source_HorrorGame_MainCharacter_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_HorrorGame_Source_HorrorGame_MainCharacter_h_15_INCLASS_NO_PURE_DECLS \
-	FID_HorrorGame_Source_HorrorGame_MainCharacter_h_15_ENHANCED_CONSTRUCTORS \
+	FID_HorrorGame_Source_HorrorGame_MainCharacter_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_HorrorGame_Source_HorrorGame_MainCharacter_h_17_INCLASS_NO_PURE_DECLS \
+	FID_HorrorGame_Source_HorrorGame_MainCharacter_h_17_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

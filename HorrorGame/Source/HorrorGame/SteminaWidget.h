@@ -15,5 +15,10 @@ class HORRORGAME_API USteminaWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-	public
+public:
+	void SteminaUpdate(float SteminaPercent);
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat", meta = (BindWidget))
+	class UProgressBar* SteminaBar;
 };
