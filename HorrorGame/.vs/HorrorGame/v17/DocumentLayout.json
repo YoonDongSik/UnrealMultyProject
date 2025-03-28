@@ -3,34 +3,6 @@
   "WorkspaceRootPath": "D:\\UnrealMultyProject\\HorrorGame\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainCharacter.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\MainCharacter.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainCharacter.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\MainCharacter.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainWidget.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\MainWidget.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\SteminaWidget.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\SteminaWidget.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\SteminaWidget.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\SteminaWidget.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainWidget.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\MainWidget.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\PlayerAnimInstance.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\PlayerAnimInstance.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainPlayerController.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\MainPlayerController.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -39,8 +11,36 @@
       "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\MainPlayerController.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainCharacter.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\MainCharacter.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainCharacter.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\MainCharacter.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\PlayerAnimInstance.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\PlayerAnimInstance.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\SteminaWidget.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\SteminaWidget.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\PlayerAnimInstance.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\PlayerAnimInstance.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainWidget.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\MainWidget.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\SteminaWidget.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\SteminaWidget.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainWidget.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{DB167565-9C3B-3B3E-81AB-182AE5FA541C}|Intermediate\\ProjectFiles\\HorrorGame.vcxproj|solutionrelative:Source\\HorrorGame\\MainWidget.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,7 +50,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 10,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -58,128 +58,132 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "MainWidget.cpp",
-              "DocumentMoniker": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainWidget.cpp",
-              "RelativeDocumentMoniker": "Source\\HorrorGame\\MainWidget.cpp",
-              "ToolTip": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainWidget.cpp",
-              "RelativeToolTip": "Source\\HorrorGame\\MainWidget.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAaAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "PlayerAnimInstance.cpp",
+              "DocumentMoniker": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\PlayerAnimInstance.cpp",
+              "RelativeDocumentMoniker": "Source\\HorrorGame\\PlayerAnimInstance.cpp",
+              "ToolTip": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\PlayerAnimInstance.cpp",
+              "RelativeToolTip": "Source\\HorrorGame\\PlayerAnimInstance.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-25T08:24:34.465Z",
+              "WhenOpened": "2025-03-27T07:52:15.444Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
+              "Title": "PlayerAnimInstance.h",
+              "DocumentMoniker": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\PlayerAnimInstance.h",
+              "RelativeDocumentMoniker": "Source\\HorrorGame\\PlayerAnimInstance.h",
+              "ToolTip": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\PlayerAnimInstance.h",
+              "RelativeToolTip": "Source\\HorrorGame\\PlayerAnimInstance.h",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAmwBUAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-03-27T06:32:41.951Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "MainWidget.h",
               "DocumentMoniker": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainWidget.h",
               "RelativeDocumentMoniker": "Source\\HorrorGame\\MainWidget.h",
               "ToolTip": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainWidget.h",
               "RelativeToolTip": "Source\\HorrorGame\\MainWidget.h",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABcAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAAABYAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-03-25T08:24:34.23Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "SteminaWidget.cpp",
-              "DocumentMoniker": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\SteminaWidget.cpp",
-              "RelativeDocumentMoniker": "Source\\HorrorGame\\SteminaWidget.cpp",
-              "ToolTip": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\SteminaWidget.cpp",
-              "RelativeToolTip": "Source\\HorrorGame\\SteminaWidget.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-24T08:39:37.748Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 8,
               "Title": "SteminaWidget.h",
               "DocumentMoniker": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\SteminaWidget.h",
               "RelativeDocumentMoniker": "Source\\HorrorGame\\SteminaWidget.h",
               "ToolTip": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\SteminaWidget.h",
               "RelativeToolTip": "Source\\HorrorGame\\SteminaWidget.h",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABYAAAAgAAAAAAAAAA==",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAABMAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-03-24T08:39:37.457Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "PlayerAnimInstance.cpp",
-              "DocumentMoniker": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\PlayerAnimInstance.cpp",
-              "RelativeDocumentMoniker": "Source\\HorrorGame\\PlayerAnimInstance.cpp",
-              "ToolTip": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\PlayerAnimInstance.cpp",
-              "RelativeToolTip": "Source\\HorrorGame\\PlayerAnimInstance.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAACAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-17T08:19:04.056Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "PlayerAnimInstance.h",
-              "DocumentMoniker": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\PlayerAnimInstance.h",
-              "RelativeDocumentMoniker": "Source\\HorrorGame\\PlayerAnimInstance.h",
-              "ToolTip": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\PlayerAnimInstance.h",
-              "RelativeToolTip": "Source\\HorrorGame\\PlayerAnimInstance.h",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-03-17T08:19:03.97Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 7,
+              "Title": "MainWidget.cpp",
+              "DocumentMoniker": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainWidget.cpp",
+              "RelativeDocumentMoniker": "Source\\HorrorGame\\MainWidget.cpp",
+              "ToolTip": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainWidget.cpp",
+              "RelativeToolTip": "Source\\HorrorGame\\MainWidget.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-25T08:24:34.465Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "MainPlayerController.cpp",
               "DocumentMoniker": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainPlayerController.cpp",
               "RelativeDocumentMoniker": "Source\\HorrorGame\\MainPlayerController.cpp",
               "ToolTip": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainPlayerController.cpp",
               "RelativeToolTip": "Source\\HorrorGame\\MainPlayerController.cpp",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAJkAAAAAAAAAAAAIwKkAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-13T08:09:53.323Z"
+              "WhenOpened": "2025-03-13T08:09:53.323Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 1,
               "Title": "MainPlayerController.h",
               "DocumentMoniker": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainPlayerController.h",
               "RelativeDocumentMoniker": "Source\\HorrorGame\\MainPlayerController.h",
               "ToolTip": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainPlayerController.h",
               "RelativeToolTip": "Source\\HorrorGame\\MainPlayerController.h",
-              "ViewState": "AgIAAC4AAAAAAAAAAAAkwDAAAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAADoAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-03-13T08:09:53.068Z"
+              "WhenOpened": "2025-03-13T08:09:53.068Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "MainCharacter.cpp",
               "DocumentMoniker": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainCharacter.cpp",
               "RelativeDocumentMoniker": "Source\\HorrorGame\\MainCharacter.cpp",
               "ToolTip": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainCharacter.cpp",
               "RelativeToolTip": "Source\\HorrorGame\\MainCharacter.cpp",
-              "ViewState": "AgIAAEAAAAAAAAAAAAAAAFAAAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAACcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-03-11T08:27:33.628Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "MainCharacter.h",
               "DocumentMoniker": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainCharacter.h",
               "RelativeDocumentMoniker": "Source\\HorrorGame\\MainCharacter.h",
               "ToolTip": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\MainCharacter.h",
               "RelativeToolTip": "Source\\HorrorGame\\MainCharacter.h",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACQAAAAAAAAAAAAYwDUAAABnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-03-11T08:27:33.055Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SteminaWidget.cpp",
+              "DocumentMoniker": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\SteminaWidget.cpp",
+              "RelativeDocumentMoniker": "Source\\HorrorGame\\SteminaWidget.cpp",
+              "ToolTip": "D:\\UnrealMultyProject\\HorrorGame\\Source\\HorrorGame\\SteminaWidget.cpp",
+              "RelativeToolTip": "Source\\HorrorGame\\SteminaWidget.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-24T08:39:37.748Z",
               "EditorCaption": ""
             }
           ]
