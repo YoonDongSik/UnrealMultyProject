@@ -36,6 +36,7 @@ void AMainPlayerController::SetupInputComponent()
 		if (MoveAction)
 		{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMainPlayerController::InputMove);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed, this, &AMainPlayerController::ResetMove);
 		}
 
 		if (LookAction)
@@ -50,8 +51,18 @@ void AMainPlayerController::SetupInputComponent()
 
 		if (RunAction)
 		{
-		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Started, this, &AMainPlayerController::InputRun);
-		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &AMainPlayerController::InputRun);
+			EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Started, this, &AMainPlayerController::InputRun);
+			EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &AMainPlayerController::InputRun);
+		}
+
+		if (JumpAction)
+		{
+			EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &AMainPlayerController::InputJump);
+		}
+
+		if (CrouchAction)
+		{
+			EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &AMainPlayerController::InputCrouching);
 		}
 	}
 }
@@ -70,9 +81,10 @@ void AMainPlayerController::OnUnPossess()
 
 void AMainPlayerController::InputMove(const FInputActionValue& Value)
 {
+	bIsMoving = true;
 	if (MainCharacter)
 	{
-		FVector2D MoveValue = Value.Get<FVector2D>();
+		MoveValue = Value.Get<FVector2D>();
 
 		float Size = MoveValue.Size();
 		if (Size > 1.0f)
@@ -87,6 +99,13 @@ void AMainPlayerController::InputMove(const FInputActionValue& Value)
 
 		MainCharacter->Movement(MoveDirection);
 	}
+}
+
+void AMainPlayerController::ResetMove(const FInputActionValue& Value)
+{
+	bIsMoving = false;
+	MainCharacter->SetWalkMode();
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("WalkMode")));
 }
 
 void AMainPlayerController::InputLook(const FInputActionValue& Value)
@@ -117,14 +136,54 @@ void AMainPlayerController::InputLookOffsetMove(const FInputActionValue& Value)
 void AMainPlayerController::InputRun(const FInputActionValue& Value)
 {
 	bIsPressed = !bIsPressed;
-	if (bIsPressed)
+	if (!bIsCrouch)
 	{
-		MainCharacter->SetRunMode();
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("RunMode")));
+		if (bIsPressed)
+		{
+			if (bIsMoving)
+			{
+				MainCharacter->SetRunMode();
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("RunMode")));
+			}
+			else
+			{
+				MainCharacter->SetWalkMode();
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("WalkMode")));
+			}
+		}
+		else
+		{
+			MainCharacter->SetWalkMode();
+			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("WalkMode")));
+		}
+	}
+}
+
+void AMainPlayerController::InputJump(const FInputActionValue& Value)
+{
+	if (MainCharacter)
+	{
+		if (!bIsCrouch)
+		{
+			MainCharacter->Jump();
+			MainCharacter->PlayJumpMontage();
+		}
+	}
+}
+
+void AMainPlayerController::InputCrouching(const FInputActionValue& Value)
+{
+	bIsCrouch = !bIsCrouch;
+
+	if (bIsCrouch)
+	{
+		MainCharacter->DoCrouching();
+		MainCharacter->SetCrouchMode();
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("CrouchMode")));
 	}
 	else
 	{
+		MainCharacter->DoCrouching();
 		MainCharacter->SetWalkMode();
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("WalkMode")));
 	}
 }

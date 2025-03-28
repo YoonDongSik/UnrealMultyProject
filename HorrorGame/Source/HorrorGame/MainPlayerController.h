@@ -29,6 +29,9 @@ protected:
 	void InputLook(const FInputActionValue& Value);
 	void InputLookOffsetMove(const FInputActionValue& Value);
 	void InputRun(const FInputActionValue& Value);
+	void ResetMove(const FInputActionValue& Value);
+	void InputJump(const FInputActionValue& Value);
+	void InputCrouching(const FInputActionValue& Value);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mapping")
@@ -45,10 +48,25 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mapping")
 	class UInputAction* RunAction = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mapping")
+	class UInputAction* JumpAction = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mapping")
+	class UInputAction* CrouchAction = nullptr;
+
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	bool bIsCrouch = false;
+
 private:
 	class AMainCharacter* MainCharacter = nullptr;
 
 	bool bLookOffsetMove = false;
 
 	bool bIsPressed = false;
+
+	bool bIsMoving = false;
+
+	FVector2D MoveValue;
 };

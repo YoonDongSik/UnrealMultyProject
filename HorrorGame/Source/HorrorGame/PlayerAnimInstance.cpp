@@ -17,5 +17,6 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (PlayerCharacter)
 	{
 	Speed = PlayerCharacter->GetVelocity().Size();
+	bIsCrouchAnim = PlayerCharacter->bIsCrouched;
 	}
 }

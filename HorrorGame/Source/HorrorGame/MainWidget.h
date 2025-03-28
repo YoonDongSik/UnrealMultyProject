@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "SteminaWidget.h"
-#include "MainCharacter.h"
 #include "MainWidget.generated.h"
 
 /**
@@ -18,9 +17,6 @@ class HORRORGAME_API UMainWidget : public UUserWidget
 
 public:
 	virtual void NativeConstruct() override;
-
-	UPROPERTY(BlueprintCallable)
-	void ShowStemina();
 	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat", meta = (BindWidget))
@@ -28,5 +24,5 @@ protected:
 
 private:
 	UPROPERTY()
-	AMainCharacter* MainCharacter;
+	class AMainCharacter* MainCharacter;
 };

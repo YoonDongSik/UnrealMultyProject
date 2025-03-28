@@ -22,10 +22,18 @@ public:
 
 	void Movement(const FVector& MoveValue);
 
+	UFUNCTION()
+	void PlayJumpMontage();
+
+	UFUNCTION()
+	void DoCrouching();
+
 	FOnStaminaChanged OnStaminaChanged;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName = NAME_None);
 
 public:	
 	// Called every frame
@@ -42,7 +50,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player Movement")
 	inline void SetWalkMode() { GetCharacterMovement()->MaxWalkSpeed = WalkSpeed; bIsRunning = false; };
 
-	inline float GetSteminaPercent() const { return Stemina / 100.0f; };
+	UFUNCTION(BlueprintCallable, Category = "Player Movement")
+	inline void SetCrouchMode() { GetCharacterMovement()->MaxWalkSpeed = CrouchSpeed; bIsRunning = false; };
+
+	/*inline float GetSteminaPercent() const { return Stemina / 100.0f; };*/
+
+public:
+	bool bIsCrouched = false;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Move")
@@ -51,32 +65,17 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Move")
 	float RunSpeed = 800;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Move")
+	float CrouchSpeed = 250;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Camera")
 	USpringArmComponent* SpringArm = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Camera")
 	UCameraComponent* Camera = nullptr;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Mesh")
-	USkeletalMeshComponent* FootMesh = nullptr;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Mesh")
-	USkeletalMeshComponent* NeckMesh = nullptr;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Mesh")
-	USkeletalMeshComponent* HoodMesh = nullptr;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Mesh")
-	USkeletalMeshComponent* JarketMesh = nullptr;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Mesh")
-	USkeletalMeshComponent* PantsMesh = nullptr;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Mesh")
-	USkeletalMeshComponent* SweaterMesh = nullptr;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Mesh")
-	USkeletalMeshComponent* GlassesMesh = nullptr;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
+	UAnimMontage* JumpMontage = nullptr;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|State")
@@ -84,4 +83,13 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Stat")
 	float Stemina = 100;
+
+private:
+	UPROPERTY()
+	UAnimInstance* AnimInstance = nullptr;
+
+	UPROPERTY()
+	UAnimMontage* CurrentMontage = nullptr;
+
+	USkeletalMeshComponent* CharacterMesh;
 };

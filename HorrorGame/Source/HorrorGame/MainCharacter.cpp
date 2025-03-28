@@ -2,6 +2,7 @@
 
 
 #include "MainCharacter.h"
+#include "PlayerAnimInstance.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -9,22 +10,9 @@ AMainCharacter::AMainCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	USkeletalMeshComponent* CharacterMesh = GetMesh();
+	CharacterMesh = GetMesh();
 
-	FootMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Foot"));
-	FootMesh->SetupAttachment(CharacterMesh);
-	NeckMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Neck"));
-	NeckMesh->SetupAttachment(CharacterMesh);
-	HoodMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Hood"));
-	HoodMesh->SetupAttachment(CharacterMesh);
-	JarketMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Jarket"));
-	JarketMesh->SetupAttachment(CharacterMesh);
-	PantsMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Pants"));
-	PantsMesh->SetupAttachment(CharacterMesh);
-	SweaterMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Sweater"));
-	SweaterMesh->SetupAttachment(CharacterMesh);
-	GlassesMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Glasses"));
-	GlassesMesh->SetupAttachment(CharacterMesh);
+	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(RootComponent);
@@ -48,11 +36,48 @@ void AMainCharacter::Movement(const FVector& MoveValue)
 	AddMovementInput(MoveValue);
 }
 
+void AMainCharacter::PlayJumpMontage()
+{
+	PlayHighPriorityMontage(JumpMontage);
+}
+
+void AMainCharacter::DoCrouching()
+{
+	bIsCrouched = !bIsCrouched;
+
+	UPlayerAnimInstance* PlayerAnimInstance = Cast<UPlayerAnimInstance>(AnimInstance);
+	if (PlayerAnimInstance)
+	{
+		PlayerAnimInstance->bIsCrouchAnim = bIsCrouched;
+	}
+
+	if (bIsCrouched)
+	{
+		Crouch();
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("Crouching True")));
+	}
+	else
+	{
+		UnCrouch();
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("Crouching false")));
+	}
+}
+
 // Called when the game starts or when spawned
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	AnimInstance = GetMesh()->GetAnimInstance();
+}
+
+void AMainCharacter::PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName)
+{
+	if (!AnimInstance->Montage_IsPlaying(Montage))	// Montage가 재생 중이 아니면
+	{
+		CurrentMontage = Montage;					// Montage를 CurrentMontage로 지정
+		PlayAnimMontage(CurrentMontage, 1.0f, StartSectionName);	// Montage 재생
+	}
 }
 
 // Called every frame
@@ -78,7 +103,7 @@ void AMainCharacter::Tick(float DeltaTime)
 		}
 	}
 	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, FString::Printf(TEXT("Current Stemina : %.f"), Stemina));
-	OnStaminaChanged.Broadcast(Stemina);
+	OnStaminaChanged.Broadcast(Stemina / 100);
 }
 
 // Called to bind functionality to input

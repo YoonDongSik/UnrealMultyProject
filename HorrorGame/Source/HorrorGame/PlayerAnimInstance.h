@@ -19,6 +19,9 @@ public:
 
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	bool bIsCrouchAnim = false;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
 	float Speed = 0.0f;
