@@ -57,7 +57,7 @@ void AMainPlayerController::SetupInputComponent()
 
 		if (JumpAction)
 		{
-			EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &AMainPlayerController::InputJump);
+			EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &AMainPlayerController::InputJump);
 		}
 
 		if (CrouchAction)
@@ -123,12 +123,13 @@ void AMainPlayerController::InputLookOffsetMove(const FInputActionValue& Value)
 	{
 	USpringArmComponent* SpringArmOffset = MainCharacter->GetSpringArm();
 	SpringArmOffset->TargetArmLength = 300.0f;
-
+	MainCharacter->bUseControllerRotationYaw = false;
 	}
 	else
 	{
 		USpringArmComponent* SpringArmOffset = MainCharacter->GetSpringArm();
 		SpringArmOffset->TargetArmLength = 50.0f;
+		MainCharacter->bUseControllerRotationYaw = true;
 	}
 
 }
@@ -163,9 +164,11 @@ void AMainPlayerController::InputJump(const FInputActionValue& Value)
 {
 	if (MainCharacter)
 	{
-		if (!bIsCrouch)
+		float Stemina = MainCharacter->GetStemina();
+		if (!bIsCrouch && !MainCharacter->GetCharacterMovement()->IsFalling() && Stemina >= 5)
 		{
 			MainCharacter->Jump();
+			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Black, FString::Printf(TEXT("Play Jump")));
 			MainCharacter->PlayJumpMontage();
 		}
 	}

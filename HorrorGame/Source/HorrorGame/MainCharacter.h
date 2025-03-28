@@ -53,7 +53,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player Movement")
 	inline void SetCrouchMode() { GetCharacterMovement()->MaxWalkSpeed = CrouchSpeed; bIsRunning = false; };
 
-	/*inline float GetSteminaPercent() const { return Stemina / 100.0f; };*/
+	inline float GetStemina() const { return Stemina; };
 
 public:
 	bool bIsCrouched = false;

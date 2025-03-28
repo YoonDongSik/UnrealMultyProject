@@ -24,7 +24,7 @@ AMainCharacter::AMainCharacter()
 	Camera->SetupAttachment(SpringArm);
 	Camera->SetRelativeLocation(FVector(-20.0f, 0.0f, 0.0f));
 
-	bUseControllerRotationYaw = false;
+	bUseControllerRotationYaw = true;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 360.0f, 0.0f);
 
@@ -39,6 +39,7 @@ void AMainCharacter::Movement(const FVector& MoveValue)
 void AMainCharacter::PlayJumpMontage()
 {
 	PlayHighPriorityMontage(JumpMontage);
+	Stemina -= 5;
 }
 
 void AMainCharacter::DoCrouching()
@@ -54,11 +55,13 @@ void AMainCharacter::DoCrouching()
 	if (bIsCrouched)
 	{
 		Crouch();
+		SpringArm->AddRelativeLocation(FVector(50.0f, 0.0f, 0.0f));
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("Crouching True")));
 	}
 	else
 	{
 		UnCrouch();
+		SpringArm->AddRelativeLocation(FVector(50.0f, 0.0f, 70.0f));
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("Crouching false")));
 	}
 }
