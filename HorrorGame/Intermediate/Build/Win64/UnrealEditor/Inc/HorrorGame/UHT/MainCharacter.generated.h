@@ -19,8 +19,11 @@ HORRORGAME_API void FOnStaminaChanged_DelegateWrapper(const FMulticastScriptDele
 
 
 #define FID_HorrorGame_Source_HorrorGame_MainCharacter_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execSetCrouchMode); \
 	DECLARE_FUNCTION(execSetWalkMode); \
-	DECLARE_FUNCTION(execSetRunMode);
+	DECLARE_FUNCTION(execSetRunMode); \
+	DECLARE_FUNCTION(execDoCrouching); \
+	DECLARE_FUNCTION(execPlayJumpMontage);
 
 
 #define FID_HorrorGame_Source_HorrorGame_MainCharacter_h_17_INCLASS_NO_PURE_DECLS \

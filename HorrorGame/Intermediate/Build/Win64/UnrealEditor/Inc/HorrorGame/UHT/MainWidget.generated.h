@@ -14,7 +14,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define HORRORGAME_MainWidget_generated_h
 
-#define FID_HorrorGame_Source_HorrorGame_MainWidget_h_17_INCLASS_NO_PURE_DECLS \
+#define FID_HorrorGame_Source_HorrorGame_MainWidget_h_16_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUMainWidget(); \
 	friend struct Z_Construct_UClass_UMainWidget_Statics; \
@@ -23,7 +23,7 @@ public: \
 	DECLARE_SERIALIZER(UMainWidget)
 
 
-#define FID_HorrorGame_Source_HorrorGame_MainWidget_h_17_ENHANCED_CONSTRUCTORS \
+#define FID_HorrorGame_Source_HorrorGame_MainWidget_h_16_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UMainWidget(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 private: \
@@ -37,12 +37,12 @@ public: \
 	NO_API virtual ~UMainWidget();
 
 
-#define FID_HorrorGame_Source_HorrorGame_MainWidget_h_14_PROLOG
-#define FID_HorrorGame_Source_HorrorGame_MainWidget_h_17_GENERATED_BODY \
+#define FID_HorrorGame_Source_HorrorGame_MainWidget_h_13_PROLOG
+#define FID_HorrorGame_Source_HorrorGame_MainWidget_h_16_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_HorrorGame_Source_HorrorGame_MainWidget_h_17_INCLASS_NO_PURE_DECLS \
-	FID_HorrorGame_Source_HorrorGame_MainWidget_h_17_ENHANCED_CONSTRUCTORS \
+	FID_HorrorGame_Source_HorrorGame_MainWidget_h_16_INCLASS_NO_PURE_DECLS \
+	FID_HorrorGame_Source_HorrorGame_MainWidget_h_16_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
