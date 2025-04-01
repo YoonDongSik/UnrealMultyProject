@@ -35,6 +35,8 @@ protected:
 
 	void PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName = NAME_None);
 
+	FVector AimLine();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

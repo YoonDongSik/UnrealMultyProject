@@ -55,13 +55,13 @@ void AMainCharacter::DoCrouching()
 	if (bIsCrouched)
 	{
 		Crouch();
-		SpringArm->AddRelativeLocation(FVector(50.0f, 0.0f, 0.0f));
+		SpringArm->SetRelativeLocation(FVector(60.0f, 0.0f, 0.0f));
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("Crouching True")));
 	}
 	else
 	{
 		UnCrouch();
-		SpringArm->AddRelativeLocation(FVector(50.0f, 0.0f, 70.0f));
+		SpringArm->SetRelativeLocation(FVector(50.0f, 0.0f, 70.0f));
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("Crouching false")));
 	}
 }
@@ -81,6 +81,41 @@ void AMainCharacter::PlayHighPriorityMontage(UAnimMontage* Montage, FName StartS
 		CurrentMontage = Montage;					// Montage를 CurrentMontage로 지정
 		PlayAnimMontage(CurrentMontage, 1.0f, StartSectionName);	// Montage 재생
 	}
+}
+
+FVector AMainCharacter::AimLine()
+{
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+
+	if (PlayerController)
+	{
+		int32 ViewportSizeX, ViewportSizeY;
+		PlayerController->GetViewportSize(ViewportSizeX, ViewportSizeY);
+
+		FVector WorldLocation, WorldDirection;
+		PlayerController->DeprojectScreenPositionToWorld(ViewportSizeX / 2, ViewportSizeY / 2, WorldLocation, WorldDirection);
+
+		FHitResult HitResult;
+		FVector TraceEnd = WorldLocation + (WorldDirection * 5000.f);
+		bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, WorldLocation, TraceEnd, ECC_Visibility);
+
+		if (bHit)
+		{
+			//// 충돌이 발생하면 빨간색으로 라인을 그립니다
+			//DrawDebugLine(GetWorld(), WorldLocation, HitResult.Location, FColor::Red, false, 1.0f, 0, 1.0f);
+			return HitResult.Location;  // 충돌된 위치 반환
+		}
+		else
+		{
+			//// 충돌이 없으면 TraceEnd까지의 라인을 녹색으로 그립니다
+			//DrawDebugLine(GetWorld(), WorldLocation, TraceEnd, FColor::Green, false, 1.0f, 0, 1.0f);
+			return TraceEnd;  // 충돌이 없으면 끝 위치 반환
+		}
+
+		/*return TraceEnd;*/
+	}
+
+	return FVector::ZeroVector;
 }
 
 // Called every frame
@@ -107,6 +142,8 @@ void AMainCharacter::Tick(float DeltaTime)
 	}
 	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, FString::Printf(TEXT("Current Stemina : %.f"), Stemina));
 	OnStaminaChanged.Broadcast(Stemina / 100);
+
+	FVector AimLocation = AimLine();
 }
 
 // Called to bind functionality to input
