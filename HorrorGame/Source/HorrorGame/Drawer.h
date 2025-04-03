@@ -15,9 +15,14 @@ public:
 	// Sets default values for this actor's properties
 	ADrawer();
 
+	void ToggleDrawer(UStaticMeshComponent* TargetDrawer);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UFUNCTION(BlueprintCallable, Category = "Drawer")
+	void DrawerMove(float Value);
 
 public:	
 	// Called every frame
@@ -49,4 +54,17 @@ protected:
 	UStaticMeshComponent* Floor3DrawerMesh;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* Floor4DrawerMesh;
+
+private:
+	UPROPERTY(EditAnywhere, Category = "Drawer")
+	class UCurveFloat* CurveFloat;
+
+	UPROPERTY(VisibleAnywhere ,Category = "Drawer")
+	class UTimelineComponent* TimelineComponent;
+
+	UStaticMeshComponent* TargetMesh;
+	FVector StartLocation;
+	FVector EndLocation;
+
+	bool bIsOpen;
 };

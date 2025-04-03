@@ -3,6 +3,7 @@
 
 #include "MainCharacter.h"
 #include "PlayerAnimInstance.h"
+#include "Camera/CameraComponent.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -25,7 +26,7 @@ AMainCharacter::AMainCharacter()
 	Camera->SetRelativeLocation(FVector(-20.0f, 0.0f, 0.0f));
 
 	bUseControllerRotationYaw = true;
-	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 360.0f, 0.0f);
 
 	Tags.Add("Player");
@@ -72,6 +73,9 @@ void AMainCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	AnimInstance = GetMesh()->GetAnimInstance();
+	bUseControllerRotationYaw = true;
+	/*FString DebugMessage = FString::Printf(TEXT("bUseControllerRotationYaw: %s"), bUseControllerRotationYaw ? TEXT("true") : TEXT("false"));
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, DebugMessage);*/
 }
 
 void AMainCharacter::PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName)
@@ -83,39 +87,50 @@ void AMainCharacter::PlayHighPriorityMontage(UAnimMontage* Montage, FName StartS
 	}
 }
 
-FVector AMainCharacter::AimLine()
+UStaticMeshComponent* AMainCharacter::CheckDrawerTag()
 {
-	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	FHitResult HitResult;
+	FVector Start = CameraComponent->GetComponentLocation();
+	FVector End = Start + CameraComponent->GetForwardVector() * 300.f;
 
-	if (PlayerController)
+	FCollisionQueryParams CollisionParams;
+	CollisionParams.AddIgnoredActor(this);
+
+	bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, CollisionParams);
+
+	if (bHit)
 	{
-		int32 ViewportSizeX, ViewportSizeY;
-		PlayerController->GetViewportSize(ViewportSizeX, ViewportSizeY);
-
-		FVector WorldLocation, WorldDirection;
-		PlayerController->DeprojectScreenPositionToWorld(ViewportSizeX / 2, ViewportSizeY / 2, WorldLocation, WorldDirection);
-
-		FHitResult HitResult;
-		FVector TraceEnd = WorldLocation + (WorldDirection * 5000.f);
-		bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, WorldLocation, TraceEnd, ECC_Visibility);
-
-		if (bHit)
+		AActor* HitActor = HitResult.GetActor();
+		if (HitActor)
 		{
-			//// 충돌이 발생하면 빨간색으로 라인을 그립니다
-			//DrawDebugLine(GetWorld(), WorldLocation, HitResult.Location, FColor::Red, false, 1.0f, 0, 1.0f);
-			return HitResult.Location;  // 충돌된 위치 반환
+			UStaticMeshComponent* HitMesh = FindTaggedMesh(HitActor, TEXT("Drawer"));
+			return HitMesh;
 		}
 		else
 		{
-			//// 충돌이 없으면 TraceEnd까지의 라인을 녹색으로 그립니다
-			//DrawDebugLine(GetWorld(), WorldLocation, TraceEnd, FColor::Green, false, 1.0f, 0, 1.0f);
-			return TraceEnd;  // 충돌이 없으면 끝 위치 반환
+			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("HitActorNull")));
 		}
-
-		/*return TraceEnd;*/
 	}
 
-	return FVector::ZeroVector;
+	return nullptr;
+}
+
+UStaticMeshComponent* AMainCharacter::FindTaggedMesh(AActor* Actor, FName Tag)
+{
+	if (!Actor) return nullptr;
+
+	TInlineComponentArray<UStaticMeshComponent*> MeshComponents;
+	Actor->GetComponents(MeshComponents);
+
+	for (UActorComponent* Component : MeshComponents)
+	{
+		UStaticMeshComponent* MeshComp = Cast<UStaticMeshComponent>(Component);
+		if (MeshComp && MeshComp->ComponentHasTag(Tag))
+		{
+			return MeshComp;
+		}
+	}
+	return nullptr;
 }
 
 // Called every frame
@@ -142,8 +157,6 @@ void AMainCharacter::Tick(float DeltaTime)
 	}
 	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, FString::Printf(TEXT("Current Stemina : %.f"), Stemina));
 	OnStaminaChanged.Broadcast(Stemina / 100);
-
-	FVector AimLocation = AimLine();
 }
 
 // Called to bind functionality to input
@@ -152,4 +165,3 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
-

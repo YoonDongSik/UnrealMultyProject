@@ -2,7 +2,8 @@
 
 
 #include "Drawer.h"
-#include "Components/SkeletalMeshComponent.h"
+#include "Components/TimelineComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 ADrawer::ADrawer()
@@ -52,6 +53,9 @@ ADrawer::ADrawer()
 	Floor4DrawerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Floor4Drawer"));
 	Floor4DrawerMesh->SetupAttachment(RootComponent);
 	Floor4DrawerMesh->ComponentTags.Add(FName("Drawer"));
+
+	TimelineComponent = CreateDefaultSubobject<UTimelineComponent>(TEXT("TimelineComponent"));
+
 }
 
 // Called when the game starts or when spawned
@@ -59,6 +63,38 @@ void ADrawer::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	FOnTimelineFloat DrawerMoveFunction;
+	DrawerMoveFunction.BindUFunction(this, FName("DrawerMove"));
+	TimelineComponent->AddInterpFloat(CurveFloat, DrawerMoveFunction);
+}
+
+void ADrawer::DrawerMove(float Value)
+{
+	if (!TargetMesh) return;
+
+	FVector NewLocation = UKismetMathLibrary::VLerp(StartLocation, EndLocation, Value);
+	TargetMesh->SetRelativeLocation(NewLocation);
+}
+
+void ADrawer::ToggleDrawer(UStaticMeshComponent* TargetDrawer)
+{
+	if (!TargetDrawer || !CurveFloat) return;
+
+	TargetMesh = TargetDrawer;
+	StartLocation = TargetMesh->GetRelativeLocation();
+
+	if (bIsOpen)
+	{
+		EndLocation = StartLocation - FVector(0.f, 50.f, 0.f);
+		TimelineComponent->Reverse();
+	}
+	else
+	{
+		EndLocation = StartLocation + FVector(0.f, 50.f, 0.f);
+		TimelineComponent->PlayFromStart();
+	}
+
+	bIsOpen = !bIsOpen;
 }
 
 // Called every frame

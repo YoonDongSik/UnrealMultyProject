@@ -14,6 +14,10 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define HORRORGAME_Drawer_generated_h
 
+#define FID_HorrorGame_Source_HorrorGame_Drawer_h_12_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execDrawerMove);
+
+
 #define FID_HorrorGame_Source_HorrorGame_Drawer_h_12_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesADrawer(); \
@@ -39,6 +43,7 @@ public: \
 #define FID_HorrorGame_Source_HorrorGame_Drawer_h_12_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
+	FID_HorrorGame_Source_HorrorGame_Drawer_h_12_RPC_WRAPPERS_NO_PURE_DECLS \
 	FID_HorrorGame_Source_HorrorGame_Drawer_h_12_INCLASS_NO_PURE_DECLS \
 	FID_HorrorGame_Source_HorrorGame_Drawer_h_12_ENHANCED_CONSTRUCTORS \
 private: \

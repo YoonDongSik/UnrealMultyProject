@@ -28,14 +28,14 @@ public:
 	UFUNCTION()
 	void DoCrouching();
 
+	UStaticMeshComponent* CheckDrawerTag();
+
 	FOnStaminaChanged OnStaminaChanged;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	void PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName = NAME_None);
-
-	FVector AimLine();
 
 public:	
 	// Called every frame
@@ -56,6 +56,9 @@ public:
 	inline void SetCrouchMode() { GetCharacterMovement()->MaxWalkSpeed = CrouchSpeed; bIsRunning = false; };
 
 	inline float GetStemina() const { return Stemina; };
+
+private:
+	UStaticMeshComponent* FindTaggedMesh(AActor* Actor, FName Tag);
 
 public:
 	bool bIsCrouched = false;
@@ -86,12 +89,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Stat")
 	float Stemina = 100;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|State")
+	class UCameraComponent* CameraComponent;
+
 private:
 	UPROPERTY()
 	UAnimInstance* AnimInstance = nullptr;
 
 	UPROPERTY()
 	UAnimMontage* CurrentMontage = nullptr;
+
+	UPROPERTY()
+	AActor* CurrentHitActor;
 
 	USkeletalMeshComponent* CharacterMesh;
 };

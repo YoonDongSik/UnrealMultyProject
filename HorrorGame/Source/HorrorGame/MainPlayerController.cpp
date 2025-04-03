@@ -5,6 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "MainCharacter.h"
+#include "Drawer.h"
 
 AMainPlayerController::AMainPlayerController()
 {
@@ -63,6 +64,11 @@ void AMainPlayerController::SetupInputComponent()
 		if (CrouchAction)
 		{
 			EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &AMainPlayerController::InputCrouching);
+		}
+
+		if (DrawerAction)
+		{
+			EnhancedInputComponent->BindAction(DrawerAction, ETriggerEvent::Started, this, &AMainPlayerController::InputDrawer);
 		}
 	}
 }
@@ -189,4 +195,12 @@ void AMainPlayerController::InputCrouching(const FInputActionValue& Value)
 		MainCharacter->DoCrouching();
 		MainCharacter->SetWalkMode();
 	}
+}
+
+void AMainPlayerController::InputDrawer(const FInputActionValue& Value)
+{
+	UStaticMeshComponent* TargetDrawer = MainCharacter->CheckDrawerTag();
+	ADrawer* DrawerActor = Cast<ADrawer>(TargetDrawer->GetOwner());
+
+	DrawerActor->ToggleDrawer(TargetDrawer);
 }
