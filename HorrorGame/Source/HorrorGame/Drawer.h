@@ -15,7 +15,7 @@ public:
 	// Sets default values for this actor's properties
 	ADrawer();
 
-	void ToggleDrawer(UStaticMeshComponent* TargetDrawer);
+	void ToggleDrawer(AActor* TargetDrawer);
 
 protected:
 	// Called when the game starts or when spawned
@@ -24,36 +24,9 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Drawer")
 	void DrawerMove(float Value);
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 protected:
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* UpMesh;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* DownMesh;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* LeftMesh;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* RightMesh;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* BackMesh;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* Floor1Mesh;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* Floor2Mesh;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* Floor3Mesh;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* Floor1DrawerMesh;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* Floor2DrawerMesh;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* Floor3DrawerMesh;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* Floor4DrawerMesh;
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* DrawerMesh;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Drawer")
@@ -62,11 +35,11 @@ private:
 	UPROPERTY(VisibleAnywhere ,Category = "Drawer")
 	class UTimelineComponent* TimelineComponent;
 
-	UStaticMeshComponent* TargetMesh;
+	AActor* TargetActor;
 	FVector StartLocation;
 	FVector EndLocation;
 
 	bool bIsOpen;
 
-	TMap<UStaticMeshComponent*, bool> DrawerStates;
+	/*TMap<UStaticMeshComponent*, bool> DrawerStates;*/
 };

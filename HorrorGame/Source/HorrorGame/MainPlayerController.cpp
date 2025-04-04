@@ -129,12 +129,14 @@ void AMainPlayerController::InputLookOffsetMove(const FInputActionValue& Value)
 	{
 	USpringArmComponent* SpringArmOffset = MainCharacter->GetSpringArm();
 	SpringArmOffset->TargetArmLength = 300.0f;
+	MainCharacter->GetCharacterMovement()->bOrientRotationToMovement = true;
 	MainCharacter->bUseControllerRotationYaw = false;
 	}
 	else
 	{
 		USpringArmComponent* SpringArmOffset = MainCharacter->GetSpringArm();
 		SpringArmOffset->TargetArmLength = 50.0f;
+		MainCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 		MainCharacter->bUseControllerRotationYaw = true;
 	}
 
@@ -199,9 +201,9 @@ void AMainPlayerController::InputCrouching(const FInputActionValue& Value)
 
 void AMainPlayerController::InputDrawer(const FInputActionValue& Value)
 {
-	UStaticMeshComponent* TargetDrawer = MainCharacter->CheckDrawerTag();
+	AActor* TargetDrawer = MainCharacter->CheckDrawerTag();
 	if (!TargetDrawer) return;
-	ADrawer* DrawerActor = Cast<ADrawer>(TargetDrawer->GetOwner());
+	ADrawer* DrawerActor = Cast<ADrawer>(TargetDrawer);
 
 	DrawerActor->ToggleDrawer(TargetDrawer);
 }

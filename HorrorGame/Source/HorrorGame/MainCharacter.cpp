@@ -87,7 +87,7 @@ void AMainCharacter::PlayHighPriorityMontage(UAnimMontage* Montage, FName StartS
 	}
 }
 
-UStaticMeshComponent* AMainCharacter::CheckDrawerTag()
+AActor* AMainCharacter::CheckDrawerTag()
 {
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
 
@@ -109,23 +109,38 @@ UStaticMeshComponent* AMainCharacter::CheckDrawerTag()
 
 		if (bHit)
 		{
-			// 히트된 컴포넌트를 직접 가져오기
-			if (HitResult.GetComponent())
+			UActorComponent* HitComponent = HitResult.GetComponent();
+
+			UChildActorComponent* ChildActorComp = Cast<UChildActorComponent>(HitComponent);
+			if (ChildActorComp && ChildActorComp->GetChildActor())
 			{
-				UStaticMeshComponent* HitMesh = Cast<UStaticMeshComponent>(HitResult.GetComponent());
-
-
-				// 히트된 컴포넌트가 "Drawer" 태그를 가지고 있는지 확인
-				if (HitMesh && HitMesh->ComponentHasTag(TEXT("Drawer")))
+				AActor* ChildActor = ChildActorComp->GetChildActor();
+				if (ChildActor->ActorHasTag(TEXT("Drawer")))
 				{
-					return HitMesh;
-				}
-				else
-				{
-					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("HitMesh is not a Drawer")));
+					return ChildActor;
 				}
 			}
 		}
+
+	//	if (bHit)
+	//	{
+	//		// 히트된 컴포넌트를 직접 가져오기
+	//		if (HitResult.GetComponent())
+	//		{
+	//			UStaticMeshComponent* HitMesh = Cast<UStaticMeshComponent>(HitResult.GetComponent());
+
+
+	//			// 히트된 컴포넌트가 "Drawer" 태그를 가지고 있는지 확인
+	//			if (HitMesh && HitMesh->ComponentHasTag(TEXT("Drawer")))
+	//			{
+	//				return HitMesh;
+	//			}
+	//			else
+	//			{
+	//				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("HitMesh is not a Drawer")));
+	//			}
+	//		}
+	//	}
 	}
 	return nullptr;
 }

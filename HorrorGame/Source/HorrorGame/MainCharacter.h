@@ -28,7 +28,7 @@ public:
 	UFUNCTION()
 	void DoCrouching();
 
-	UStaticMeshComponent* CheckDrawerTag();
+	AActor* CheckDrawerTag();
 
 	FOnStaminaChanged OnStaminaChanged;
 protected:

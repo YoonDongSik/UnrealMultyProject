@@ -11,48 +11,9 @@ ADrawer::ADrawer()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	USceneComponent* Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-	RootComponent = Root;
-
-	UpMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseUp"));
-	UpMesh->SetupAttachment(RootComponent);
-
-	DownMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseDown"));
-	DownMesh->SetupAttachment(RootComponent);
-
-	LeftMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseLeft"));
-	LeftMesh->SetupAttachment(RootComponent);
-
-	RightMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseRight"));
-	RightMesh->SetupAttachment(RootComponent);
-
-	BackMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseBack"));
-	BackMesh->SetupAttachment(RootComponent);
-
-	Floor1Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseFloor1"));
-	Floor1Mesh->SetupAttachment(RootComponent);
-
-	Floor2Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseFloor2"));
-	Floor2Mesh->SetupAttachment(RootComponent);
-
-	Floor3Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseFloor3"));
-	Floor3Mesh->SetupAttachment(RootComponent);
-
-	Floor1DrawerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Floor1Drawer"));
-	Floor1DrawerMesh->SetupAttachment(RootComponent);
-	Floor1DrawerMesh->ComponentTags.Add(FName("Drawer"));
-
-	Floor2DrawerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Floor2Drawer"));
-	Floor2DrawerMesh->SetupAttachment(RootComponent);
-	Floor2DrawerMesh->ComponentTags.Add(FName("Drawer"));
-
-	Floor3DrawerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Floor3Drawer"));
-	Floor3DrawerMesh->SetupAttachment(RootComponent);
-	Floor3DrawerMesh->ComponentTags.Add(FName("Drawer"));
-
-	Floor4DrawerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Floor4Drawer"));
-	Floor4DrawerMesh->SetupAttachment(RootComponent);
-	Floor4DrawerMesh->ComponentTags.Add(FName("Drawer"));
+	DrawerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DrawerMesh"));
+	DrawerMesh->SetupAttachment(RootComponent);
+	Tags.Add(FName("Drawer"));
 
 	TimelineComponent = CreateDefaultSubobject<UTimelineComponent>(TEXT("TimelineComponent"));
 
@@ -70,26 +31,25 @@ void ADrawer::BeginPlay()
 
 void ADrawer::DrawerMove(float Value)
 {
-	if (!TargetMesh) return;
+	if (!TargetActor) return;
 
 	FVector NewLocation = UKismetMathLibrary::VLerp(StartLocation, EndLocation, Value);
-	TargetMesh->SetRelativeLocation(NewLocation);
+	TargetActor->SetActorRelativeLocation(NewLocation);
 }
 
-void ADrawer::ToggleDrawer(UStaticMeshComponent* TargetDrawer)
+void ADrawer::ToggleDrawer(AActor* TargetDrawer)
 {
 	if (!TargetDrawer || !CurveFloat) return;
 
-	TargetMesh = TargetDrawer;
-	StartLocation = TargetMesh->GetRelativeLocation();
+	TargetActor = TargetDrawer;
+	StartLocation = TargetActor->GetActorLocation();
 
-	bool bCurrentlyOpen = false;
-	if (DrawerStates.Contains(TargetDrawer))
+	/*if (DrawerStates.Contains(TargetDrawer))
 	{
 		bCurrentlyOpen = DrawerStates[TargetDrawer];
-	}
+	}*/
 
-	if (bCurrentlyOpen)
+	if (bIsOpen)
 	{
 		EndLocation = StartLocation - FVector(0.f, 50.f, 0.f);
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, TEXT("Drawer Is Closed"));
@@ -101,16 +61,9 @@ void ADrawer::ToggleDrawer(UStaticMeshComponent* TargetDrawer)
 	}
 
 	// 상태 업데이트
-	DrawerStates.Add(TargetDrawer, !bCurrentlyOpen);
+	/*DrawerStates.Add(TargetDrawer, !bCurrentlyOpen);*/
 
 	TimelineComponent->PlayFromStart();
+	bIsOpen = !bIsOpen;
 }
-
-// Called every frame
-void ADrawer::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
 

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HorrorGameModuleRules")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Development")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f0bbece9787dbce3311d2bdb10892138fb4328a7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+537f3cc9e9a8b7423bd69dedf1a7576d43630443")]
 [assembly: System.Reflection.AssemblyProductAttribute("HorrorGameModuleRules")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HorrorGameModuleRules")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
