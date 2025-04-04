@@ -2,6 +2,10 @@
 	"BuildId": "37670630",
 	"Modules": 
 	{
+<<<<<<< Updated upstream
 		"HorrorGame": "UnrealEditor-HorrorGame-0002.dll"
+=======
+		"HorrorGame": "UnrealEditor-HorrorGame-0035.dll"
+>>>>>>> Stashed changes
 	}
 }

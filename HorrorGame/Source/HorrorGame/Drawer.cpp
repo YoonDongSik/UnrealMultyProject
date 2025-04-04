@@ -83,18 +83,27 @@ void ADrawer::ToggleDrawer(UStaticMeshComponent* TargetDrawer)
 	TargetMesh = TargetDrawer;
 	StartLocation = TargetMesh->GetRelativeLocation();
 
-	if (bIsOpen)
+	bool bCurrentlyOpen = false;
+	if (DrawerStates.Contains(TargetDrawer))
+	{
+		bCurrentlyOpen = DrawerStates[TargetDrawer];
+	}
+
+	if (bCurrentlyOpen)
 	{
 		EndLocation = StartLocation - FVector(0.f, 50.f, 0.f);
-		TimelineComponent->Reverse();
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, TEXT("Drawer Is Closed"));
 	}
 	else
 	{
 		EndLocation = StartLocation + FVector(0.f, 50.f, 0.f);
-		TimelineComponent->PlayFromStart();
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, TEXT("Drawer Is Opened"));
 	}
 
-	bIsOpen = !bIsOpen;
+	// 상태 업데이트
+	DrawerStates.Add(TargetDrawer, !bCurrentlyOpen);
+
+	TimelineComponent->PlayFromStart();
 }
 
 // Called every frame

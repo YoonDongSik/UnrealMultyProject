@@ -200,6 +200,7 @@ void AMainPlayerController::InputCrouching(const FInputActionValue& Value)
 void AMainPlayerController::InputDrawer(const FInputActionValue& Value)
 {
 	UStaticMeshComponent* TargetDrawer = MainCharacter->CheckDrawerTag();
+	if (!TargetDrawer) return;
 	ADrawer* DrawerActor = Cast<ADrawer>(TargetDrawer->GetOwner());
 
 	DrawerActor->ToggleDrawer(TargetDrawer);

@@ -89,49 +89,64 @@ void AMainCharacter::PlayHighPriorityMontage(UAnimMontage* Montage, FName StartS
 
 UStaticMeshComponent* AMainCharacter::CheckDrawerTag()
 {
-	FHitResult HitResult;
-	FVector Start = CameraComponent->GetComponentLocation();
-	FVector End = Start + CameraComponent->GetForwardVector() * 300.f;
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
 
-	FCollisionQueryParams CollisionParams;
-	CollisionParams.AddIgnoredActor(this);
-
-	bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, CollisionParams);
-
-	if (bHit)
+	if (PlayerController)
 	{
-		AActor* HitActor = HitResult.GetActor();
-		if (HitActor)
+		int32 ViewportSizeX, ViewportSizeY;
+		PlayerController->GetViewportSize(ViewportSizeX, ViewportSizeY);
+
+		FVector WorldLocation, WorldDirection;
+		PlayerController->DeprojectScreenPositionToWorld(ViewportSizeX / 2, ViewportSizeY / 2, WorldLocation, WorldDirection);
+
+		FHitResult HitResult;
+		FVector TraceEnd = WorldLocation + (WorldDirection * 5000.f);
+
+		FCollisionQueryParams CollisionParams;
+		CollisionParams.AddIgnoredActor(this);
+
+		bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, WorldLocation, TraceEnd, ECC_Visibility, CollisionParams);
+
+		if (bHit)
 		{
-			UStaticMeshComponent* HitMesh = FindTaggedMesh(HitActor, TEXT("Drawer"));
-			return HitMesh;
-		}
-		else
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("HitActorNull")));
-		}
-	}
+			// 히트된 컴포넌트를 직접 가져오기
+			if (HitResult.GetComponent())
+			{
+				UStaticMeshComponent* HitMesh = Cast<UStaticMeshComponent>(HitResult.GetComponent());
 
-	return nullptr;
-}
 
-UStaticMeshComponent* AMainCharacter::FindTaggedMesh(AActor* Actor, FName Tag)
-{
-	if (!Actor) return nullptr;
-
-	TInlineComponentArray<UStaticMeshComponent*> MeshComponents;
-	Actor->GetComponents(MeshComponents);
-
-	for (UActorComponent* Component : MeshComponents)
-	{
-		UStaticMeshComponent* MeshComp = Cast<UStaticMeshComponent>(Component);
-		if (MeshComp && MeshComp->ComponentHasTag(Tag))
-		{
-			return MeshComp;
+				// 히트된 컴포넌트가 "Drawer" 태그를 가지고 있는지 확인
+				if (HitMesh && HitMesh->ComponentHasTag(TEXT("Drawer")))
+				{
+					return HitMesh;
+				}
+				else
+				{
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("HitMesh is not a Drawer")));
+				}
+			}
 		}
 	}
 	return nullptr;
 }
+
+//UStaticMeshComponent* AMainCharacter::FindTaggedMesh(AActor* Actor, FName Tag)
+//{
+//	if (!Actor) return nullptr;
+//
+//	TInlineComponentArray<UStaticMeshComponent*> MeshComponents;
+//	Actor->GetComponents(MeshComponents);
+//
+//	for (UActorComponent* Component : MeshComponents)
+//	{
+//		UStaticMeshComponent* MeshComp = Cast<UStaticMeshComponent>(Component);
+//		if (MeshComp && MeshComp->ComponentHasTag(Tag))
+//		{
+//			return MeshComp;
+//		}
+//	}
+//	return nullptr;
+//}
 
 // Called every frame
 void AMainCharacter::Tick(float DeltaTime)

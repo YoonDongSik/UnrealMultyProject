@@ -67,4 +67,6 @@ private:
 	FVector EndLocation;
 
 	bool bIsOpen;
+
+	TMap<UStaticMeshComponent*, bool> DrawerStates;
 };

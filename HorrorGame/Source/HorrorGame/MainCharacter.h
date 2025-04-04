@@ -57,8 +57,8 @@ public:
 
 	inline float GetStemina() const { return Stemina; };
 
-private:
-	UStaticMeshComponent* FindTaggedMesh(AActor* Actor, FName Tag);
+//private:
+//	UStaticMeshComponent* FindTaggedMesh(AActor* Actor, FName Tag);
 
 public:
 	bool bIsCrouched = false;
