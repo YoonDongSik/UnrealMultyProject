@@ -6,6 +6,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "MainCharacter.h"
 #include "Drawer.h"
+#include "Adrenaline.h"
 
 AMainPlayerController::AMainPlayerController()
 {
@@ -69,6 +70,11 @@ void AMainPlayerController::SetupInputComponent()
 		if (DrawerAction)
 		{
 			EnhancedInputComponent->BindAction(DrawerAction, ETriggerEvent::Started, this, &AMainPlayerController::InputDrawer);
+		}
+
+		if (InterectionAction)
+		{
+			EnhancedInputComponent->BindAction(InterectionAction, ETriggerEvent::Started, this, &AMainPlayerController::InputInterection);
 		}
 	}
 }
@@ -201,9 +207,25 @@ void AMainPlayerController::InputCrouching(const FInputActionValue& Value)
 
 void AMainPlayerController::InputDrawer(const FInputActionValue& Value)
 {
-	AActor* TargetDrawer = MainCharacter->CheckDrawerTag();
-	if (!TargetDrawer) return;
-	ADrawer* DrawerActor = Cast<ADrawer>(TargetDrawer);
+		AActor* TargetDrawer = MainCharacter->CheckDrawerTag();
+		if (TargetDrawer)
+		{
+			ADrawer* DrawerActor = Cast<ADrawer>(TargetDrawer);
 
-	DrawerActor->ToggleDrawer(TargetDrawer);
+			DrawerActor->ToggleDrawer(TargetDrawer);
+		}
+}
+
+void AMainPlayerController::InputInterection(const FInputActionValue& Value)
+{
+	AActor* TargetItem = MainCharacter->CheckDrawerTag();
+	if (TargetItem)
+	{
+		AAdrenaline* AdrenalineItem = Cast<AAdrenaline>(TargetItem);
+		if (AdrenalineItem)
+		{
+			AdrenalineItem->AttachToComponent(MainCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("ItemSocket"));
+		}
+	}
+
 }

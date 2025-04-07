@@ -66,7 +66,9 @@
             "c:\\program files\\epic games\\ue_5.5\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\cameracomponent.generated.h",
             "d:\\unrealmultyproject\\horrorgame\\intermediate\\build\\win64\\unrealeditor\\inc\\horrorgame\\uht\\maincharacter.generated.h",
             "d:\\unrealmultyproject\\horrorgame\\source\\horrorgame\\drawer.h",
-            "d:\\unrealmultyproject\\horrorgame\\intermediate\\build\\win64\\unrealeditor\\inc\\horrorgame\\uht\\drawer.generated.h"
+            "d:\\unrealmultyproject\\horrorgame\\intermediate\\build\\win64\\unrealeditor\\inc\\horrorgame\\uht\\drawer.generated.h",
+            "d:\\unrealmultyproject\\horrorgame\\source\\horrorgame\\adrenaline.h",
+            "d:\\unrealmultyproject\\horrorgame\\intermediate\\build\\win64\\unrealeditor\\inc\\horrorgame\\uht\\adrenaline.generated.h"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []

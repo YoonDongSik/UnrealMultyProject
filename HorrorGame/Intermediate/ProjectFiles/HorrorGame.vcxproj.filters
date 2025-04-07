@@ -30,6 +30,12 @@
     <Filter Include="Source\HorrorGame">
       <UniqueIdentifier>{3D30EE25-DDDA-396E-ADB2-7EAD9046B1EB}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\HorrorGame\Adrenaline.cpp">
+      <Filter>Source\HorrorGame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\HorrorGame\Adrenaline.h">
+      <Filter>Source\HorrorGame</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\HorrorGame\CrosshairWidget.cpp">
       <Filter>Source\HorrorGame</Filter>
     </ClCompile>
@@ -40,6 +46,12 @@
       <Filter>Source\HorrorGame</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\HorrorGame\Drawer.h">
+      <Filter>Source\HorrorGame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\HorrorGame\DrawerBody.cpp">
+      <Filter>Source\HorrorGame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\HorrorGame\DrawerBody.h">
       <Filter>Source\HorrorGame</Filter>
     </ClCompile>
     <None Include="..\..\Source\HorrorGame\HorrorGame.Build.cs">

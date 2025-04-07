@@ -100,7 +100,7 @@ AActor* AMainCharacter::CheckDrawerTag()
 		PlayerController->DeprojectScreenPositionToWorld(ViewportSizeX / 2, ViewportSizeY / 2, WorldLocation, WorldDirection);
 
 		FHitResult HitResult;
-		FVector TraceEnd = WorldLocation + (WorldDirection * 5000.f);
+		FVector TraceEnd = WorldLocation + (WorldDirection * 200.f);
 
 		FCollisionQueryParams CollisionParams;
 		CollisionParams.AddIgnoredActor(this);
@@ -109,17 +109,18 @@ AActor* AMainCharacter::CheckDrawerTag()
 
 		if (bHit)
 		{
-			UActorComponent* HitComponent = HitResult.GetComponent();
+			AActor* HitActor = HitResult.GetActor();
 
-			UChildActorComponent* ChildActorComp = Cast<UChildActorComponent>(HitComponent);
-			if (ChildActorComp && ChildActorComp->GetChildActor())
+			if (HitActor->ActorHasTag("Drawer"))
 			{
-				AActor* ChildActor = ChildActorComp->GetChildActor();
-				if (ChildActor->ActorHasTag(TEXT("Drawer")))
-				{
-					return ChildActor;
-				}
+				return HitActor;
 			}
+			else if (HitActor->ActorHasTag("KitItem"))
+			{
+				return HitActor;
+			}
+
+			
 		}
 
 	//	if (bHit)

@@ -47,7 +47,6 @@ ADrawerBody::ADrawerBody()
 
 	DrawerChild4 = CreateDefaultSubobject<UChildActorComponent>(TEXT("DrawerChild4"));
 	DrawerChild4->SetupAttachment(RootComponent);
-
 }
 
 // Called when the game starts or when spawned

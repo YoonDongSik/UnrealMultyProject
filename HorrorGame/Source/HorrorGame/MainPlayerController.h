@@ -33,6 +33,7 @@ protected:
 	void InputJump(const FInputActionValue& Value);
 	void InputCrouching(const FInputActionValue& Value);
 	void InputDrawer(const FInputActionValue& Value);
+	void InputInterection(const FInputActionValue& Value);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mapping")
@@ -58,6 +59,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mapping")
 	class UInputAction* DrawerAction = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mapping")
+	class UInputAction* InterectionAction = nullptr;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
