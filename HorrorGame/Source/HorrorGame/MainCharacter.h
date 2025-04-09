@@ -35,7 +35,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName = NAME_None);
+	/*void PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName = NAME_None);*/
 
 public:	
 	// Called every frame
@@ -43,6 +43,8 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName = NAME_None);
 
 	USpringArmComponent* GetSpringArm() const { return SpringArm; }
 
@@ -63,6 +65,9 @@ public:
 public:
 	bool bIsCrouched = false;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
+	UAnimMontage* PickUpMontage = nullptr;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Move")
 	float WalkSpeed = 400;
@@ -81,6 +86,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
 	UAnimMontage* JumpMontage = nullptr;
+
+	/*UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
+	UAnimMontage* PickUpMontage = nullptr;*/
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|State")

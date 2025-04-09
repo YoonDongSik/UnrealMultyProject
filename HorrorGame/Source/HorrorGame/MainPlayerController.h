@@ -32,7 +32,7 @@ protected:
 	void ResetMove(const FInputActionValue& Value);
 	void InputJump(const FInputActionValue& Value);
 	void InputCrouching(const FInputActionValue& Value);
-	void InputDrawer(const FInputActionValue& Value);
+	void InputClick(const FInputActionValue& Value);
 	void InputInterection(const FInputActionValue& Value);
 
 protected:
@@ -75,6 +75,8 @@ private:
 	bool bIsPressed = false;
 
 	bool bIsMoving = false;
+
+	bool bIsPickUp = false;
 
 	FVector2D MoveValue;
 };

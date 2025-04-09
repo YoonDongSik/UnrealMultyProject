@@ -63,6 +63,12 @@
     <ClCompile Include="..\..\Source\HorrorGame\HorrorGame.h">
       <Filter>Source\HorrorGame</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\HorrorGame\ItemDataAsset.cpp">
+      <Filter>Source\HorrorGame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\HorrorGame\ItemDataAsset.h">
+      <Filter>Source\HorrorGame</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\HorrorGame\MainCharacter.cpp">
       <Filter>Source\HorrorGame</Filter>
     </ClCompile>

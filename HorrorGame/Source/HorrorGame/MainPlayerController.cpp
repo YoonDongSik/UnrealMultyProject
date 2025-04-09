@@ -69,7 +69,7 @@ void AMainPlayerController::SetupInputComponent()
 
 		if (DrawerAction)
 		{
-			EnhancedInputComponent->BindAction(DrawerAction, ETriggerEvent::Started, this, &AMainPlayerController::InputDrawer);
+			EnhancedInputComponent->BindAction(DrawerAction, ETriggerEvent::Started, this, &AMainPlayerController::InputClick);
 		}
 
 		if (InterectionAction)
@@ -205,26 +205,37 @@ void AMainPlayerController::InputCrouching(const FInputActionValue& Value)
 	}
 }
 
-void AMainPlayerController::InputDrawer(const FInputActionValue& Value)
+void AMainPlayerController::InputClick(const FInputActionValue& Value)
 {
+	if (MainCharacter->CheckDrawerTag())
+	{
 		AActor* TargetDrawer = MainCharacter->CheckDrawerTag();
-		if (TargetDrawer)
+		if (TargetDrawer->ActorHasTag("Drawer") && TargetDrawer)
 		{
 			ADrawer* DrawerActor = Cast<ADrawer>(TargetDrawer);
 
 			DrawerActor->ToggleDrawer(TargetDrawer);
 		}
+	}
 }
 
 void AMainPlayerController::InputInterection(const FInputActionValue& Value)
 {
-	AActor* TargetItem = MainCharacter->CheckDrawerTag();
-	if (TargetItem)
+	if (MainCharacter->CheckDrawerTag())
 	{
-		AAdrenaline* AdrenalineItem = Cast<AAdrenaline>(TargetItem);
-		if (AdrenalineItem)
+		AActor* TargetItem = MainCharacter->CheckDrawerTag();
+		if (TargetItem->ActorHasTag("KitItem") && TargetItem)
 		{
-			AdrenalineItem->AttachToComponent(MainCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("ItemSocket"));
+			AAdrenaline* AdrenalineItem = Cast<AAdrenaline>(TargetItem);
+			if (AdrenalineItem)
+			{
+				MainCharacter->PlayHighPriorityMontage(MainCharacter->PickUpMontage);
+				AdrenalineItem->AttachToComponent(
+					MainCharacter->GetMesh(),
+					FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+					TEXT("ItemSocket"));
+				bIsPickUp = true;
+			}
 		}
 	}
 
