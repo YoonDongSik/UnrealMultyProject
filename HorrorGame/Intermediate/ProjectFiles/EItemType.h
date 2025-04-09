@@ -8,8 +8,8 @@ enum class EItemType : uint8
 	Adrenaline,
 	HealthKit,
 	Bandage,
-	Painkillers,
+	Painkiller,
 	ElectricBall,
 	IceBall,
-	FlashLight,
+	HandLight,
 };
