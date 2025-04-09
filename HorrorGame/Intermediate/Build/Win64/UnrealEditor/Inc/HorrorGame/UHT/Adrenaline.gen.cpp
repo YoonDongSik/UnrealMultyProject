@@ -11,7 +11,8 @@ void EmptyLinkFunctionForGeneratedCodeAdrenaline() {}
 
 // Begin Cross Module References
 ENGINE_API UClass* Z_Construct_UClass_AActor();
-ENGINE_API UClass* Z_Construct_UClass_UStaticMeshComponent_NoRegister();
+ENGINE_API UClass* Z_Construct_UClass_UCapsuleComponent_NoRegister();
+ENGINE_API UClass* Z_Construct_UClass_USkeletalMeshComponent_NoRegister();
 HORRORGAME_API UClass* Z_Construct_UClass_AAdrenaline();
 HORRORGAME_API UClass* Z_Construct_UClass_AAdrenaline_NoRegister();
 UPackage* Z_Construct_UPackage__Script_HorrorGame();
@@ -33,13 +34,19 @@ struct Z_Construct_UClass_AAdrenaline_Statics
 		{ "IncludePath", "Adrenaline.h" },
 		{ "ModuleRelativePath", "Adrenaline.h" },
 	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_StaticMesh1_MetaData[] = {
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_SkeletalMesh_MetaData[] = {
+		{ "Category", "Adrenaline" },
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Adrenaline.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CapsuleComponent_MetaData[] = {
 		{ "Category", "Adrenaline" },
 		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "Adrenaline.h" },
 	};
 #endif // WITH_METADATA
-	static const UECodeGen_Private::FObjectPropertyParams NewProp_StaticMesh1;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_SkeletalMesh;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_CapsuleComponent;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -47,9 +54,11 @@ struct Z_Construct_UClass_AAdrenaline_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
-const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AAdrenaline_Statics::NewProp_StaticMesh1 = { "StaticMesh1", nullptr, (EPropertyFlags)0x0020080000080009, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AAdrenaline, StaticMesh1), Z_Construct_UClass_UStaticMeshComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_StaticMesh1_MetaData), NewProp_StaticMesh1_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AAdrenaline_Statics::NewProp_SkeletalMesh = { "SkeletalMesh", nullptr, (EPropertyFlags)0x00200800000a000d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AAdrenaline, SkeletalMesh), Z_Construct_UClass_USkeletalMeshComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SkeletalMesh_MetaData), NewProp_SkeletalMesh_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AAdrenaline_Statics::NewProp_CapsuleComponent = { "CapsuleComponent", nullptr, (EPropertyFlags)0x00200800000a000d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AAdrenaline, CapsuleComponent), Z_Construct_UClass_UCapsuleComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CapsuleComponent_MetaData), NewProp_CapsuleComponent_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AAdrenaline_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AAdrenaline_Statics::NewProp_StaticMesh1,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AAdrenaline_Statics::NewProp_SkeletalMesh,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AAdrenaline_Statics::NewProp_CapsuleComponent,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AAdrenaline_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_AAdrenaline_Statics::DependentSingletons[])() = {
@@ -92,10 +101,10 @@ AAdrenaline::~AAdrenaline() {}
 struct Z_CompiledInDeferFile_FID_HorrorGame_Source_HorrorGame_Adrenaline_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AAdrenaline, AAdrenaline::StaticClass, TEXT("AAdrenaline"), &Z_Registration_Info_UClass_AAdrenaline, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AAdrenaline), 227814661U) },
+		{ Z_Construct_UClass_AAdrenaline, AAdrenaline::StaticClass, TEXT("AAdrenaline"), &Z_Registration_Info_UClass_AAdrenaline, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AAdrenaline), 1070396645U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_HorrorGame_Source_HorrorGame_Adrenaline_h_30679287(TEXT("/Script/HorrorGame"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_HorrorGame_Source_HorrorGame_Adrenaline_h_544311781(TEXT("/Script/HorrorGame"),
 	Z_CompiledInDeferFile_FID_HorrorGame_Source_HorrorGame_Adrenaline_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_HorrorGame_Source_HorrorGame_Adrenaline_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
