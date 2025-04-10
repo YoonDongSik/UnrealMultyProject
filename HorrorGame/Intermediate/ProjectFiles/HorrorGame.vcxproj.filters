@@ -106,4 +106,9 @@
       <Filter>Source\HorrorGame</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\HorrorGame\EItemType.h">
+      <Filter>Source\HorrorGame</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
