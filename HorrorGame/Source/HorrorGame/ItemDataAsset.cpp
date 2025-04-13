@@ -8,5 +8,5 @@ UItemDataAsset::UItemDataAsset()
 	ItemDescription = FText::FromString(TEXT("아이템 설명"));
 	ItemIcon = nullptr;
 	ItemMesh = nullptr;
-	ItemMaterial = nullptr;
+	ItemType = EItemType::None;
 }

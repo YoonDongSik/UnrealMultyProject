@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "EItemType.h"
 #include "ItemDataAsset.generated.h"
 
 /**
@@ -27,8 +28,8 @@ public:
 	class UTexture2D* ItemIcon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-	class UStaticMesh* ItemMesh;
+	class USkeletalMesh* ItemMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-	class UMaterialInterface* ItemMaterial;
+	EItemType ItemType;
 };
