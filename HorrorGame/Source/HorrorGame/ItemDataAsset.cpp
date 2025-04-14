@@ -9,4 +9,5 @@ UItemDataAsset::UItemDataAsset()
 	ItemIcon = nullptr;
 	ItemMesh = nullptr;
 	ItemType = EItemType::None;
+	ItemScale = FVector(1.0f, 1.0f, 1.0f);
 }
