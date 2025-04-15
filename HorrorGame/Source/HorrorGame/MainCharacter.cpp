@@ -115,7 +115,7 @@ AActor* AMainCharacter::CheckDrawerTag()
 			{
 				return HitActor;
 			}
-			else if (HitActor->ActorHasTag("KitItem"))
+			else if (HitActor->ActorHasTag("Item"))
 			{
 				return HitActor;
 			}

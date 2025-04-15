@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "ItemDataAsset.h"
 #include "Maincharacter.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/BoxComponent.h"
+#include "Components/SphereComponent.h"
 #include "ItemBaseActor.generated.h"
 
 UCLASS()
@@ -35,4 +38,13 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+protected:
+	UPROPERTY(VisibleAnywhere, Category = "Item|Collision")
+	UCapsuleComponent* CapsuleCollision;
+
+	UPROPERTY(VisibleAnywhere, Category = "Item|Collision")
+	UBoxComponent* BoxCollision;
+
+	UPROPERTY(VisibleAnywhere, Category = "Item|Collision")
+	USphereComponent* SphereCollision;
 };

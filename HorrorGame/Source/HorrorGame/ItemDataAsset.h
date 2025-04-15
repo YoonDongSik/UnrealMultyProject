@@ -38,5 +38,23 @@ public:
 	FVector ItemScale = FVector(1.0f, 1.0f, 1.0f);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collision")
+	float CapsuleRadius = 0.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collision")
+	float CapsuleHalfHeight = 0.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collision")
+	float SphereRadius = 0.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collision")
+	FVector BoxExtent = FVector(0.0f, 0.0f, 0.0f);
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collision")
 	EItemCollisionType ItemCollisionType = EItemCollisionType::None;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collision")
+	FRotator CollisionRotation = FRotator::ZeroRotator;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collision")
+	FVector CollisionOffset = FVector::ZeroVector;
 };

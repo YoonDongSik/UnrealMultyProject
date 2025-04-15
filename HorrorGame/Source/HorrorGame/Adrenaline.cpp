@@ -21,7 +21,7 @@ AAdrenaline::AAdrenaline()
 
 
 
-	Tags.Add(FName("KitItem"));
+	Tags.Add(FName("Item"));
 }
 
 // Called when the game starts or when spawned

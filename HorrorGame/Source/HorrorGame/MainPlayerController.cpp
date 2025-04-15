@@ -6,7 +6,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "MainCharacter.h"
 #include "Drawer.h"
-#include "Adrenaline.h"
+#include "Components/SceneComponent.h"
+#include "ItemBaseActor.h"
 
 AMainPlayerController::AMainPlayerController()
 {
@@ -224,15 +225,20 @@ void AMainPlayerController::InputInterection(const FInputActionValue& Value)
 	if (MainCharacter->CheckDrawerTag())
 	{
 		AActor* TargetItem = MainCharacter->CheckDrawerTag();
-		if (TargetItem->ActorHasTag("KitItem") && TargetItem)
+		if (TargetItem->ActorHasTag("Item") && TargetItem)
 		{
-			AAdrenaline* AdrenalineItem = Cast<AAdrenaline>(TargetItem);
-			if (AdrenalineItem)
+			AItemBaseActor* ItemActor = Cast<AItemBaseActor>(TargetItem);
+			if (ItemActor && ItemActor->ItemDataAsset && !bIsPickUp)
 			{
 				MainCharacter->PlayHighPriorityMontage(MainCharacter->PickUpMontage);
-				AdrenalineItem->AttachToComponent(
+				ItemActor->SetActorEnableCollision(false);
+				ItemActor->AttachToComponent(
 					MainCharacter->GetMesh(),
-					FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+					FAttachmentTransformRules(
+						EAttachmentRule::SnapToTarget,
+						EAttachmentRule::SnapToTarget,
+						EAttachmentRule::KeepWorld
+					),
 					TEXT("ItemSocket"));
 				bIsPickUp = true;
 			}
