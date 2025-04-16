@@ -74,6 +74,9 @@ void AMainCharacter::BeginPlay()
 
 	AnimInstance = GetMesh()->GetAnimInstance();
 	bUseControllerRotationYaw = true;
+
+	Health = MaxHealth;
+	OnHealthChanged.Broadcast(Health / MaxHealth);
 	/*FString DebugMessage = FString::Printf(TEXT("bUseControllerRotationYaw: %s"), bUseControllerRotationYaw ? TEXT("true") : TEXT("false"));
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, DebugMessage);*/
 }
@@ -85,6 +88,11 @@ void AMainCharacter::PlayHighPriorityMontage(UAnimMontage* Montage, FName StartS
 		CurrentMontage = Montage;					// Montage를 CurrentMontage로 지정
 		PlayAnimMontage(CurrentMontage, 1.0f, StartSectionName);	// Montage 재생
 	}
+}
+
+void AMainCharacter::UseCurrentItem()
+{
+
 }
 
 AActor* AMainCharacter::CheckDrawerTag()
@@ -186,6 +194,13 @@ void AMainCharacter::Tick(float DeltaTime)
 			Stemina = 100;
 		}
 	}
+
+	if (Health >= MaxHealth)
+	{
+		Health = MaxHealth;
+		OnHealthChanged.Broadcast(Health / MaxHealth);
+	}
+
 	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, FString::Printf(TEXT("Current Stemina : %.f"), Stemina));
 	OnStaminaChanged.Broadcast(Stemina / 100);
 }

@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "SteminaWidget.h"
 #include "CrosshairWidget.h"
+#include "HealthWidget.h"
 #include "MainWidget.generated.h"
 
 /**
@@ -25,6 +26,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CrossHair", meta = (BindWidget))
 	UCrosshairWidget* CrosshairWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat", meta = (BindWidget))
+	UHealthWidget* HealthWidget;
 
 private:
 	UPROPERTY()

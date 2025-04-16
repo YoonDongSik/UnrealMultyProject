@@ -18,5 +18,9 @@ void UMainWidget::NativeConstruct()
 	{
 		MainCharacter->OnStaminaChanged.AddDynamic(SteminaWidget, &USteminaWidget::SteminaUpdate);
 	}
+	if (MainCharacter && HealthWidget)
+	{
+		MainCharacter->OnHealthChanged.AddDynamic(HealthWidget, &UHealthWidget::HealthUpdate);
+	}
 }
 

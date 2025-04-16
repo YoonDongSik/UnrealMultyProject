@@ -10,6 +10,7 @@
 #include "MainCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStaminaChanged, float, NewStaminaPercent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, NewHealthPercent);
 
 UCLASS()
 class HORRORGAME_API AMainCharacter : public ACharacter
@@ -31,6 +32,9 @@ public:
 	AActor* CheckDrawerTag();
 
 	FOnStaminaChanged OnStaminaChanged;
+
+	FOnHealthChanged OnHealthChanged;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -59,6 +63,9 @@ public:
 
 	inline float GetStemina() const { return Stemina; };
 
+protected:
+	void UseCurrentItem();
+
 //private:
 //	UStaticMeshComponent* FindTaggedMesh(AActor* Actor, FName Tag);
 
@@ -67,6 +74,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
 	UAnimMontage* PickUpMontage = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item")
+	class AItemBaseActor* CurrentItem;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Move")
@@ -96,6 +106,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Stat")
 	float Stemina = 100;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Stat")
+	float Health = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Stat")
+	float MaxHealth = 100;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|State")
 	class UCameraComponent* CameraComponent;

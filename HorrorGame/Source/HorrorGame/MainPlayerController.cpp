@@ -237,9 +237,11 @@ void AMainPlayerController::InputInterection(const FInputActionValue& Value)
 					FAttachmentTransformRules(
 						EAttachmentRule::SnapToTarget,
 						EAttachmentRule::SnapToTarget,
-						EAttachmentRule::KeepWorld
+						EAttachmentRule::KeepWorld,
+						false
 					),
 					TEXT("ItemSocket"));
+				MainCharacter->CurrentItem = ItemActor;
 				bIsPickUp = true;
 			}
 		}
