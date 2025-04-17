@@ -241,10 +241,31 @@ void AMainPlayerController::InputInterection(const FInputActionValue& Value)
 						false
 					),
 					TEXT("ItemSocket"));
+
+				if (MainCharacter->InventoryComponent)
+				{
+					MainCharacter->InventoryComponent->AddItem(ItemActor->ItemDataAsset);
+
+					// 콘솔 출력
+					UE_LOG(LogTemp, Warning, TEXT("인벤토리에 추가됨: %s"), *ItemActor->ItemDataAsset->ItemName.ToString());
+
+					// ✅ 인게임 화면에 메시지 출력
+					if (GEngine)
+					{
+						GEngine->AddOnScreenDebugMessage(
+							-1,
+							3.0f,
+							FColor::Green,
+							FString::Printf(TEXT("인벤토리에 추가됨: %s"), *ItemActor->ItemDataAsset->ItemName.ToString())
+						);
+					}
+				}
 				MainCharacter->CurrentItem = ItemActor;
 				bIsPickUp = true;
+
 			}
 		}
-	}
 
+	}
 }
+
