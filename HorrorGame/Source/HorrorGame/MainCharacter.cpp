@@ -3,6 +3,8 @@
 
 #include "MainCharacter.h"
 #include "PlayerAnimInstance.h"
+#include "UserbleItem.h"
+#include "ItemBaseActor.h"
 #include "Camera/CameraComponent.h"
 
 // Sets default values
@@ -75,7 +77,7 @@ void AMainCharacter::BeginPlay()
 	AnimInstance = GetMesh()->GetAnimInstance();
 	bUseControllerRotationYaw = true;
 
-	Health = MaxHealth;
+	Health = 10;
 	OnHealthChanged.Broadcast(Health / MaxHealth);
 	/*FString DebugMessage = FString::Printf(TEXT("bUseControllerRotationYaw: %s"), bUseControllerRotationYaw ? TEXT("true") : TEXT("false"));
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, DebugMessage);*/
@@ -92,7 +94,17 @@ void AMainCharacter::PlayHighPriorityMontage(UAnimMontage* Montage, FName StartS
 
 void AMainCharacter::UseCurrentItem()
 {
-
+	if (CurrentItem)
+	{
+		UUserbleItem* UserbleItem = NewObject<UUserbleItem>();
+		if (UserbleItem)
+		{
+			UserbleItem->UseItem(this, CurrentItem->ItemDataAsset);
+			CurrentItem->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+			CurrentItem->Destroy();
+			CurrentItem = nullptr;
+		}
+	}
 }
 
 AActor* AMainCharacter::CheckDrawerTag()
@@ -177,13 +189,21 @@ void AMainCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (AdrenalineDuration > 0.0f)
+	{
+		AdrenalineDuration -= DeltaTime;
+	}
+
 	if (bIsRunning)
 	{
-		Stemina -= 10 * DeltaTime;
-		if (Stemina < 0)
+		if (AdrenalineDuration <= 0.0f)
 		{
-			Stemina = 0;
-			SetWalkMode();
+			Stemina -= 10 * DeltaTime;
+			if (Stemina < 0)
+			{
+				Stemina = 0;
+				SetWalkMode();
+			}
 		}
 	}
 	else

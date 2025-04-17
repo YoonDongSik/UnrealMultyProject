@@ -11,15 +11,16 @@ void UUserbleItem::UseItem(AMainCharacter* Character, UItemDataAsset* DataAsset)
 	switch (DataAsset->ItemType)
 	{
 	case EItemType::Adrenaline:
+		Character->SetAdrenalineDuration(Character->GetAdrenalineDuration() + 20);
 		break;
 	case EItemType::Bandage:
-		/*Character->Health += 10;*/
+		Character->SetHealth(Character->GetHealth() + 10);
 		break;
 	case EItemType::HealthKit:
-		// Logic to use health kit item
+		Character->SetHealth(Character->GetHealth() + 40);
 		break;
 	case EItemType::Painkiller:
-		// Logic to use painkiller item
+		Character->SetHealth(Character->GetHealth() + 20);
 		break;
 	case EItemType::ElectricOrb:
 		// Logic to use electric orb item

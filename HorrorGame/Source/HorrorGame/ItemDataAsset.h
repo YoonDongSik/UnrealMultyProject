@@ -57,4 +57,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collision")
 	FVector CollisionOffset = FVector::ZeroVector;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SocketName")
+	FName SocketName = FName("None");
 };

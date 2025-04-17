@@ -29,6 +29,8 @@ public:
 	UFUNCTION()
 	void DoCrouching();
 
+	void UseCurrentItem();
+
 	AActor* CheckDrawerTag();
 
 	FOnStaminaChanged OnStaminaChanged;
@@ -63,8 +65,11 @@ public:
 
 	inline float GetStemina() const { return Stemina; };
 
-protected:
-	void UseCurrentItem();
+	inline float GetHealth() const { return Health; };
+	inline void SetHealth(float NewHealth) { Health = NewHealth; OnHealthChanged.Broadcast(Health / MaxHealth); }
+
+	inline void SetAdrenalineDuration(float Duration) { AdrenalineDuration = Duration; }
+	inline float GetAdrenalineDuration() const { return AdrenalineDuration; }
 
 //private:
 //	UStaticMeshComponent* FindTaggedMesh(AActor* Actor, FName Tag);
@@ -115,6 +120,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|State")
 	class UCameraComponent* CameraComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|State")
+	float AdrenalineDuration = 0;
 
 private:
 	UPROPERTY()

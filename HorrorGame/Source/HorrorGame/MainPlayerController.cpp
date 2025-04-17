@@ -218,6 +218,11 @@ void AMainPlayerController::InputClick(const FInputActionValue& Value)
 			DrawerActor->ToggleDrawer(TargetDrawer);
 		}
 	}
+	else if (bIsPickUp)
+	{
+		MainCharacter->UseCurrentItem();
+		bIsPickUp = false;
+	}
 }
 
 void AMainPlayerController::InputInterection(const FInputActionValue& Value)
@@ -240,7 +245,7 @@ void AMainPlayerController::InputInterection(const FInputActionValue& Value)
 						EAttachmentRule::KeepWorld,
 						false
 					),
-					TEXT("ItemSocket"));
+					ItemActor->ItemDataAsset->SocketName);
 				MainCharacter->CurrentItem = ItemActor;
 				bIsPickUp = true;
 			}
