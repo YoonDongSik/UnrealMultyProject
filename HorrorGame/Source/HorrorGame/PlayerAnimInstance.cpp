@@ -3,6 +3,8 @@
 
 #include "PlayerAnimInstance.h"
 #include "MainCharacter.h"
+#include "ItemBaseActor.h"
+#include "ItemDataAsset.h"
 
 void UPlayerAnimInstance::NativeInitializeAnimation()
 {
@@ -16,7 +18,24 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	
 	if (PlayerCharacter)
 	{
-	Speed = PlayerCharacter->GetVelocity().Size();
-	bIsCrouchAnim = PlayerCharacter->bIsCrouched;
+		Speed = PlayerCharacter->GetVelocity().Size();
+		bIsCrouchAnim = PlayerCharacter->bIsCrouched;
+		if (PlayerCharacter->CurrentItem && PlayerCharacter->CurrentItem->ItemDataAsset->ItemType == EItemType::HandLight)
+		{
+			FlashItem = true;
+		}
+		else
+		{
+			FlashItem = false;
+		}
+		if (FlashItem)
+		{
+			bIsPickUp = true;
+		}
+		else
+		{
+			bIsPickUp = false;
+		}
 	}
+
 }

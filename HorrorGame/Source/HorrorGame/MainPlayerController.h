@@ -67,6 +67,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	bool bIsCrouch = false;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	bool bIsPickUp = false;
+
 private:
 	class AMainCharacter* MainCharacter = nullptr;
 
@@ -75,8 +78,6 @@ private:
 	bool bIsPressed = false;
 
 	bool bIsMoving = false;
-
-	bool bIsPickUp = false;
 
 	FVector2D MoveValue;
 };

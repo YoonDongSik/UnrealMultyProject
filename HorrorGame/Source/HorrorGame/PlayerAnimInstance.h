@@ -26,6 +26,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
 	float Speed = 0.0f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "PickUp")
+	bool bIsPickUp = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "PickUp")
+	bool FlashItem = false;
+
 	UPROPERTY()
 	class AMainCharacter* PlayerCharacter = nullptr;
 };
