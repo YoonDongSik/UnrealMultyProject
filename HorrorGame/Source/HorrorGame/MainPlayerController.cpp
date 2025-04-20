@@ -221,7 +221,14 @@ void AMainPlayerController::InputClick(const FInputActionValue& Value)
 	else if (bIsPickUp)
 	{
 		MainCharacter->UseCurrentItem();
-		bIsPickUp = false;
+		if (MainCharacter->CurrentItem != nullptr && MainCharacter->CurrentItem->ItemDataAsset->ItemType == EItemType::HandLight)
+		{
+			bIsPickUp = true;
+		}
+		else
+		{
+			bIsPickUp = false;
+		}
 	}
 }
 

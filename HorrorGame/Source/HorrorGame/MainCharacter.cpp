@@ -5,6 +5,7 @@
 #include "PlayerAnimInstance.h"
 #include "UserbleItem.h"
 #include "ItemBaseActor.h"
+#include "HandLightComponent.h"
 #include "Camera/CameraComponent.h"
 
 // Sets default values
@@ -100,9 +101,24 @@ void AMainCharacter::UseCurrentItem()
 		if (UserbleItem)
 		{
 			UserbleItem->UseItem(this, CurrentItem->ItemDataAsset);
-			CurrentItem->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-			CurrentItem->Destroy();
-			CurrentItem = nullptr;
+			if (CurrentItem->ItemDataAsset->ItemType == EItemType::HandLight)
+			{
+				UHandLightComponent* HandLightComponent = Cast<UHandLightComponent>(CurrentItem->GetComponentByClass(UHandLightComponent::StaticClass()));
+				if (HandLightComponent)
+				{
+					HandLightComponent->ToggleLight();
+				}
+			}
+			else
+			{
+				if (CurrentItem->ItemDataAsset->ItemType == EItemType::ElectricOrb || CurrentItem->ItemDataAsset->ItemType == EItemType::IceOrb)
+				{
+					PlayHighPriorityMontage(ThrowMontage);
+				}
+				CurrentItem->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+				CurrentItem->Destroy();
+				CurrentItem = nullptr;
+			}
 		}
 	}
 }

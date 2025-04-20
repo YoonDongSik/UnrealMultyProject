@@ -47,10 +47,14 @@ void AItemBaseActor::OnConstruction(const FTransform& Transform)
 	{
 		ItemMesh->SetSkeletalMesh(ItemDataAsset->ItemMesh);
 		ItemMesh->SetWorldScale3D(ItemDataAsset->ItemScale);
+		/*ItemMesh->SetSimulatePhysics(true);
+		ItemMesh->SetEnableGravity(true);*/
+		ItemMesh->SetCollisionProfileName(FName("BlockAll"));
+		ItemMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
 		BoxCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		CapsuleCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		SphereCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 		switch (ItemDataAsset->ItemCollisionType)
 		{
@@ -60,7 +64,6 @@ void AItemBaseActor::OnConstruction(const FTransform& Transform)
 			BoxCollision->SetBoxExtent(ItemDataAsset->BoxExtent);
 			BoxCollision->SetRelativeRotation(ItemDataAsset->CollisionRotation);
 			BoxCollision->SetRelativeLocation(ItemDataAsset->CollisionOffset);
-			ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			break;
 		case EItemCollisionType::Capsule:
 			CapsuleCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
@@ -69,7 +72,6 @@ void AItemBaseActor::OnConstruction(const FTransform& Transform)
 			CapsuleCollision->SetCapsuleHalfHeight(ItemDataAsset->CapsuleHalfHeight);
 			CapsuleCollision->SetRelativeRotation(ItemDataAsset->CollisionRotation);
 			CapsuleCollision->SetRelativeLocation(ItemDataAsset->CollisionOffset);
-			ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			break;
 		case EItemCollisionType::Sphere:
 			SphereCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
@@ -77,7 +79,6 @@ void AItemBaseActor::OnConstruction(const FTransform& Transform)
 			SphereCollision->SetRelativeRotation(ItemDataAsset->CollisionRotation);
 			SphereCollision->SetRelativeLocation(ItemDataAsset->CollisionOffset);
 			SphereCollision->SetCollisionProfileName(FName("BlockAll"));
-			ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			break;
 		}
 	}

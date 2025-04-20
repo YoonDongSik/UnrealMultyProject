@@ -102,8 +102,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
 	UAnimMontage* JumpMontage = nullptr;
 
-	/*UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
-	UAnimMontage* PickUpMontage = nullptr;*/
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
+	UAnimMontage* ThrowMontage = nullptr;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|State")
