@@ -32,3 +32,4 @@ void UInventoryWidget::NativeConstruct()
 			GridSlot->SetRow(i / 4);
 		}
 	}
+}

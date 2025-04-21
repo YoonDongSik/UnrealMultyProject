@@ -5,6 +5,13 @@ void UInventoryComponent::AddItem(UItemDataAsset* NewItem)
 	if (NewItem)
 	{
 		InventoryItems.Add(NewItem);
-		UE_LOG(LogTemp, Log, TEXT("¾ÆÀÌÅÛ Ãß°¡µÊ: %s"), *NewItem->ItemName.ToString());
+
+		for (UItemDataAsset* Item : InventoryItems)
+		{
+			if (Item)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("í˜„ìž¬ ë³´ìœ : %s"), *Item->ItemName.ToString());
+			}
+		}
 	}
 }

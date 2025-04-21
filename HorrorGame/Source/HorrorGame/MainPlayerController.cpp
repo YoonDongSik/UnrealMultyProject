@@ -14,6 +14,8 @@ AMainPlayerController::AMainPlayerController()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
+
+
 void AMainPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -228,7 +230,7 @@ void AMainPlayerController::InputInterection(const FInputActionValue& Value)
 		if (TargetItem->ActorHasTag("Item") && TargetItem)
 		{
 			AItemBaseActor* ItemActor = Cast<AItemBaseActor>(TargetItem);
-			if (ItemActor && ItemActor->ItemDataAsset && !bIsPickUp)
+			if (ItemActor && ItemActor->ItemDataAsset)
 			{
 				MainCharacter->PlayHighPriorityMontage(MainCharacter->PickUpMontage);
 				ItemActor->SetActorEnableCollision(false);
@@ -259,13 +261,13 @@ void AMainPlayerController::InputInterection(const FInputActionValue& Value)
 							FString::Printf(TEXT("인벤토리에 추가됨: %s"), *ItemActor->ItemDataAsset->ItemName.ToString())
 						);
 					}
+					MainCharacter->CurrentItem = ItemActor;
+					/*bIsPickUp = true;*/
+
 				}
-				MainCharacter->CurrentItem = ItemActor;
-				bIsPickUp = true;
-
 			}
-		}
 
+		}
 	}
 }
 

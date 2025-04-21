@@ -9,6 +9,6 @@ void UItemSlotWidget::SetItem(UItemDataAsset* InItem)
 	if (InItem && ItemIcon && ItemNameText)
 	{
 		ItemIcon->SetBrushFromTexture(InItem->ItemIcon);             // 아이템 아이콘 설정
-		//ItemNameText->SetText(InItem->ItemName);                     // 아이템 이름 텍스트 설정
+		ItemNameText->SetText(InItem->ItemName);                     // 아이템 이름 텍스트 설정
 	}
 }

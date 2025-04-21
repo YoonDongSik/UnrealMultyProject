@@ -18,6 +18,7 @@ class HORRORGAME_API AMainPlayerController : public APlayerController
 public:
 	AMainPlayerController();
 
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -34,6 +35,7 @@ protected:
 	void InputCrouching(const FInputActionValue& Value);
 	void InputClick(const FInputActionValue& Value);
 	void InputInterection(const FInputActionValue& Value);
+	
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mapping")
