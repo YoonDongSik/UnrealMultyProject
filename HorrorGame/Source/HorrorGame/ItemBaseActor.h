@@ -28,6 +28,8 @@ public:
 
 	void OnPickup(class AMainCharacter* MainCharacter);
 
+	void ThrowItem(class AMainCharacter* MainCharacter);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

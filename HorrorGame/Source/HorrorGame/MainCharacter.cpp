@@ -109,12 +109,14 @@ void AMainCharacter::UseCurrentItem()
 					HandLightComponent->ToggleLight();
 				}
 			}
+			else if (CurrentItem->ItemDataAsset->ItemType == EItemType::ElectricOrb || CurrentItem->ItemDataAsset->ItemType == EItemType::IceOrb)
+			{
+					PlayHighPriorityMontage(ThrowMontage);
+					CurrentItem->SetActorEnableCollision(true);
+					/*CurrentItem->ThrowItem(this);*/
+			}
 			else
 			{
-				if (CurrentItem->ItemDataAsset->ItemType == EItemType::ElectricOrb || CurrentItem->ItemDataAsset->ItemType == EItemType::IceOrb)
-				{
-					PlayHighPriorityMontage(ThrowMontage);
-				}
 				CurrentItem->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 				CurrentItem->Destroy();
 				CurrentItem = nullptr;

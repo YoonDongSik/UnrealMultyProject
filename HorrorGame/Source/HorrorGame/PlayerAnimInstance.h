@@ -22,6 +22,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	bool bIsCrouchAnim = false;
 
+	UFUNCTION()
+	void AnimNotify_ThrowTiming();
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
 	float Speed = 0.0f;

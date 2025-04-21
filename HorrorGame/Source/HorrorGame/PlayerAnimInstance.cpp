@@ -39,3 +39,16 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	}
 
 }
+
+void UPlayerAnimInstance::AnimNotify_ThrowTiming()
+{
+	if (PlayerCharacter)
+	{
+		AItemBaseActor* ItemActor = Cast<AItemBaseActor>(PlayerCharacter->CurrentItem);
+		if (ItemActor)
+		{
+			ItemActor->ThrowItem(PlayerCharacter);
+			PlayerCharacter->CurrentItem = nullptr;
+		}
+	}
+}

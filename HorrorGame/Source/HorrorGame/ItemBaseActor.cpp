@@ -33,6 +33,34 @@ void AItemBaseActor::OnPickup(class AMainCharacter* MainCharacter)
 	AttachToComponent(MainCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("hand_r"));
 }
 
+void AItemBaseActor::ThrowItem(AMainCharacter* MainCharacter)
+{
+	if (ItemDataAsset)
+	{
+		ItemMesh->SetMassOverrideInKg(NAME_None, 3.0f);
+		DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+
+		//FVector Velocity = ItemMesh->GetPhysicsLinearVelocity();
+		//UE_LOG(LogTemp, Warning, TEXT("Velocity: %s"), *Velocity.ToString());
+		ItemMesh->SetPhysicsLinearVelocity(FVector::ZeroVector);
+		ItemMesh->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
+
+		ItemMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		ItemMesh->SetCollisionProfileName(FName("ThrowItem"));
+		//ItemMesh->SetCollisionProfileName(FName("BlockAll"));
+		ItemMesh->SetSimulatePhysics(true);
+		ItemMesh->SetEnableGravity(true);
+
+		float ThrowPower = 700.0f;
+
+		/*FVector ForwardVector = MainCharacter->GetActorForwardVector();*/
+		FVector ForwardVector = MainCharacter->GetControlRotation().Vector();
+		FVector ThrowDirection = (ForwardVector + FVector(0, 0, 1.0f)).GetSafeNormal();
+
+		ItemMesh->AddImpulse(ThrowDirection * ThrowPower, NAME_None, true);
+	}
+}
+
 // Called when the game starts or when spawned
 void AItemBaseActor::BeginPlay()
 {
