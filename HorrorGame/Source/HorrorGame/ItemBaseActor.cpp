@@ -2,7 +2,7 @@
 
 
 #include "ItemBaseActor.h"
-#include "Maincharacter.h"
+#include "MainCharacter.h"
 
 // Sets default values
 AItemBaseActor::AItemBaseActor()
@@ -58,6 +58,8 @@ void AItemBaseActor::ThrowItem(AMainCharacter* MainCharacter)
 		FVector ThrowDirection = (ForwardVector + FVector(0, 0, 1.0f)).GetSafeNormal();
 
 		ItemMesh->AddImpulse(ThrowDirection * ThrowPower, NAME_None, true);
+
+		GetWorldTimerManager().SetTimer(AttackSpawnTimerHandle, this, &AItemBaseActor::AttackSpawn, AttackSpawnTime, false);
 	}
 }
 
@@ -65,6 +67,9 @@ void AItemBaseActor::ThrowItem(AMainCharacter* MainCharacter)
 void AItemBaseActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	OwnerCharacter = Cast<AMainCharacter>(PC->GetPawn());
 
 }
 
@@ -117,5 +122,21 @@ void AItemBaseActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AItemBaseActor::AttackSpawn()
+{
+	if (!ItemAttackSpawnClass || !OwnerCharacter) return;
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = OwnerCharacter;
+	SpawnParams.Instigator = OwnerCharacter->GetInstigator();
+
+	FVector SpawnLocation = ItemMesh->GetComponentLocation();
+	FRotator SpawnRotation = ItemMesh->GetComponentRotation();
+
+	GetWorld()->SpawnActor<AActor>(ItemAttackSpawnClass, SpawnLocation, SpawnRotation, SpawnParams);
+
+	Destroy();
 }
 

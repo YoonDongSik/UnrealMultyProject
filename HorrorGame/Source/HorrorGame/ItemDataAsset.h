@@ -6,6 +6,7 @@
 #include "Engine/DataAsset.h"
 #include "EItemType.h"
 #include "EItemCollisionType.h"
+#include "NiagaraSystem.h"
 #include "ItemDataAsset.generated.h"
 
 /**
@@ -33,6 +34,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	EItemType ItemType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
+	UNiagaraSystem* ItemParticle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Visual")
 	FVector ItemScale = FVector(1.0f, 1.0f, 1.0f);

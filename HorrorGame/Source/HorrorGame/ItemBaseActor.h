@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "ItemDataAsset.h"
-#include "Maincharacter.h"
+#include "MainCharacter.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
@@ -49,4 +49,14 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Item|Collision")
 	USphereComponent* SphereCollision;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item|Attack")
+	TSubclassOf<AActor> ItemAttackSpawnClass;
+
+private:
+	void AttackSpawn();
+
+	float AttackSpawnTime = 2.0f;
+	FTimerHandle AttackSpawnTimerHandle;
+	AMainCharacter* OwnerCharacter;
 };

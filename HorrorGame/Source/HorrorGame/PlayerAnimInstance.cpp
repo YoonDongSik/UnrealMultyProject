@@ -48,7 +48,7 @@ void UPlayerAnimInstance::AnimNotify_ThrowTiming()
 		if (ItemActor)
 		{
 			ItemActor->ThrowItem(PlayerCharacter);
-			PlayerCharacter->CurrentItem = nullptr;
+			/*PlayerCharacter->CurrentItem = nullptr;*/
 		}
 	}
 }
