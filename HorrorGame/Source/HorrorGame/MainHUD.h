@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
 #include "MainWidget.h"
+#include "UInventoryComponent.h"
 #include "MainHUD.generated.h"
 
 /**
@@ -24,4 +25,7 @@ protected:
 
 	UPROPERTY()
 	UMainWidget* MainWidget = nullptr;
+
+	UPROPERTY()
+	UInventoryComponent* InventoryComponent;
 };

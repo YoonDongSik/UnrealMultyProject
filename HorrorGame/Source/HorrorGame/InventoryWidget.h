@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "InventroyWidget.generated.h"
+#include "InventoryWidget.generated.h"
 
 class UUniformGridPanel;
 class UItemSlotWidget;
@@ -16,7 +16,9 @@ public:
 	virtual void NativeConstruct() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-	TSubclassOf<UItemSlotWidget> ItemSlotClass;
+	TArray<UItemSlotWidget*> ItemSlotWidgets;
+
+	void RefreshInventory();
 
 protected:
 	UPROPERTY(meta = (BindWidget))

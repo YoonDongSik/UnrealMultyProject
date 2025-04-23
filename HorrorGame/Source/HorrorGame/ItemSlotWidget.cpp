@@ -12,3 +12,12 @@ void UItemSlotWidget::SetItem(UItemDataAsset* InItem)
 		ItemNameText->SetText(InItem->ItemName);                     // 아이템 이름 텍스트 설정
 	}
 }
+
+void UItemSlotWidget::ClearItem()
+{
+	if (ItemIcon && ItemNameText)
+	{
+		ItemIcon->SetBrushFromTexture(nullptr);                     // 아이템 아이콘 초기화
+		ItemNameText->SetText(FText::GetEmpty());                   // 아이템 이름 텍스트 초기화
+	}
+}

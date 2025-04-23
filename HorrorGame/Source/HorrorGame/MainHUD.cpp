@@ -2,6 +2,8 @@
 
 
 #include "MainHUD.h"
+#include "MainCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 void AMainHUD::BeginPlay()
 {
@@ -15,6 +17,17 @@ void AMainHUD::BeginPlay()
 		if (MainWidget)
 		{
 			MainWidget->AddToViewport();
+		}
+
+		AMainCharacter* MainCharacter = Cast<AMainCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+		if (MainCharacter)
+		{
+			InventoryComponent = MainCharacter->InventoryComponent;
+
+			if (InventoryComponent && MainWidget && MainWidget->InventoryWidget)
+			{
+				InventoryComponent->SetInventoryWidget(MainWidget->InventoryWidget);
+			}
 		}
 	}
 }

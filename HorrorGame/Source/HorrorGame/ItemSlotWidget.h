@@ -17,6 +17,8 @@ class HORRORGAME_API UItemSlotWidget : public UUserWidget
 public:
 	void SetItem(UItemDataAsset* InItem);
 
+	void ClearItem();
+
 protected:
 	UPROPERTY(meta = (BindWidget))
 	UImage* ItemIcon;
