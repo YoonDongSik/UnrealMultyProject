@@ -24,3 +24,15 @@ void UMainWidget::NativeConstruct()
 	}
 }
 
+void UMainWidget::SetupInventorySlotClass(TSubclassOf<UItemSlotWidget> InSlotClass)
+{
+	if (InventoryWidget)
+	{
+		InventoryWidget->ItemSlotClass = InSlotClass;
+		UE_LOG(LogTemp, Warning, TEXT("✅ ItemSlotClass 전달 완료: %s"), *InSlotClass->GetName());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("❌ InventoryWidget가 nullptr"));
+	}
+}

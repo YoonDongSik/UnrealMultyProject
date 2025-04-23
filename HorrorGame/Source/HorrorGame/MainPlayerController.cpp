@@ -267,7 +267,7 @@ void AMainPlayerController::InputInterection(const FInputActionValue& Value)
 				}
 			}
 
-		}
 	}
+		}
 }
 

@@ -23,6 +23,9 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "InventoryWidget", meta = (BindWidget))
 	UInventoryWidget* InventoryWidget;
+
+	UFUNCTION(BlueprintCallable)
+	void SetupInventorySlotClass(TSubclassOf<UItemSlotWidget> InSlotClass);
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat", meta = (BindWidget))
 	USteminaWidget* SteminaWidget;

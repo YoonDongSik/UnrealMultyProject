@@ -4,6 +4,7 @@
 #include "MainHUD.h"
 #include "MainCharacter.h"
 #include "Kismet/GameplayStatics.h"
+#include "InventoryWidget.h"
 
 void AMainHUD::BeginPlay()
 {
@@ -23,11 +24,14 @@ void AMainHUD::BeginPlay()
 		if (MainCharacter)
 		{
 			InventoryComponent = MainCharacter->InventoryComponent;
-
+			MainWidget->InventoryWidget->ItemSlotClass = WBP_ItemSlotClass;
 			if (InventoryComponent && MainWidget && MainWidget->InventoryWidget)
 			{
 				InventoryComponent->SetInventoryWidget(MainWidget->InventoryWidget);
+				MainWidget->SetupInventorySlotClass(WBP_ItemSlotClass); // ✅ 여기!
 			}
+			
 		}
 	}
 }
+

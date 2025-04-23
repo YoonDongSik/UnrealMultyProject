@@ -16,10 +16,18 @@ class HORRORGAME_API AMainHUD : public AHUD
 {
 	GENERATED_BODY()
 
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
+	TSubclassOf<UItemSlotWidget> WBP_ItemSlotClass;
+
 protected:
 	virtual void BeginPlay() override;
 	
 protected:
+
+
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI")
 	TSubclassOf<UUserWidget> MainWidgetClass;
 
