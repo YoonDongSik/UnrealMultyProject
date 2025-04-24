@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/Button.h"  // ✅ 이거 꼭 추가해야 UButton 인식됨
 #include "InventoryWidget.generated.h"
 
 class UUniformGridPanel;
@@ -19,7 +20,13 @@ public:
 	TArray<UItemSlotWidget*> ItemSlotWidgets;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-	TSubclassOf<UItemSlotWidget> ItemSlotClass; // 👈 이거 있어야 함
+	TSubclassOf<UItemSlotWidget> ItemSlotClass; 
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* CloseButton;  // 위젯에 있는 X 버튼
+
+	UFUNCTION()
+	void OnCloseButtonClicked();
 
 	void RefreshInventory();
 

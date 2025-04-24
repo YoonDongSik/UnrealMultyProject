@@ -6,6 +6,8 @@
 #include "UInventoryComponent.h"
 #include "ItemDataAsset.h"
 
+
+
 void UInventoryWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -15,7 +17,14 @@ void UInventoryWidget::NativeConstruct()
 	{
 		InventoryPanel->ClearChildren();
 	}
+
+	if (CloseButton)
+	{
+		CloseButton->OnClicked.AddDynamic(this, &UInventoryWidget::OnCloseButtonClicked);
+	}
 }
+
+
 
 void UInventoryWidget::RefreshInventory()
 {
@@ -59,4 +68,10 @@ void UInventoryWidget::RefreshInventory()
 			ItemSlotWidgets.Add(NewSlot);
 		}
 	}
+}
+
+void UInventoryWidget::OnCloseButtonClicked()
+{
+	this->RemoveFromParent();  // ✅ 위젯을 화면에서 제거
+	UE_LOG(LogTemp, Warning, TEXT("인벤토리 UI 닫기"));
 }

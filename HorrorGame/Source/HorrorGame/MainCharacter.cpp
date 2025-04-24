@@ -2,7 +2,9 @@
 
 
 #include "MainCharacter.h"
+#include "MainWidget.h" 
 #include "PlayerAnimInstance.h"
+#include "InventoryWidget.h" // ← 너의 UInventoryWidget 헤더 필요!
 #include "Camera/CameraComponent.h"
 
 // Sets default values
@@ -94,6 +96,54 @@ void AMainCharacter::BeginPlay()
 			{
 				UE_LOG(LogTemp, Warning, TEXT("미리 설정된 아이템 있음: %s"), *Item->ItemName.ToString());
 			}
+		}
+	}
+	
+	if (MainWidgetClass)
+	{
+		MainWidget = CreateWidget<UMainWidget>(GetWorld(), MainWidgetClass);
+		if (MainWidget)
+		{
+			MainWidget->AddToViewport();
+			MainWidget->SetVisibility(ESlateVisibility::Hidden);
+			UE_LOG(LogTemp, Warning, TEXT("✅ MainWidget 생성 성공"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("❌ MainWidget 생성 실패"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("❌ MainWidgetClass 가 null입니다! 에디터에서 위젯 클래스 지정했는지 확인"));
+	}
+
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (PC)
+	{
+		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer());
+		if (Subsystem && InputMappingContext)
+		{
+			Subsystem->AddMappingContext(InputMappingContext, InputMappingPriority);
+			UE_LOG(LogTemp, Warning, TEXT("✅ 입력 매핑 컨텍스트 적용됨"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("❌ Subsystem 또는 MappingContext null"));
+		}
+	}
+
+	if (MainWidget)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("✅ MainWidget 생성됨"));
+
+		if (MainWidget->InventoryWidget)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("✅ InventoryWidget 바인딩됨"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("❌ InventoryWidget은 NULL임"));
 		}
 	}
 }
@@ -227,4 +277,43 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	UE_LOG(LogTemp, Warning, TEXT("🟡 SetupPlayerInputComponent 호출됨"));
+
+	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	if (EnhancedInput && IA_ToggleInventory)
+	{
+		EnhancedInput->BindAction(IA_ToggleInventory, ETriggerEvent::Started, this, &AMainCharacter::ToggleInventory);
+		UE_LOG(LogTemp, Warning, TEXT("✅ IA_ToggleInventory 바인딩 성공"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("❌ EnhancedInput 또는 IA_ToggleInventory가 null입니다"));
+	}
+}
+
+void AMainCharacter::ToggleInventory()
+{
+	UE_LOG(LogTemp, Warning, TEXT("🟡 ToggleInventory() 함수 호출됨"));
+
+	if (!MainWidget)
+	{
+		UE_LOG(LogTemp, Error, TEXT("❌ MainWidget이 유효하지 않음"));
+		return;
+	}
+	if (!MainWidget->InventoryWidget)
+	{
+		UE_LOG(LogTemp, Error, TEXT("❌ InventoryWidget이 유효하지 않음"));
+		return;
+	}
+
+	if (MainWidget->InventoryWidget->IsInViewport())
+	{
+		MainWidget->InventoryWidget->RemoveFromParent();
+		UE_LOG(LogTemp, Warning, TEXT("🔒 인벤토리 닫힘"));
+	}
+	else
+	{
+		MainWidget->InventoryWidget->AddToViewport();
+		UE_LOG(LogTemp, Warning, TEXT("📦 인벤토리 열림"));
+	}
 }
