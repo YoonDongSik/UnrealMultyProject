@@ -33,25 +33,28 @@ void UInventoryWidget::RefreshInventory()
 
 	const TArray<UItemDataAsset*>& Items = MainCharacter->InventoryComponent->InventoryItems;
 
-	for (int32 i = 0; i < Items.Num(); i++)
+	const int32 MaxSlotCount = 6; // ✅ 항상 6칸 고정
+
+	for (int32 i = 0; i < MaxSlotCount; i++)
 	{
 		UItemSlotWidget* NewSlot = CreateWidget<UItemSlotWidget>(this, ItemSlotClass);
 		if (NewSlot)
 		{
+			// 인벤토리에 해당 인덱스 아이템이 있으면 세팅
 			if (Items.IsValidIndex(i) && Items[i])
 			{
 				NewSlot->SetItem(Items[i]);
-				UE_LOG(LogTemp, Warning, TEXT("Inventory Index [%d]: %s"), i, *Items[i]->ItemName.ToString());
+				UE_LOG(LogTemp, Warning, TEXT("✅ Inventory Index [%d]: %s"), i, *Items[i]->ItemName.ToString());
 			}
 			else
 			{
-				NewSlot->ClearItem();
-				UE_LOG(LogTemp, Error, TEXT("❌ Inventory Index [%d] is null!"), i);
+				NewSlot->ClearItem(); // 아이템이 없으면 빈칸
+				UE_LOG(LogTemp, Warning, TEXT("➖ Inventory Index [%d]: 빈칸"), i);
 			}
 
 			UUniformGridSlot* GridSlot = InventoryPanel->AddChildToUniformGrid(NewSlot);
-			GridSlot->SetColumn(i % 4);
-			GridSlot->SetRow(i / 4);
+			GridSlot->SetColumn(i % 3); // ✅ 3칸씩 한 줄
+			GridSlot->SetRow(i / 3);    // 2줄
 
 			ItemSlotWidgets.Add(NewSlot);
 		}
