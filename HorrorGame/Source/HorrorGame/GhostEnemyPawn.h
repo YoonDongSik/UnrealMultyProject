@@ -4,16 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "TestEnemyPawn.generated.h"
+#include "EnemyBasePawn.h"
+#include "GhostEnemyPawn.generated.h"
 
 UCLASS()
-class HORRORGAME_API ATestEnemyPawn : public APawn
+class HORRORGAME_API AGhostEnemyPawn : public AEnemyBasePawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	ATestEnemyPawn();
+	AGhostEnemyPawn();
 
 protected:
 	// Called when the game starts or when spawned
