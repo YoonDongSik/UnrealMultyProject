@@ -3,6 +3,7 @@
 
 #include "EnemyBasePawn.h"
 #include "Kismet/GameplayStatics.h"
+#include "EnemyAIController.h"
 
 // Sets default values
 AEnemyBasePawn::AEnemyBasePawn()
@@ -21,6 +22,9 @@ AEnemyBasePawn::AEnemyBasePawn()
 
 	CharacterMovementComponent = CreateDefaultSubobject<UCharacterMovementComponent>(TEXT("CharacterMovementComponent"));
 	CharacterMovementComponent->bOrientRotationToMovement = true;
+
+	AIControllerClass = AEnemyAIController::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	Tags.Add(FName("Enemy"));
 }
@@ -58,14 +62,14 @@ void AEnemyBasePawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (ViewPlayer())
+	/*if (ViewPlayer())
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, TEXT("Player in view!"));
 	}
 	else
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("Player out of view!"));
-	}
+	}*/
 
 }
 

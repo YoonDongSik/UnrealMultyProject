@@ -9,6 +9,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MainCharacter.h"
+#include "AIController.h"
 #include "EnemyBasePawn.generated.h"
 
 UCLASS()
