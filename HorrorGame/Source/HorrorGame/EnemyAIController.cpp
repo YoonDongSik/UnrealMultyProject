@@ -8,7 +8,7 @@ void AEnemyAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetWorld()->GetTimerManager().SetTimer(RandomMoveTimerHandle, this, &AEnemyAIController::RandomMove, 10.0f, true);
+	GetWorld()->GetTimerManager().SetTimer(RandomMoveTimerHandle, this, &AEnemyAIController::RandomMove, 3.0f, true);
 }
 
 void AEnemyAIController::OnPossess(APawn* InPawn)
@@ -18,19 +18,28 @@ void AEnemyAIController::OnPossess(APawn* InPawn)
 
 void AEnemyAIController::RandomMove()
 {
-	APawn* ControlledPawn = GetPawn();
-	if (!ControlledPawn) return;
+    APawn* ControlledPawn = GetPawn();
+    if (!ControlledPawn) return;
 
-	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
-	if (NavSystem)
-	{
-		FVector Origin = ControlledPawn->GetActorLocation();
-		FNavLocation RandomLocation;
+    UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
+    if (NavSystem)
+    {
+        FVector Origin = ControlledPawn->GetActorLocation();
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Origin: %s"), *Origin.ToString()));
 
-		if (NavSystem->GetRandomReachablePointInRadius(Origin, 1000.0f, RandomLocation))
-		{
-			MoveToLocation(RandomLocation.Location);
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("random Move location: %s"), *RandomLocation.Location.ToString()));
-		}
-	}
+        FNavLocation RandomLocation;
+        if (NavSystem->GetRandomReachablePointInRadius(Origin, 1000.0f, RandomLocation))
+        {
+            FVector NewLocation = RandomLocation.Location;
+            NewLocation.Z = 150.0f;
+
+            /*ControlledPawn->SetActorLocation(RandomLocation.Location);*/
+			MoveToLocation(NewLocation);
+            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Random Move location: %s"), *NewLocation.ToString()));
+        }
+        else
+        {
+            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("No reachable random location found!"));
+        }
+    }
 }
