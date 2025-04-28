@@ -78,7 +78,7 @@ void AMainCharacter::BeginPlay()
 	AnimInstance = GetMesh()->GetAnimInstance();
 	bUseControllerRotationYaw = true;
 
-	Health = 10;
+	Health = MaxHealth;
 	OnHealthChanged.Broadcast(Health / MaxHealth);
 	/*FString DebugMessage = FString::Printf(TEXT("bUseControllerRotationYaw: %s"), bUseControllerRotationYaw ? TEXT("true") : TEXT("false"));
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, DebugMessage);*/

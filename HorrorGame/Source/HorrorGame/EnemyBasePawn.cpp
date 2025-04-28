@@ -11,17 +11,7 @@ AEnemyBasePawn::AEnemyBasePawn()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComponent"));
-	RootComponent = CapsuleComponent;
-
-	ArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowComponent"));
-	ArrowComponent->SetupAttachment(RootComponent);
-
-	MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComponent"));
-	MeshComponent->SetupAttachment(RootComponent);
-
-	CharacterMovementComponent = CreateDefaultSubobject<UCharacterMovementComponent>(TEXT("CharacterMovementComponent"));
-	CharacterMovementComponent->bOrientRotationToMovement = true;
+	/*MyCapsuleComponent = GetCapsuleComponent();*/
 
 	AIControllerClass = AEnemyAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
@@ -62,14 +52,26 @@ void AEnemyBasePawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	/*if (ViewPlayer())
+	AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
+
+	if (ViewPlayer())
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, TEXT("Player in view!"));
+		if (!AIController->bIsPlayerFollow)
+		{
+			AIController->StopRandomMove();
+			AIController->FollowPlayer(PlayerCharacter);
+		}
+		/*GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, TEXT("Player in view!"));*/
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("Player out of view!"));
-	}*/
+		if (AIController->bIsPlayerFollow)
+		{
+			AIController->RandomMove();
+			AIController->bIsPlayerFollow = false;
+		}
+		/*GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("Player out of view!"));*/
+	}
 
 }
 

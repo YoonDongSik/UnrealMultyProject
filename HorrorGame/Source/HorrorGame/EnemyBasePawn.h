@@ -3,17 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
-#include "Components/CapsuleComponent.h"
-#include "Components/ArrowComponent.h"
-#include "Components/SkeletalMeshComponent.h"
+#include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MainCharacter.h"
 #include "AIController.h"
 #include "EnemyBasePawn.generated.h"
 
 UCLASS()
-class HORRORGAME_API AEnemyBasePawn : public APawn
+class HORRORGAME_API AEnemyBasePawn : public ACharacter
 {
 	GENERATED_BODY()
 
@@ -35,17 +32,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "EnemyBase")
-	UCapsuleComponent* CapsuleComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "EnemyBase")
-	UArrowComponent* ArrowComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "EnemyBase")
-	USkeletalMeshComponent* MeshComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "EnemyBase")
-	UCharacterMovementComponent* CharacterMovementComponent;
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	UCapsuleComponent* MyCapsuleComponent;*/
 
 private:
 	UPROPERTY(EditAnywhere, Category = "EnemyView")

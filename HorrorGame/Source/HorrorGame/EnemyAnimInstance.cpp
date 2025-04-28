@@ -13,4 +13,8 @@ void UEnemyAnimInstance::NativeInitializeAnimation()
 void UEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
+	if (EnemyPawn)
+	{
+		EnemySpeed = EnemyPawn->GetVelocity().Size();
+	}
 }

@@ -22,4 +22,7 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class AGhostEnemyPawn* EnemyPawn;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
+	float EnemySpeed = 0.0f;
 };

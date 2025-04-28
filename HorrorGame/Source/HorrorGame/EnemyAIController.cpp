@@ -3,6 +3,36 @@
 
 #include "EnemyAIController.h"
 #include "NavigationSystem.h"
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Navigation/PathFollowingComponent.h"
+
+void AEnemyAIController::StopRandomMove()
+{
+	GetWorld()->GetTimerManager().ClearTimer(RandomMoveTimerHandle);
+	bIsMoving = false;
+}
+
+void AEnemyAIController::FollowPlayer(APawn* PlayerPawn)
+{
+    APawn* ControlledPawn = GetPawn();
+    if (!ControlledPawn) return;
+    ACharacter* ConCharacter = Cast<ACharacter>(ControlledPawn);
+    if (ConCharacter)
+    {
+        UCharacterMovementComponent* CharacterMovement = ConCharacter->GetCharacterMovement();
+        if (CharacterMovement)
+        {
+            CharacterMovement->MaxWalkSpeed = 600.0f;
+        }
+    }
+
+	if (PlayerPawn)
+	{
+		MoveToActor(PlayerPawn);
+		bIsPlayerFollow = true;
+	}
+}
 
 void AEnemyAIController::BeginPlay()
 {
@@ -11,15 +41,36 @@ void AEnemyAIController::BeginPlay()
 	GetWorld()->GetTimerManager().SetTimer(RandomMoveTimerHandle, this, &AEnemyAIController::RandomMove, 3.0f, true);
 }
 
-void AEnemyAIController::OnPossess(APawn* InPawn)
+//void AEnemyAIController::OnPossess(APawn* InPawn)
+//{
+//	Super::OnPossess(InPawn);
+//}
+
+
+AEnemyAIController::AEnemyAIController()
 {
-	Super::OnPossess(InPawn);
+
 }
 
 void AEnemyAIController::RandomMove()
 {
     APawn* ControlledPawn = GetPawn();
     if (!ControlledPawn) return;
+
+    if (bIsMoving)
+    {
+        return;
+    }
+
+    ACharacter* ConCharacter = Cast<ACharacter>(ControlledPawn);
+    if (ConCharacter)
+    {
+        UCharacterMovementComponent* CharacterMovement = ConCharacter->GetCharacterMovement();
+        if (CharacterMovement)
+        {
+			CharacterMovement->MaxWalkSpeed = 200.0f;
+        }
+    }
 
     UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
     if (NavSystem)
@@ -28,13 +79,14 @@ void AEnemyAIController::RandomMove()
         GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Origin: %s"), *Origin.ToString()));
 
         FNavLocation RandomLocation;
-        if (NavSystem->GetRandomReachablePointInRadius(Origin, 1000.0f, RandomLocation))
+        if (NavSystem->GetRandomReachablePointInRadius(Origin, 3000.0f, RandomLocation))
         {
             FVector NewLocation = RandomLocation.Location;
             NewLocation.Z = 150.0f;
 
             /*ControlledPawn->SetActorLocation(RandomLocation.Location);*/
 			MoveToLocation(NewLocation);
+			bIsMoving = true;
             GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Random Move location: %s"), *NewLocation.ToString()));
         }
         else
@@ -43,3 +95,15 @@ void AEnemyAIController::RandomMove()
         }
     }
 }
+
+void AEnemyAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
+{
+	Super::OnMoveCompleted(RequestID, Result);
+	if (Result.IsSuccess())
+	{
+        bIsMoving = false;
+
+        GetWorld()->GetTimerManager().SetTimer(RandomMoveTimerHandle, this, &AEnemyAIController::RandomMove, 3.0f, false);
+	}
+}
+

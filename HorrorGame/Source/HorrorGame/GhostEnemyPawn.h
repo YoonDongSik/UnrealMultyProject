@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+#include "GameFramework/Character.h"
 #include "EnemyBasePawn.h"
 #include "GhostEnemyPawn.generated.h"
 
