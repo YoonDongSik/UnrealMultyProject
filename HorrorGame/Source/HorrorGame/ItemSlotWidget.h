@@ -19,10 +19,21 @@ public:
 
 	void ClearItem();
 
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
+	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
+	void UpdateSlot();
+
+	void SwapItem(UItemSlotWidget* OtherSlot);
+
 protected:
 	UPROPERTY(meta = (BindWidget))
 	UImage* ItemIcon;
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* ItemNameText;
+
+	UPROPERTY()
+	UItemDataAsset* ItemDataAsset = nullptr;
 };

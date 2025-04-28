@@ -16,6 +16,28 @@ AMainPlayerController::AMainPlayerController()
 
 
 
+void AMainPlayerController::ToggleInventory()
+{
+	UE_LOG(LogTemp, Warning, TEXT("🔁 ToggleInventory 실행됨"));
+
+	if (!MainWidget || !MainWidget->InventoryWidget)
+	{
+		UE_LOG(LogTemp, Error, TEXT("❌ InventoryWidget 또는 MainWidget이 null"));
+		return;
+	}
+
+	if (MainWidget->InventoryWidget->IsInViewport())
+	{
+		MainWidget->InventoryWidget->RemoveFromParent();
+		UE_LOG(LogTemp, Warning, TEXT("🔒 인벤토리 닫힘"));
+	}
+	else
+	{
+		MainWidget->InventoryWidget->AddToViewport(); // ✅ 실제로 화면에 추가!
+		UE_LOG(LogTemp, Warning, TEXT("📦 인벤토리 열림"));
+	}
+}
+
 void AMainPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -28,6 +50,35 @@ void AMainPlayerController::BeginPlay()
 		{
 			LocalPlayerSubsystem->AddMappingContext(InputMappingContext, 0);
 		}
+	}
+
+	if (MainWidgetClass)
+	{
+		MainWidget = CreateWidget<UMainWidget>(this, MainWidgetClass);
+		if (MainWidget)
+		{
+			MainWidget->AddToViewport();
+			MainWidget->SetVisibility(ESlateVisibility::Hidden); // ✅ 이 줄은 CreateWidget 이후에 와야 함
+
+			UE_LOG(LogTemp, Warning, TEXT("🎉 MainWidget 생성됨"));
+
+			if (MainWidget->InventoryWidget)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("✅ InventoryWidget 바인딩 성공"));
+			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("❌ InventoryWidget 바인딩 실패"));
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("❌ MainWidget 생성 실패"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("❌ MainWidgetClass가 null"));
 	}
 }
 
@@ -78,6 +129,16 @@ void AMainPlayerController::SetupInputComponent()
 		if (InterectionAction)
 		{
 			EnhancedInputComponent->BindAction(InterectionAction, ETriggerEvent::Started, this, &AMainPlayerController::InputInterection);
+		}
+
+		if (IA_ToggleInventory)
+		{
+			EnhancedInputComponent->BindAction(IA_ToggleInventory, ETriggerEvent::Started, this, &AMainPlayerController::ToggleInventory);
+		}
+		if (EnhancedInputComponent && IA_ToggleInventory)
+		{
+			EnhancedInputComponent->BindAction(IA_ToggleInventory, ETriggerEvent::Started, this, &AMainPlayerController::ToggleInventory);
+			UE_LOG(LogTemp, Warning, TEXT("🟢 인벤토리 토글 키 바인딩 완료"));
 		}
 	}
 }

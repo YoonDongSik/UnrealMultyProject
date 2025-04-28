@@ -22,7 +22,17 @@ void UMainWidget::NativeConstruct()
 	{
 		MainCharacter->OnHealthChanged.AddDynamic(HealthWidget, &UHealthWidget::HealthUpdate);
 	}
+
+	if (InventoryWidget)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InventoryWidget 바인딩 성공"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT(" InventoryWidget 바인딩 실패"));
+	}
 }
+
 
 void UMainWidget::SetupInventorySlotClass(TSubclassOf<UItemSlotWidget> InSlotClass)
 {

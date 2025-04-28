@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "InputActionValue.h"
+#include "MainWidget.h"
 #include "MainPlayerController.generated.h"
 
 /**
@@ -17,6 +18,17 @@ class HORRORGAME_API AMainPlayerController : public APlayerController
 	
 public:
 	AMainPlayerController();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
+	TSubclassOf<UMainWidget> MainWidgetClass;
+
+	UPROPERTY()
+	UMainWidget* MainWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	class UInputAction* IA_ToggleInventory;
+
+	void ToggleInventory(); // 함수 선언
 
 
 protected:

@@ -10,9 +10,8 @@
 #include "InventoryWidget.h"
 #include "MainWidget.generated.h"
 
-/**
- * 
- */
+class UInventoryWidget; // 잊지 말고 선언
+
 UCLASS()
 class HORRORGAME_API UMainWidget : public UUserWidget
 {

@@ -50,11 +50,9 @@ public:
 	UPROPERTY()
 	UMainWidget* MainWidget;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	class UInputAction* IA_ToggleInventory;
+	
 
-	UFUNCTION()
-	void ToggleInventory();
+
 
 	
 
