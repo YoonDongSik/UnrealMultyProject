@@ -18,67 +18,63 @@ AMainPlayerController::AMainPlayerController()
 
 void AMainPlayerController::ToggleInventory()
 {
-	UE_LOG(LogTemp, Warning, TEXT("🔁 ToggleInventory 실행됨"));
+	
+	UE_LOG(LogTemp, Warning, TEXT("🟡 ToggleInventory 함수 호출됨"));
 
-	if (!MainWidget || !MainWidget->InventoryWidget)
+	if (!MainWidget)
 	{
-		UE_LOG(LogTemp, Error, TEXT("❌ InventoryWidget 또는 MainWidget이 null"));
+		UE_LOG(LogTemp, Error, TEXT("❌ MainWidget이 nullptr입니다!"));
 		return;
 	}
 
-	if (MainWidget->InventoryWidget->IsInViewport())
+	// 현재 상태 확인
+	ESlateVisibility CurrentVisibility = MainWidget->GetVisibility(); // ✅ MainWidget의 Visibility!
+
+	if (CurrentVisibility == ESlateVisibility::Visible)
 	{
-		MainWidget->InventoryWidget->RemoveFromParent();
-		UE_LOG(LogTemp, Warning, TEXT("🔒 인벤토리 닫힘"));
+		MainWidget->SetVisibility(ESlateVisibility::Hidden);
+
+		// 마우스 커서 끄기
+		bShowMouseCursor = false;
+		SetInputMode(FInputModeGameOnly());
+		UE_LOG(LogTemp, Warning, TEXT("🔒 인벤토리 닫힘, 마우스 커서 끔"));
 	}
 	else
 	{
-		MainWidget->InventoryWidget->AddToViewport(); // ✅ 실제로 화면에 추가!
-		UE_LOG(LogTemp, Warning, TEXT("📦 인벤토리 열림"));
+		MainWidget->SetVisibility(ESlateVisibility::Visible);
+
+		// 마우스 커서 켜기
+		bShowMouseCursor = true;
+		FInputModeUIOnly InputMode;
+		InputMode.SetWidgetToFocus(MainWidget->TakeWidget());
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		SetInputMode(InputMode);
+		UE_LOG(LogTemp, Warning, TEXT("📦 인벤토리 열림, 마우스 커서 켬"));
 	}
+
 }
 
 void AMainPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ULocalPlayer* LocalPlayer = GetLocalPlayer();
-	if (LocalPlayer)
-	{
-		UEnhancedInputLocalPlayerSubsystem* LocalPlayerSubsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
-		if (LocalPlayerSubsystem && InputMappingContext)
-		{
-			LocalPlayerSubsystem->AddMappingContext(InputMappingContext, 0);
-		}
-	}
-
+	//ULocalPlayer* LocalPlayer = GetLocalPlayer();
+	//if (LocalPlayer)
+	//{
+	//	UEnhancedInputLocalPlayerSubsystem* LocalPlayerSubsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+	//	if (LocalPlayerSubsystem && InputMappingContext)
+	//	{
+	//		LocalPlayerSubsystem->AddMappingContext(InputMappingContext, 0);
+	//	}
+	//}
 	if (MainWidgetClass)
 	{
 		MainWidget = CreateWidget<UMainWidget>(this, MainWidgetClass);
 		if (MainWidget)
 		{
-			MainWidget->AddToViewport();
-			MainWidget->SetVisibility(ESlateVisibility::Hidden); // ✅ 이 줄은 CreateWidget 이후에 와야 함
-
-			UE_LOG(LogTemp, Warning, TEXT("🎉 MainWidget 생성됨"));
-
-			if (MainWidget->InventoryWidget)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("✅ InventoryWidget 바인딩 성공"));
-			}
-			else
-			{
-				UE_LOG(LogTemp, Error, TEXT("❌ InventoryWidget 바인딩 실패"));
-			}
+			MainWidget->AddToViewport();   // ✅ 여기!
+			MainWidget->InventoryWidget->SetVisibility(ESlateVisibility::Collapsed); // 시작할 때 숨겨놓기
 		}
-		else
-		{
-			UE_LOG(LogTemp, Error, TEXT("❌ MainWidget 생성 실패"));
-		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("❌ MainWidgetClass가 null"));
 	}
 }
 
@@ -138,7 +134,7 @@ void AMainPlayerController::SetupInputComponent()
 		if (EnhancedInputComponent && IA_ToggleInventory)
 		{
 			EnhancedInputComponent->BindAction(IA_ToggleInventory, ETriggerEvent::Started, this, &AMainPlayerController::ToggleInventory);
-			UE_LOG(LogTemp, Warning, TEXT("🟢 인벤토리 토글 키 바인딩 완료"));
+			UE_LOG(LogTemp, Warning, TEXT("🟢 I 키에 인벤토리 토글 바인딩 완료"));
 		}
 	}
 }

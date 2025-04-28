@@ -11,6 +11,9 @@
 /**
  * 
  */
+
+class UInventoryWidget;  // 반드시 필요
+
 UCLASS()
 class HORRORGAME_API AMainPlayerController : public APlayerController
 {
@@ -27,6 +30,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	class UInputAction* IA_ToggleInventory;
+
+	UPROPERTY(meta = (BindWidget))   // 반드시 BindWidget 붙여야 됨
+		UInventoryWidget* InventoryWidget;
 
 	void ToggleInventory(); // 함수 선언
 
