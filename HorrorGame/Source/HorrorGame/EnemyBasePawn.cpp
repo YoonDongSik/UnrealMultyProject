@@ -80,7 +80,20 @@ bool AEnemyBasePawn::ViewPlayer()
 	float DotProduct = FVector::DotProduct(ForwardVector, DirectionToPlayer);
 	float Angle = FMath::RadiansToDegrees(FMath::Acos(DotProduct));
 
-	return Angle <= ViewAngle * 0.5f;
+	//DrawDebugCone(
+	//	GetWorld(),
+	//	EnemyLocation + FVector(0, 0, 50), // 눈 높이 보정
+	//	ForwardVector,
+	//	ViewDistance,
+	//	FMath::DegreesToRadians(ViewAngle * 0.3f),
+	//	FMath::DegreesToRadians(ViewAngle * 0.3f),
+	//	16,
+	//	FColor::Green,
+	//	true,
+	//	0.0f // 0.1초 동안 표시되게 (Tick에서 자주 호출될 경우)
+	//);
+
+	return Angle <= ViewAngle * 0.3f;
 }
 
 // Called every frame

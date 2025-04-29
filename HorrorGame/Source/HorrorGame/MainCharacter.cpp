@@ -23,6 +23,7 @@ AMainCharacter::AMainCharacter()
 	SpringArm->TargetArmLength = 50.0f;
 	SpringArm->SocketOffset = FVector(0.0f);
 	SpringArm->bUsePawnControlRotation = true;
+	/*SpringArm->bDoCollisionTest = true;*/
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
@@ -59,13 +60,17 @@ void AMainCharacter::DoCrouching()
 	if (bIsCrouched)
 	{
 		Crouch();
-		SpringArm->SetRelativeLocation(FVector(60.0f, 0.0f, 0.0f));
+		SpringArm->SetRelativeLocation(FVector(60.0f, 0.0f, 40.0f));
+		GetCapsuleComponent()->SetCapsuleSize(45, 60);
+		GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -60.0f));
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("Crouching True")));
 	}
 	else
 	{
 		UnCrouch();
 		SpringArm->SetRelativeLocation(FVector(50.0f, 0.0f, 70.0f));
+		GetCapsuleComponent()->SetCapsuleSize(45, 90);
+		GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("Crouching false")));
 	}
 }
