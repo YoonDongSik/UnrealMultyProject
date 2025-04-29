@@ -4,6 +4,8 @@
 #include "ThrowItemAttackActor.h"
 #include "Kismet/GameplayStatics.h"
 #include "ItemBaseActor.h"
+#include "EnemyBasePawn.h"
+#include "GhostEnemyPawn.h"
 
 // Sets default values
 AThrowItemAttackActor::AThrowItemAttackActor()
@@ -31,6 +33,8 @@ void AThrowItemAttackActor::BeginPlay()
 	MainCharacter = Cast<AMainCharacter>(GetOwner());
 
 	EffectAndAttack();
+
+	AttackSphere->OnComponentBeginOverlap.AddDynamic(this, &AThrowItemAttackActor::OnAttackSphereBeginOverlap);
 }
 
 void AThrowItemAttackActor::EffectAndAttack()
@@ -49,19 +53,37 @@ void AThrowItemAttackActor::EffectAndAttack()
 		MainCharacter->CurrentItem = nullptr;
 		AttackParticleComponent->Activate(true);
 	}
-	// Perform attack logic here
-	TArray<AActor*> OverlappingActors;
-	AttackSphere->GetOverlappingActors(OverlappingActors);
-	for (AActor* Actor : OverlappingActors)
-	{
-		if (Actor && Actor != this)
-		{
-			// Apply damage or any other effect to the overlapping actors
-			// Example: UGameplayStatics::ApplyDamage(Actor, DamageAmount, nullptr, this, nullptr);
-		}
-	}
+	//// Perform attack logic here
+	//TArray<AActor*> OverlappingActors;
+	//AttackSphere->GetOverlappingActors(OverlappingActors);
+	//for (AActor* Actor : OverlappingActors)
+	//{
+	//	if (Actor && Actor != this)
+	//	{
+	//		if (Actor->ActorHasTag("Enemy"))
+	//		{
+	//			AGhostEnemyPawn* Enemy = Cast<AGhostEnemyPawn>(Actor);
+	//			Enemy->Stun();
+	//		}
+	//	}
+	//}
 
 	SetLifeSpan(4.0f); // Destroy the actor after 1 second
+}
+
+void AThrowItemAttackActor::OnAttackSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor && OtherActor != this)
+	{
+		if (OtherActor->ActorHasTag("Enemy"))
+		{
+			AGhostEnemyPawn* Enemy = Cast<AGhostEnemyPawn>(OtherActor);
+			if (Enemy)
+			{
+				Enemy->Stun();
+			}
+		}
+	}
 }
 
 // Called every frame

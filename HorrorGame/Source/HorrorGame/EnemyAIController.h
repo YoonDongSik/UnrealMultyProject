@@ -33,8 +33,8 @@ protected:
 public:
 	bool bIsPlayerFollow = false;
 
+	bool bIsMoving = false;
+
 protected:
 	FTimerHandle RandomMoveTimerHandle;
-
-	bool bIsMoving = false;
 };

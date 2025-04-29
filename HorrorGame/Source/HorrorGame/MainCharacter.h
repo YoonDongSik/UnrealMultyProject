@@ -41,7 +41,12 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	/*void PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName = NAME_None);*/
+	virtual float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override
+	{
+		Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+		SetHealth(Health - Damage);
+		return Damage;
+	}
 
 public:	
 	// Called every frame

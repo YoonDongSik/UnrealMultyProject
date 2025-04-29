@@ -4,6 +4,9 @@
 #include "EnemyBasePawn.h"
 #include "Kismet/GameplayStatics.h"
 #include "EnemyAIController.h"
+#include "MainCharacter.h"
+#include "GhostEnemyPawn.h"
+
 
 // Sets default values
 AEnemyBasePawn::AEnemyBasePawn()
@@ -13,10 +16,40 @@ AEnemyBasePawn::AEnemyBasePawn()
 
 	/*MyCapsuleComponent = GetCapsuleComponent();*/
 
+	AttackRangeSphere = CreateDefaultSubobject<USphereComponent>(TEXT("AttackRangeSphere"));
+	AttackRangeSphere->SetupAttachment(RootComponent);
+
 	AIControllerClass = AEnemyAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	Tags.Add(FName("Enemy"));
+}
+
+void AEnemyBasePawn::Stun()
+{
+	AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
+
+	bIsStun = true;
+	if (AIController)
+	{
+		AIController->bIsMoving = true;
+	}
+
+	GetCharacterMovement()->StopMovementImmediately();
+
+	FTimerHandle StunTimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(StunTimerHandle, this, &AEnemyBasePawn::Unstun, 10.0f, false);
+}
+
+void AEnemyBasePawn::Unstun()
+{
+	bIsStun = false;
+	AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
+	if (AIController)
+	{
+		AIController->RandomMove();
+		AIController->bIsMoving = false;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -25,6 +58,9 @@ void AEnemyBasePawn::BeginPlay()
 	Super::BeginPlay();
 
 	PlayerCharacter = Cast<AMainCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+	AttackRangeSphere->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBasePawn::OnAttackRangeBeginOverlap);
+	AttackRangeSphere->OnComponentEndOverlap.AddDynamic(this, &AEnemyBasePawn::OnAttackRangeEndOverlap);
 	
 }
 
@@ -56,7 +92,7 @@ void AEnemyBasePawn::Tick(float DeltaTime)
 
 	if (ViewPlayer())
 	{
-		if (!AIController->bIsPlayerFollow)
+		if (!AIController->bIsPlayerFollow && !bIsPlayerInAttack && !bIsStun)
 		{
 			AIController->StopRandomMove();
 			AIController->FollowPlayer(PlayerCharacter);
@@ -65,7 +101,7 @@ void AEnemyBasePawn::Tick(float DeltaTime)
 	}
 	else
 	{
-		if (AIController->bIsPlayerFollow)
+		if (AIController->bIsPlayerFollow && !bIsPlayerInAttack && !bIsStun)
 		{
 			AIController->RandomMove();
 			AIController->bIsPlayerFollow = false;
@@ -80,5 +116,32 @@ void AEnemyBasePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AEnemyBasePawn::OnAttackRangeBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,const FHitResult& SweepResult)
+{
+	if (OtherActor && OtherActor != this)
+	{
+		if (OtherActor->ActorHasTag("Player"))
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, FString::Printf(TEXT("Overlap Actor: %s, Comp: %s"), *OtherActor->GetName(), *OtherComp->GetName()));
+			bIsPlayerInAttack = true;
+			AGhostEnemyPawn* GhostEnemy = Cast<AGhostEnemyPawn>(this);
+			GhostEnemy->PlayAttack();
+		}
+	}
+}
+
+void AEnemyBasePawn::OnAttackRangeEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("OverlapEnd!"));
+	if (OtherActor && OtherActor != this)
+	{
+		if (OtherActor->ActorHasTag("Player"))
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, FString::Printf(TEXT("OverlapEnd Actor: %s, Comp: %s"), *OtherActor->GetName(), *OtherComp->GetName()));
+			bIsPlayerInAttack = false;
+		}
+	}
 }
 

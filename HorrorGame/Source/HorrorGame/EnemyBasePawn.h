@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MainCharacter.h"
 #include "AIController.h"
+#include "Components/SphereComponent.h"
 #include "EnemyBasePawn.generated.h"
 
 UCLASS()
@@ -17,6 +18,10 @@ class HORRORGAME_API AEnemyBasePawn : public ACharacter
 public:
 	// Sets default values for this pawn's properties
 	AEnemyBasePawn();
+
+	void Stun();
+
+	void Unstun();
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,6 +36,20 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION()
+	void OnAttackRangeBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+		const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnAttackRangeEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+public:
+	bool bIsPlayerInAttack = false;
+
+	bool bIsStun = false;
+
 protected:
 	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	UCapsuleComponent* MyCapsuleComponent;*/
@@ -41,6 +60,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "EnemyView")
 	float ViewAngle = 90.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	USphereComponent* AttackRangeSphere;
 
 	AMainCharacter* PlayerCharacter;
 };
