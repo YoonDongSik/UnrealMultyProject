@@ -5,11 +5,15 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "InputActionValue.h"
+#include "MainWidget.h"
 #include "MainPlayerController.generated.h"
 
 /**
  * 
  */
+
+class UInventoryWidget;  // 반드시 필요
+
 UCLASS()
 class HORRORGAME_API AMainPlayerController : public APlayerController
 {
@@ -17,6 +21,20 @@ class HORRORGAME_API AMainPlayerController : public APlayerController
 	
 public:
 	AMainPlayerController();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
+	TSubclassOf<UMainWidget> MainWidgetClass;
+
+	UPROPERTY()
+	UMainWidget* MainWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	class UInputAction* IA_ToggleInventory;
+
+	UPROPERTY(meta = (BindWidget))   // 반드시 BindWidget 붙여야 됨
+		UInventoryWidget* InventoryWidget;
+
+	void ToggleInventory(); // 함수 선언
 
 
 protected:

@@ -16,17 +16,65 @@ AMainPlayerController::AMainPlayerController()
 
 
 
+void AMainPlayerController::ToggleInventory()
+{
+	
+	UE_LOG(LogTemp, Warning, TEXT("🟡 ToggleInventory 함수 호출됨"));
+
+	if (!MainWidget || !MainWidget->InventoryWidget)
+	{
+		UE_LOG(LogTemp, Error, TEXT("❌ MainWidget 또는 InventoryWidget이 nullptr입니다!"));
+		return;
+	}
+
+	// 현재 인벤토리 UI의 상태를 가져옴
+	ESlateVisibility CurrentVisibility = MainWidget->InventoryWidget->GetVisibility();
+	UE_LOG(LogTemp, Warning, TEXT("현재 InventoryWidget Visibility: %d"), (int32)CurrentVisibility);
+
+	if (CurrentVisibility == ESlateVisibility::Visible)
+	{
+		MainWidget->InventoryWidget->SetVisibility(ESlateVisibility::Collapsed); // ✅ Visible → Collapsed 로 바꿔
+		bShowMouseCursor = false;
+		SetInputMode(FInputModeGameOnly());
+		UE_LOG(LogTemp, Warning, TEXT("🔒 인벤토리 닫힘, 마우스 커서 끔"));
+	}
+	else
+	{
+		MainWidget->InventoryWidget->SetVisibility(ESlateVisibility::Visible);
+		bShowMouseCursor = true;
+
+		FInputModeUIOnly InputMode;
+		InputMode.SetWidgetToFocus(MainWidget->InventoryWidget->TakeWidget()); // ✅ 수정: InventoryWidget에 포커스 주기
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		SetInputMode(InputMode);
+
+		UE_LOG(LogTemp, Warning, TEXT("📦 인벤토리 열림, 마우스 커서 켬"));
+	}
+
+}
+
 void AMainPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ULocalPlayer* LocalPlayer = GetLocalPlayer();
-	if (LocalPlayer)
+	//ULocalPlayer* LocalPlayer = GetLocalPlayer();
+	//if (LocalPlayer)
+	//{
+	//	UEnhancedInputLocalPlayerSubsystem* LocalPlayerSubsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+	//	if (LocalPlayerSubsystem && InputMappingContext)
+	//	{
+	//		LocalPlayerSubsystem->AddMappingContext(InputMappingContext, 0);
+	//	}
+	//}
+	if (MainWidgetClass)
 	{
-		UEnhancedInputLocalPlayerSubsystem* LocalPlayerSubsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
-		if (LocalPlayerSubsystem && InputMappingContext)
+		MainWidget = CreateWidget<UMainWidget>(this, MainWidgetClass);
+		if (MainWidget)
 		{
-			LocalPlayerSubsystem->AddMappingContext(InputMappingContext, 0);
+			MainWidget->AddToViewport();
+
+			// 인벤토리 시작할 때 안 보이게
+			MainWidget->InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
 		}
 	}
 }
@@ -78,6 +126,16 @@ void AMainPlayerController::SetupInputComponent()
 		if (InterectionAction)
 		{
 			EnhancedInputComponent->BindAction(InterectionAction, ETriggerEvent::Started, this, &AMainPlayerController::InputInterection);
+		}
+
+		if (IA_ToggleInventory)
+		{
+			EnhancedInputComponent->BindAction(IA_ToggleInventory, ETriggerEvent::Started, this, &AMainPlayerController::ToggleInventory);
+		}
+		if (EnhancedInputComponent && IA_ToggleInventory)
+		{
+			EnhancedInputComponent->BindAction(IA_ToggleInventory, ETriggerEvent::Started, this, &AMainPlayerController::ToggleInventory);
+			UE_LOG(LogTemp, Warning, TEXT("🟢 I 키에 인벤토리 토글 바인딩 완료"));
 		}
 	}
 }
@@ -232,26 +290,13 @@ void AMainPlayerController::InputInterection(const FInputActionValue& Value)
 			AItemBaseActor* ItemActor = Cast<AItemBaseActor>(TargetItem);
 			if (ItemActor && ItemActor->ItemDataAsset)
 			{
-				MainCharacter->PlayHighPriorityMontage(MainCharacter->PickUpMontage);
-				ItemActor->SetActorEnableCollision(false);
-				ItemActor->AttachToComponent(
-					MainCharacter->GetMesh(),
-					FAttachmentTransformRules(
-						EAttachmentRule::SnapToTarget,
-						EAttachmentRule::SnapToTarget,
-						EAttachmentRule::KeepWorld,
-						false
-					),
-					TEXT("ItemSocket"));
-
+				// ✅ 인벤토리에 추가
 				if (MainCharacter->InventoryComponent)
 				{
 					MainCharacter->InventoryComponent->AddItem(ItemActor->ItemDataAsset);
 
-					// 콘솔 출력
 					UE_LOG(LogTemp, Warning, TEXT("인벤토리에 추가됨: %s"), *ItemActor->ItemDataAsset->ItemName.ToString());
 
-					// ✅ 인게임 화면에 메시지 출력
 					if (GEngine)
 					{
 						GEngine->AddOnScreenDebugMessage(
@@ -261,12 +306,36 @@ void AMainPlayerController::InputInterection(const FInputActionValue& Value)
 							FString::Printf(TEXT("인벤토리에 추가됨: %s"), *ItemActor->ItemDataAsset->ItemName.ToString())
 						);
 					}
-					MainCharacter->CurrentItem = ItemActor;
-					/*bIsPickUp = true;*/
-
 				}
-			}
 
+				// ✅ 기존 아이템 있으면 파괴
+				if (MainCharacter->CurrentItem)
+				{
+					MainCharacter->CurrentItem->Destroy();
+					MainCharacter->CurrentItem = nullptr;
+				}
+
+				// ✅ 손이 비어있으면 들고
+				if (!MainCharacter->CurrentItem)
+				{
+					MainCharacter->PlayHighPriorityMontage(MainCharacter->PickUpMontage);
+					ItemActor->SetActorEnableCollision(false);
+					ItemActor->AttachToComponent(
+						MainCharacter->GetMesh(),
+						FAttachmentTransformRules(
+							EAttachmentRule::SnapToTarget,
+							EAttachmentRule::SnapToTarget,
+							EAttachmentRule::KeepWorld,
+							false
+						),
+						TEXT("ItemSocket"));
+
+					MainCharacter->CurrentItem = ItemActor;
+				}
+
+				// ✅ 무조건 바닥에서 제거
+				ItemActor->Destroy();
+			}
 		}
 	}
 }

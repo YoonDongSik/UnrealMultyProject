@@ -5,12 +5,16 @@
 UENUM(BlueprintType)
 enum class EItemType : uint8
 {
-	None,
-	Adrenaline,
-	HealthKit,
-	Bandage,
-	Painkiller,
-	ElectricOrb,
-	IceOrb,
-	HandLight,
+	//None,
+	//Adrenaline,
+	//HealthKit,
+	//Bandage,
+	//Painkiller,
+	//ElectricOrb,
+	//IceOrb,
+	//HandLight,
+
+	None UMETA(DisplayName = "None"),               // 기본 없음
+	E_Equipable UMETA(DisplayName = "Equipable"),   // 장착형 (HandLight, ElectricOrb 등)
+	E_Consumable UMETA(DisplayName = "Consumable")  // 소모형 (Bandage, Adrenaline 등)
 };

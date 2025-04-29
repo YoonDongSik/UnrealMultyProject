@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -10,9 +8,8 @@
 #include "InventoryWidget.h"
 #include "MainWidget.generated.h"
 
-/**
- * 
- */
+class UInventoryWidget;
+
 UCLASS()
 class HORRORGAME_API UMainWidget : public UUserWidget
 {
@@ -20,21 +17,24 @@ class HORRORGAME_API UMainWidget : public UUserWidget
 
 public:
 	virtual void NativeConstruct() override;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "InventoryWidget", meta = (BindWidget))
-	UInventoryWidget* InventoryWidget;
-protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat", meta = (BindWidget))
-	USteminaWidget* SteminaWidget;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CrossHair", meta = (BindWidget))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI", meta = (BindWidget))
+	UCanvasPanel* InventoryPanel;  // ✅ WBP_Main에 있는 Root 패널 연결 (InventoryPanel 이름)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI", meta = (BindWidget))
+	USteminaWidget* StaminaWidget;  // ✅ 이름 오타 수정
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI", meta = (BindWidget))
 	UCrosshairWidget* CrosshairWidget;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat", meta = (BindWidget))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI", meta = (BindWidget))
 	UHealthWidget* HealthWidget;
 
-	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "InventoryWidget", meta = (BindWidget))
-	UInventoryWidget* InventoryWidget;*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI", meta = (BindWidget))
+	UInventoryWidget* InventoryWidget;  // ✅ 드디어 제대로 InventoryWidget
+
+	UFUNCTION(BlueprintCallable)
+	void SetupInventorySlotClass(TSubclassOf<UItemSlotWidget> InSlotClass);
 
 private:
 	UPROPERTY()

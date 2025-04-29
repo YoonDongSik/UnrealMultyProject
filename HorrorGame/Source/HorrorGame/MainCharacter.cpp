@@ -2,7 +2,9 @@
 
 
 #include "MainCharacter.h"
+#include "MainWidget.h" 
 #include "PlayerAnimInstance.h"
+#include "InventoryWidget.h" // ← 너의 UInventoryWidget 헤더 필요!
 #include "Camera/CameraComponent.h"
 
 // Sets default values
@@ -94,6 +96,21 @@ void AMainCharacter::BeginPlay()
 			{
 				UE_LOG(LogTemp, Warning, TEXT("미리 설정된 아이템 있음: %s"), *Item->ItemName.ToString());
 			}
+		}
+	}
+
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (PC)
+	{
+		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer());
+		if (Subsystem && InputMappingContext)
+		{
+			Subsystem->AddMappingContext(InputMappingContext, InputMappingPriority);
+			UE_LOG(LogTemp, Warning, TEXT("✅ 입력 매핑 컨텍스트 적용됨"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("❌ Subsystem 또는 MappingContext null"));
 		}
 	}
 }
@@ -227,4 +244,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	UE_LOG(LogTemp, Warning, TEXT("🟡 SetupPlayerInputComponent 호출됨"));
+
+
 }
+

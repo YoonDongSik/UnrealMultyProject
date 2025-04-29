@@ -3,23 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "EItemType.h"
 #include "Engine/DataAsset.h"
 #include "EItemType.h"
 #include "EItemCollisionType.h"
 #include "ItemDataAsset.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS(Blueprintable)
 class HORRORGAME_API UItemDataAsset : public UDataAsset
 {
 	GENERATED_BODY()
-	
+
 public:
 	UItemDataAsset();
 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	FText ItemName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")

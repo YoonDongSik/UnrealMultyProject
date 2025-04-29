@@ -2,6 +2,9 @@
 
 #pragma once
 
+#include "InputActionValue.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -10,8 +13,11 @@
 #include "UInventoryComponent.h"
 #include "MainCharacter.generated.h"
 
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStaminaChanged, float, NewStaminaPercent);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, NewHealthPercent);
+
+class UMainWidget;
 
 UCLASS()
 class HORRORGAME_API AMainCharacter : public ACharacter
@@ -41,6 +47,15 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Test")
 	UItemDataAsset* TestItemData;
 
+	UPROPERTY()
+	UMainWidget* MainWidget;
+
+	
+
+
+
+	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -50,6 +65,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -69,7 +85,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player Movement")
 	inline void SetCrouchMode() { GetCharacterMovement()->MaxWalkSpeed = CrouchSpeed; bIsRunning = false; };
 
-
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
+	TSubclassOf<UMainWidget> MainWidgetClass;
 
 	inline float GetStemina() const { return Stemina; };
 
@@ -81,12 +98,17 @@ protected:
 
 public:
 	bool bIsCrouched = false;
+	
+
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
 	UAnimMontage* PickUpMontage = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item")
 	class AItemBaseActor* CurrentItem;
+
+	UPROPERTY(meta = (BindWidget))
+	class UInventoryWidget* InventoryWidget;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Move")
@@ -106,6 +128,15 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
 	UAnimMontage* JumpMontage = nullptr;
+
+	// 입력 매핑 컨텍스트
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	class UInputMappingContext* InputMappingContext;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	int32 InputMappingPriority = 0;
+
+	
 
 	/*UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
 	UAnimMontage* PickUpMontage = nullptr;*/
