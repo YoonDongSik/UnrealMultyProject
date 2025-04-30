@@ -5,6 +5,7 @@
 #include "Components/Button.h"  
 #include "InventoryWidget.generated.h"
 
+
 class UUniformGridPanel;
 class UItemSlotWidget;
 class UCanvasPanel; // 캔버스 패널 추가 선언

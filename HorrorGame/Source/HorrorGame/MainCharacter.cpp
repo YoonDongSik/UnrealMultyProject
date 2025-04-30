@@ -5,6 +5,7 @@
 #include "MainWidget.h" 
 #include "PlayerAnimInstance.h"
 #include "InventoryWidget.h" // ← 너의 UInventoryWidget 헤더 필요!
+#include "MainPlayerController.h"
 #include "Camera/CameraComponent.h"
 
 // Sets default values
@@ -72,6 +73,74 @@ void AMainCharacter::DoCrouching()
 	}
 }
 
+void AMainCharacter::EquipItem(UItemDataAsset* ItemData)
+{
+	if (!ItemData || !ItemData->ItemMesh || !InventoryComponent) return;
+
+	UE_LOG(LogTemp, Warning, TEXT("🟡 EquipItem 호출됨: %s"), *ItemData->ItemName.ToString());
+
+	
+
+	// 기존 장착 아이템 → 인벤토리로 복구
+	if (CurrentItem)
+	{
+
+		if (CurrentItem->ItemDataAsset)
+		{
+			int32 EmptyIndex = InventoryComponent->InventoryItems.Find(nullptr);
+			if (EmptyIndex != INDEX_NONE)
+			{
+				InventoryComponent->InventoryItems[EmptyIndex] = CurrentItem->ItemDataAsset;
+				UE_LOG(LogTemp, Warning, TEXT("🟢 기존 아이템 복구: %s → Index %d"), *CurrentItem->ItemDataAsset->ItemName.ToString(), EmptyIndex);
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("🔴 인벤토리에 빈칸 없음 → 기존 아이템 유실됨: %s"), *CurrentItem->ItemDataAsset->ItemName.ToString());
+			}
+		}
+		CurrentItem->Destroy();
+		CurrentItem = nullptr;
+	}
+
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		if (AMainPlayerController* MPC = Cast<AMainPlayerController>(PC))
+		{
+			if (MPC->MainWidget && MPC->MainWidget->InventoryWidget)
+			{
+				MPC->MainWidget->InventoryWidget->RefreshInventory();
+			}
+		}
+	}
+
+	// 인벤토리에서 새로 장착할 아이템 제거
+	int32 RemoveIndex = InventoryComponent->InventoryItems.Find(ItemData);
+	if (RemoveIndex != INDEX_NONE)
+	{
+		InventoryComponent->InventoryItems[RemoveIndex] = nullptr;
+		UE_LOG(LogTemp, Warning, TEXT("🟠 장착 아이템 인벤토리에서 제거: Index %d"), RemoveIndex);
+	}
+
+	// 새 장착 아이템 생성 및 손에 부착
+	AItemBaseActor* NewItem = GetWorld()->SpawnActor<AItemBaseActor>(AItemBaseActor::StaticClass());
+	if (NewItem)
+	{
+		FName SocketName = NewItem->ItemDataAsset->
+		NewItem->SetItemData(ItemData);
+		NewItem->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("ItemSocket"));
+		NewItem->SetActorRelativeLocation(ItemData->CollisionOffset);
+		NewItem->SetActorRelativeRotation(ItemData->CollisionRotation);
+		NewItem->SetActorScale3D(ItemData->ItemScale);
+
+		CurrentItem = NewItem;
+
+		UE_LOG(LogTemp, Warning, TEXT("✅ 새 아이템 장착: %s"), *ItemData->ItemName.ToString());
+	}
+
+
+
+}
+
 // Called when the game starts or when spawned
 void AMainCharacter::BeginPlay()
 {
@@ -102,6 +171,8 @@ void AMainCharacter::BeginPlay()
 	APlayerController* PC = Cast<APlayerController>(GetController());
 	if (PC)
 	{
+
+		AMainPlayerController* MPC = Cast<AMainPlayerController>(PC);
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer());
 		if (Subsystem && InputMappingContext)
 		{
@@ -113,6 +184,8 @@ void AMainCharacter::BeginPlay()
 			UE_LOG(LogTemp, Error, TEXT("❌ Subsystem 또는 MappingContext null"));
 		}
 	}
+
+	
 }
 
 void AMainCharacter::PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName)

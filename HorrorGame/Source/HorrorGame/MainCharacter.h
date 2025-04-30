@@ -6,6 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "CoreMinimal.h"
+#include "ItemBaseActor.h" 
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -18,6 +19,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStaminaChanged, float, NewStamina
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, NewHealthPercent);
 
 class UMainWidget;
+class AItemBaseActor;
 
 UCLASS()
 class HORRORGAME_API AMainCharacter : public ACharacter
@@ -50,7 +52,8 @@ public:
 	UPROPERTY()
 	UMainWidget* MainWidget;
 
-	
+	UFUNCTION()
+	void EquipItem(UItemDataAsset* ItemData);
 
 
 
@@ -60,7 +63,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	/*void PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName = NAME_None);*/
+	
 
 public:	
 	// Called every frame

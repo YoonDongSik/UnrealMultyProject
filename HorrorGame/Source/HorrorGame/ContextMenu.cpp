@@ -21,21 +21,19 @@ void UContextMenu::SetupContextMenu(UItemSlotWidget* TargetSlot)
 {
 	TargetItemSlot = TargetSlot;
 
-	if (!TargetItemSlot || !TargetItemSlot->ItemDataAsset)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("❌ SetupContextMenu 리턴됨: 슬롯 또는 아이템 없음")); // ✅ 실패 로그
-		return;
-	}
+	if (!TargetItemSlot || !TargetItemSlot->ItemDataAsset) return;
 
-	UE_LOG(LogTemp, Warning, TEXT("✅ SetupContextMenu 실행 성공")); // ✅ 성공 로그
-
-	if (TargetItemSlot->ItemDataAsset->ItemType == EItemType::E_Equipable)
+	switch (TargetItemSlot->ItemDataAsset->ItemType)
 	{
+	case EItemType::E_Equipable:
 		Text_UseOrEquip->SetText(FText::FromString(TEXT("장착")));
-	}
-	else if (TargetItemSlot->ItemDataAsset->ItemType == EItemType::E_Consumable)
-	{
+		break;
+	case EItemType::E_Consumable:
 		Text_UseOrEquip->SetText(FText::FromString(TEXT("사용")));
+		break;
+	default:
+		Text_UseOrEquip->SetText(FText::FromString(TEXT("???")));
+		break;
 	}
 }
 
@@ -43,7 +41,6 @@ void UContextMenu::OnUseOrEquipButtonClicked()
 {
 	if (!TargetItemSlot || !TargetItemSlot->ItemDataAsset) return;
 
-	// 플레이어 가져오기
 	AMainCharacter* MainCharacter = Cast<AMainCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
 	if (!MainCharacter)
 	{
@@ -53,22 +50,45 @@ void UContextMenu::OnUseOrEquipButtonClicked()
 
 	if (TargetItemSlot->ItemDataAsset->ItemType == EItemType::E_Equipable)
 	{
-		// TODO: 장착 처리 (MainCharacter에 장착 함수 만들어야 함)
 		UE_LOG(LogTemp, Warning, TEXT("장착 실행!"));
+
+		// ✅ 장착 처리 함수 호출
+		MainCharacter->EquipItem(TargetItemSlot->ItemDataAsset);
+
+		// ✅ 슬롯도 비워줘야 시각적으로 사라짐
+		TargetItemSlot->ClearItem();
 	}
 	else if (TargetItemSlot->ItemDataAsset->ItemType == EItemType::E_Consumable)
 	{
-		// 소모 아이템 사용
 		UUserbleItem* UserbleItemObject = NewObject<UUserbleItem>();
 		if (UserbleItemObject)
 		{
 			UserbleItemObject->UseItem(MainCharacter, TargetItemSlot->ItemDataAsset);
 		}
 
-		// ✅ 사용했으면 슬롯 비우기
+		if (MainCharacter->InventoryComponent)
+		{
+			int32 Index = MainCharacter->InventoryComponent->InventoryItems.Find(TargetItemSlot->ItemDataAsset);
+			if (Index != INDEX_NONE)
+			{
+				MainCharacter->InventoryComponent->InventoryItems[Index] = nullptr;
+			}
+		}
+
 		TargetItemSlot->ClearItem();
 	}
 
-	// 메뉴 닫기
+	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
+	if (AMainPlayerController* MPC = Cast<AMainPlayerController>(PC))
+	{
+		if (MPC->MainWidget && MPC->MainWidget->InventoryWidget)
+		{
+			MPC->MainWidget->InventoryWidget->RefreshInventory();
+			UE_LOG(LogTemp, Warning, TEXT("✅ 인벤토리 UI 새로고침 완료"));
+		}
+	}
+
 	RemoveFromParent();
+
+	
 }

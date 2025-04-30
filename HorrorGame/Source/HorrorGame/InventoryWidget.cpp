@@ -7,6 +7,7 @@
 #include "UInventoryComponent.h"
 #include "ItemDataAsset.h"
 
+
 void UInventoryWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -25,43 +26,40 @@ void UInventoryWidget::NativeConstruct()
 
 void UInventoryWidget::RefreshInventory()
 {
+
 	if (!InventoryPanel || !ItemSlotClass) return;
 
+	InventoryPanel->ClearChildren();  // UI 초기화
 	ItemSlotWidgets.Empty();
-	InventoryPanel->ClearChildren();
 
-	UWorld* World = GetWorld();
-	if (!World) return;
-
-	APlayerController* PlayerController = World->GetFirstPlayerController();
-	AMainCharacter* MainCharacter = Cast<AMainCharacter>(PlayerController->GetPawn());
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	AMainCharacter* MainCharacter = Cast<AMainCharacter>(PC->GetPawn());
 	if (!MainCharacter || !MainCharacter->InventoryComponent) return;
 
 	const TArray<UItemDataAsset*>& Items = MainCharacter->InventoryComponent->InventoryItems;
-	const int32 MaxSlotCount = 6; // 항상 6칸 고정
+	const int32 MaxSlotCount = 6;
 
 	for (int32 i = 0; i < MaxSlotCount; i++)
 	{
 		UItemSlotWidget* NewSlot = CreateWidget<UItemSlotWidget>(this, ItemSlotClass);
-		if (NewSlot)
+		if (!NewSlot) continue;
+
+		if (Items.IsValidIndex(i) && Items[i])
 		{
-			if (Items.IsValidIndex(i) && Items[i])
-			{
-				NewSlot->SetItem(Items[i]);
-				UE_LOG(LogTemp, Warning, TEXT("✅ Inventory Index [%d]: %s"), i, *Items[i]->ItemName.ToString());
-			}
-			else
-			{
-				NewSlot->ClearItem();
-				UE_LOG(LogTemp, Warning, TEXT("➖ Inventory Index [%d]: 빈칸"), i);
-			}
-
-			UUniformGridSlot* GridSlot = InventoryPanel->AddChildToUniformGrid(NewSlot);
-			GridSlot->SetColumn(i % 3);
-			GridSlot->SetRow(i / 3);
-
-			ItemSlotWidgets.Add(NewSlot);
+			NewSlot->SetItem(Items[i]);
+			UE_LOG(LogTemp, Warning, TEXT("✅ SetItem: %s"), *Items[i]->ItemName.ToString());
 		}
+		else
+		{
+			NewSlot->ClearItem();
+			UE_LOG(LogTemp, Warning, TEXT("➖ 빈 슬롯 생성"));
+		}
+
+		UUniformGridSlot* GridSlot = InventoryPanel->AddChildToUniformGrid(NewSlot);
+		GridSlot->SetColumn(i % 3);
+		GridSlot->SetRow(i / 3);
+
+		ItemSlotWidgets.Add(NewSlot);
 	}
 }
 
