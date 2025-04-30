@@ -79,7 +79,7 @@ void AEnemyAIController::RandomMove()
         GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Origin: %s"), *Origin.ToString()));
 
         FNavLocation RandomLocation;
-        if (NavSystem->GetRandomReachablePointInRadius(Origin, 3000.0f, RandomLocation))
+        if (NavSystem->GetRandomReachablePointInRadius(Origin, 10000.0f, RandomLocation))
         {
             FVector NewLocation = RandomLocation.Location;
             NewLocation.Z = 150.0f;

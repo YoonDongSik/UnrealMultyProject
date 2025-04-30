@@ -82,7 +82,7 @@ bool AEnemyBasePawn::ViewPlayer()
 
 	//DrawDebugCone(
 	//	GetWorld(),
-	//	EnemyLocation + FVector(0, 0, 50), // ´« ³ôÀÌ º¸Á¤
+	//	EnemyLocation + FVector(0, 0, 50), // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	//	ForwardVector,
 	//	ViewDistance,
 	//	FMath::DegreesToRadians(ViewAngle * 0.3f),
@@ -90,7 +90,7 @@ bool AEnemyBasePawn::ViewPlayer()
 	//	16,
 	//	FColor::Green,
 	//	true,
-	//	0.0f // 0.1ÃÊ µ¿¾È Ç¥½ÃµÇ°Ô (Tick¿¡¼­ ÀÚÁÖ È£ÃâµÉ °æ¿ì)
+	//	0.0f // 0.1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ÃµÇ°ï¿½ (Tickï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½)
 	//);
 
 	return Angle <= ViewAngle * 0.3f;
