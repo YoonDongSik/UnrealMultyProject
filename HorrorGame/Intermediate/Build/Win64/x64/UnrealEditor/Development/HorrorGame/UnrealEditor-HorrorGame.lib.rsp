@@ -1,0 +1,12 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-HorrorGame.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:\UnrealMultyProject\UnrealMultyProject\HorrorGame\Intermediate\Build\Win64\x64\HorrorGameEditor\Development\UnrealEd\SharedPCH.UnrealEd.Project.ValApi.Cpp20.h.obj"
+"D:\UnrealMultyProject\UnrealMultyProject\HorrorGame\Intermediate\Build\Win64\x64\UnrealEditor\Development\HorrorGame\Module.HorrorGame.cpp.obj"
+"D:\UnrealMultyProject\UnrealMultyProject\HorrorGame\Intermediate\Build\Win64\x64\UnrealEditor\Development\HorrorGame\Default.rc2.res"
+/OUT:"D:\UnrealMultyProject\UnrealMultyProject\HorrorGame\Intermediate\Build\Win64\x64\UnrealEditor\Development\HorrorGame\UnrealEditor-HorrorGame.lib"
