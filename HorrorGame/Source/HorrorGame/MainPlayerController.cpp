@@ -7,6 +7,7 @@
 #include "MainCharacter.h"
 #include "Drawer.h"
 #include "Components/SceneComponent.h"
+#include "DoorActor.h"
 #include "ItemBaseActor.h"
 
 AMainPlayerController::AMainPlayerController()
@@ -255,6 +256,14 @@ void AMainPlayerController::InputInterection(const FInputActionValue& Value)
 					ItemActor->ItemDataAsset->SocketName);
 				MainCharacter->CurrentItem = ItemActor;
 				bIsPickUp = true;
+			}
+		}
+		else if (TargetItem->ActorHasTag("Door") && TargetItem)
+		{
+			ADoorActor* DoorActor = Cast<ADoorActor>(TargetItem);
+			if (DoorActor)
+			{
+				DoorActor->ToggleDoor();
 			}
 		}
 	}

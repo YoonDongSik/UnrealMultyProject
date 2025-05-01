@@ -162,8 +162,10 @@ AActor* AMainCharacter::CheckDrawerTag()
 			{
 				return HitActor;
 			}
-
-			
+			else if (HitActor->ActorHasTag("Door"))
+			{
+				return HitActor;
+			}
 		}
 
 	//	if (bHit)

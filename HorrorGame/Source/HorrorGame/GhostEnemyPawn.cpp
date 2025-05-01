@@ -2,7 +2,7 @@
 
 
 #include "GhostEnemyPawn.h"
-#include "EnemyAnimInstance.h"
+#include "GhostEnemyAnimInstance.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
