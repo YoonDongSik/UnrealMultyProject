@@ -18,7 +18,7 @@ public:
 	AGhostEnemyPawn();
 
 	UFUNCTION()
-	void PlayAttack();
+	virtual void PlayAttack() override;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

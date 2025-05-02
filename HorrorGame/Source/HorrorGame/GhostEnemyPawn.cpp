@@ -28,7 +28,7 @@ void AGhostEnemyPawn::BeginPlay()
 
 void AGhostEnemyPawn::PlayAttack()
 {
-		PlayHighPriorityMontage(AttackMontage);
+	PlayHighPriorityMontage(AttackMontage);
 }
 
 void AGhostEnemyPawn::PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName)
@@ -55,7 +55,6 @@ void AGhostEnemyPawn::OnHitAttackBeginOverlap(UPrimitiveComponent* OverlappedCom
 void AGhostEnemyPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input

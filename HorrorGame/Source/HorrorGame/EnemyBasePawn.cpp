@@ -52,6 +52,10 @@ void AEnemyBasePawn::Unstun()
 	}
 }
 
+void AEnemyBasePawn::PlayAttack()
+{
+}
+
 // Called when the game starts or when spawned
 void AEnemyBasePawn::BeginPlay()
 {
@@ -105,23 +109,43 @@ void AEnemyBasePawn::Tick(float DeltaTime)
 
 	if (ViewPlayer())
 	{
-		if (!AIController->bIsPlayerFollow && !bIsPlayerInAttack && !bIsStun)
+		if (!bIsPlayerInAttack && !bIsStun)
 		{
 			AIController->StopRandomMove();
 			AIController->FollowPlayer(PlayerCharacter);
 		}
-		/*GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, TEXT("Player in view!"));*/
+		else if (bIsPlayerInAttack)
+		{
+			AIController->StopRandomMove();
+			AIController->StopMovement();
+			AIController->bIsPlayerFollow = false;
+		}
 	}
 	else
 	{
-		if (AIController->bIsPlayerFollow && !bIsPlayerInAttack && !bIsStun)
+		if (!bIsPlayerInAttack && !bIsStun)
 		{
 			AIController->RandomMove();
 			AIController->bIsPlayerFollow = false;
 		}
+		else if (bIsPlayerInAttack)
+		{
+			AIController->StopRandomMove();
+			AIController->StopMovement();
+		}
 		/*GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("Player out of view!"));*/
 	}
 
+	if (bIsPlayerInAttack && TargetActor)
+	{
+		FRotator LookAtRotation = FRotationMatrix::MakeFromX(TargetActor->GetActorLocation() - GetActorLocation()).Rotator();
+		SetActorRotation(FMath::RInterpTo(GetActorRotation(), LookAtRotation, DeltaTime, RotationSpeed));
+	}
+
+	if (bIsPlayerInAttack)
+	{
+		PlayAttack();
+	}
 }
 
 // Called to bind functionality to input
@@ -139,8 +163,8 @@ void AEnemyBasePawn::OnAttackRangeBeginOverlap(UPrimitiveComponent* OverlappedCo
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, FString::Printf(TEXT("Overlap Actor: %s, Comp: %s"), *OtherActor->GetName(), *OtherComp->GetName()));
 			bIsPlayerInAttack = true;
-			AGhostEnemyPawn* GhostEnemy = Cast<AGhostEnemyPawn>(this);
-			GhostEnemy->PlayAttack();
+			TargetActor = OtherActor;
+			PlayAttack();
 		}
 	}
 }
@@ -154,6 +178,7 @@ void AEnemyBasePawn::OnAttackRangeEndOverlap(UPrimitiveComponent* OverlappedComp
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, FString::Printf(TEXT("OverlapEnd Actor: %s, Comp: %s"), *OtherActor->GetName(), *OtherComp->GetName()));
 			bIsPlayerInAttack = false;
+			TargetActor = nullptr;
 		}
 	}
 }

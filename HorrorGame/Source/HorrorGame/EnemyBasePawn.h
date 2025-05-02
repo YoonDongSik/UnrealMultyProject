@@ -22,6 +22,7 @@ public:
 	void Stun();
 
 	void Unstun();
+	virtual void PlayAttack();
 
 protected:
 	// Called when the game starts or when spawned
@@ -53,6 +54,12 @@ public:
 protected:
 	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	UCapsuleComponent* MyCapsuleComponent;*/
+
+	UPROPERTY()
+	AActor* TargetActor = nullptr;
+
+	UPROPERTY(EditAnywhere, Category = "AI")
+	float RotationSpeed = 5.0f;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "EnemyView")
