@@ -23,6 +23,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetInventoryWidget(UInventoryWidget* NewInventoryWidget);
 
+	void LogInventoryState();
+
 private:
 	UPROPERTY()
 	UInventoryWidget* InventoryWidget;

@@ -37,7 +37,7 @@ void UInventoryWidget::RefreshInventory()
 	if (!MainCharacter || !MainCharacter->InventoryComponent) return;
 
 	const TArray<UItemDataAsset*>& Items = MainCharacter->InventoryComponent->InventoryItems;
-	const int32 MaxSlotCount = 6;
+	const int32 MaxSlotCount = FMath::Max(6, Items.Num());
 
 	for (int32 i = 0; i < MaxSlotCount; i++)
 	{
@@ -47,17 +47,19 @@ void UInventoryWidget::RefreshInventory()
 		if (Items.IsValidIndex(i) && Items[i])
 		{
 			NewSlot->SetItem(Items[i]);
-			UE_LOG(LogTemp, Warning, TEXT("✅ SetItem: %s"), *Items[i]->ItemName.ToString());
+
 		}
 		else
 		{
 			NewSlot->ClearItem();
-			UE_LOG(LogTemp, Warning, TEXT("➖ 빈 슬롯 생성"));
 		}
 
-		UUniformGridSlot* GridSlot = InventoryPanel->AddChildToUniformGrid(NewSlot);
+		/*UUniformGridSlot* GridSlot = InventoryPanel->AddChildToUniformGrid(NewSlot);
 		GridSlot->SetColumn(i % 3);
-		GridSlot->SetRow(i / 3);
+		GridSlot->SetRow(i / 3);*/
+
+		InventoryPanel->AddChildToUniformGrid(NewSlot, i / 3, i % 3);
+		ItemSlotWidgets.Add(NewSlot);
 
 		ItemSlotWidgets.Add(NewSlot);
 	}

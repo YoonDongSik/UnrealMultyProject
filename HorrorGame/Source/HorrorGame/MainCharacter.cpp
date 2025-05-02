@@ -125,7 +125,7 @@ void AMainCharacter::EquipItem(UItemDataAsset* ItemData)
 	AItemBaseActor* NewItem = GetWorld()->SpawnActor<AItemBaseActor>(AItemBaseActor::StaticClass());
 	if (NewItem)
 	{
-		FName SocketName = NewItem->ItemDataAsset->
+		
 		NewItem->SetItemData(ItemData);
 		NewItem->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("ItemSocket"));
 		NewItem->SetActorRelativeLocation(ItemData->CollisionOffset);
@@ -135,6 +135,7 @@ void AMainCharacter::EquipItem(UItemDataAsset* ItemData)
 		CurrentItem = NewItem;
 
 		UE_LOG(LogTemp, Warning, TEXT("✅ 새 아이템 장착: %s"), *ItemData->ItemName.ToString());
+		InventoryComponent->LogInventoryState();  // ✅ 추가
 	}
 
 

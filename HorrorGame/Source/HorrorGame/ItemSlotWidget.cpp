@@ -10,33 +10,62 @@
 void UItemSlotWidget::SetItem(UItemDataAsset* InItem)
 {
 
+	if (!InItem || !ItemIcon || !ItemNameText)
+	{
+		UE_LOG(LogTemp, Error, TEXT("❌ SetItem 실패 - 누락된 참조 있음"));
+		return;
+	}
+
 
 	ItemDataAsset = InItem;
-	UpdateSlot();
+
+	ItemIcon->SetBrushFromTexture(InItem->ItemIcon);
+	ItemIcon->SetVisibility(ESlateVisibility::Visible);
+
+	ItemNameText->SetText(FText::FromString(InItem->ItemName.ToString()));
+	ItemNameText->SetVisibility(ESlateVisibility::Visible);
+
 	SetVisibility(ESlateVisibility::Visible);
+
+	UE_LOG(LogTemp, Warning, TEXT("✅ SetItem: %s"), *InItem->ItemName.ToString());
 }
 
 void UItemSlotWidget::ClearItem()
 {
 	ItemDataAsset = nullptr;
-	ItemIcon->SetBrushFromTexture(nullptr);
-	ItemNameText->SetText(FText::GetEmpty());
-	UpdateSlot();
-	SetVisibility(ESlateVisibility::Visible);
+
+	if (ItemIcon)
+	{
+		ItemIcon->SetBrushFromTexture(nullptr);
+		ItemIcon->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	if (ItemNameText)
+	{
+		ItemNameText->SetText(FText::GetEmpty());
+		ItemNameText->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	SetVisibility(ESlateVisibility::Visible); // 슬롯 자체는 보여줘야 함 (단, 내용은 비워짐)
 }
 
 void UItemSlotWidget::UpdateSlot()
 {
 	if (ItemDataAsset && ItemIcon && ItemNameText)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("✅ 아이템 슬롯에 데이터 적용: %s"), *ItemDataAsset->ItemName.ToString());
 		ItemIcon->SetBrushFromTexture(ItemDataAsset->ItemIcon);
 		ItemNameText->SetText(ItemDataAsset->ItemName);
 	}
-	else if (ItemIcon && ItemNameText)
+	else
 	{
+		if (!ItemDataAsset) UE_LOG(LogTemp, Warning, TEXT("⚠️ ItemDataAsset이 null입니다."));
+		if (!ItemIcon) UE_LOG(LogTemp, Warning, TEXT("⚠️ ItemIcon이 바인딩되지 않았습니다."));
+		if (!ItemNameText) UE_LOG(LogTemp, Warning, TEXT("⚠️ ItemNameText가 바인딩되지 않았습니다."));
+	}
+
 		ItemIcon->SetBrushFromTexture(nullptr);
 		ItemNameText->SetText(FText::GetEmpty());
-	}
 }
 
 void UItemSlotWidget::SwapItem(UItemSlotWidget* OtherSlot)
@@ -134,7 +163,7 @@ void UItemSlotWidget::NativeOnDragDetected(const FGeometry& InGeometry, const FP
 		PC->SetInputMode(InputMode);
 		PC->bShowMouseCursor = true;
 	}
-
+	
 	
 }
 

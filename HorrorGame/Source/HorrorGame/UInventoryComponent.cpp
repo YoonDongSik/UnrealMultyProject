@@ -23,6 +23,7 @@ void UInventoryComponent::AddItem(UItemDataAsset* NewItem)
     }
     InventoryItems.Add(NewItem);
     UE_LOG(LogTemp, Warning, TEXT("인벤토리에 추가됨: %s"), *NewItem->ItemName.ToString());
+    LogInventoryState();  // ✅ 추가
 
     // 화면에 인벤토리의 전체 아이템 목록을 출력
     FString InventoryList;
@@ -51,4 +52,22 @@ void UInventoryComponent::AddItem(UItemDataAsset* NewItem)
 void UInventoryComponent::SetInventoryWidget(UInventoryWidget* NewInventoryWidget)
 {
     InventoryWidget = NewInventoryWidget;
+}
+
+void UInventoryComponent::LogInventoryState()
+{
+
+    UE_LOG(LogTemp, Warning, TEXT("🧩 [인벤토리 상태 출력] 전체 %d개 슬롯:"), InventoryItems.Num());
+
+    for (int32 i = 0; i < InventoryItems.Num(); ++i)
+    {
+        if (InventoryItems[i])
+        {
+            UE_LOG(LogTemp, Warning, TEXT("  ▸ [%d] %s"), i, *InventoryItems[i]->ItemName.ToString());
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("  ▫ [%d] (빈 슬롯)"), i);
+        }
+    }
 }
