@@ -17,11 +17,12 @@ class HORRORGAME_API AMainHUD : public AHUD
 
 protected:
 	virtual void BeginPlay() override;
+
+public:
+	UPROPERTY()
+	UMainWidget* MainWidget = nullptr;
 	
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI")
 	TSubclassOf<UUserWidget> MainWidgetClass;
-
-	UPROPERTY()
-	UMainWidget* MainWidget = nullptr;
 };

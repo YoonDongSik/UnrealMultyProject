@@ -7,6 +7,9 @@
 #include "ItemBaseActor.h"
 #include "HandLightComponent.h"
 #include "Camera/CameraComponent.h"
+#include "MainHUD.h"
+#include "Kismet/GameplayStatics.h"
+
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -87,6 +90,24 @@ void AMainCharacter::BeginPlay()
 	OnHealthChanged.Broadcast(Health / MaxHealth);
 	/*FString DebugMessage = FString::Printf(TEXT("bUseControllerRotationYaw: %s"), bUseControllerRotationYaw ? TEXT("true") : TEXT("false"));
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, DebugMessage);*/
+
+	AMainHUD* HUD = Cast<AMainHUD>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
+	if (HUD && HUD->MainWidget)
+	{
+		// 직접 참조 저장해두기
+		PlayerHitWidget = HUD->MainWidget->PlayerHitWidget;
+	}
+}
+
+float AMainCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	SetHealth(Health - Damage);
+	if (PlayerHitWidget)
+	{
+		PlayerHitWidget->TakeDamageEffect();
+	}
+	return Damage;
 }
 
 void AMainCharacter::PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName)

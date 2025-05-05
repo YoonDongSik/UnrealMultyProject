@@ -12,12 +12,33 @@ ASmallEnemy::ASmallEnemy()
 	PrimaryActorTick.bCanEverTick = true;
 	BreathCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("BreathCapsule"));
 	BreathCapsule->SetupAttachment(GetMesh(), TEXT("FX_FireBreath"));
-	BreathCapsule->OnComponentBeginOverlap.AddDynamic(this, &ASmallEnemy::OnHitAttackBeginOverlap);
 }
 
 void ASmallEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (bIsPlayerInAttack)
+	{
+		BreathCapsule->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	}
+	else
+	{
+		BreathCapsule->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		if (AnimInstance && AnimInstance->Montage_IsPlaying(AttackMontage))
+		{
+			AnimInstance->Montage_Stop(0.2f, AttackMontage);
+		}
+
+		if (BreathEffectComp)
+		{
+			BreathEffectComp->Deactivate();
+			BreathEffectComp->DestroyComponent();
+			BreathEffectComp = nullptr;
+		}
+
+	}
 }
 
 void ASmallEnemy::PlayAttack()
@@ -27,9 +48,9 @@ void ASmallEnemy::PlayAttack()
 	if (BreathFX)
 	{
 		FTransform SocketTransform = Mesh->GetSocketTransform(TEXT("FX_FireBreath"), RTS_World);
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), 
+		BreathEffectComp = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), 
 		BreathFX, SocketTransform.GetLocation(),
-		SocketTransform.GetRotation().Rotator());
+		SocketTransform.GetRotation().Rotator(), FVector(0.5f, 0.5f, 0.5f), true);
 	}
 }
 
@@ -40,6 +61,9 @@ void ASmallEnemy::BeginPlay()
 	AnimInstance = GetMesh()->GetAnimInstance();
 
 	Mesh = GetMesh();
+
+	BreathCapsule->OnComponentBeginOverlap.AddDynamic(this, &ASmallEnemy::OnHitAttackBeginOverlap);
+	BreathCapsule->OnComponentEndOverlap.AddDynamic(this, &ASmallEnemy::OnHitAttackEndOverlap);
 }
 
 void ASmallEnemy::PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName)
@@ -57,7 +81,40 @@ void ASmallEnemy::OnHitAttackBeginOverlap(UPrimitiveComponent* OverlappedComp, A
 	{
 		if (OtherActor->ActorHasTag("Player"))
 		{
-			UGameplayStatics::ApplyDamage(OtherActor, 30.0f, GetController(), this, nullptr);
+			if (!bIsBurningPlayer)
+			{
+				bIsBurningPlayer = true;
+				DamagedActor = OtherActor;
+
+				// 0.5초마다 틱 데미지 적용
+				GetWorld()->GetTimerManager().SetTimer(BurningTimerHandle, this, &ASmallEnemy::BurningDamage, 0.2f, true);
+			}
 		}
+	}
+}
+
+void ASmallEnemy::OnHitAttackEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (OtherActor && OtherActor != this)
+	{
+		if (OtherActor->ActorHasTag("Player"))
+		{
+			bIsBurningPlayer = false;
+			DamagedActor = nullptr;
+			GetWorld()->GetTimerManager().ClearTimer(BurningTimerHandle);
+		}
+	}
+}
+
+void ASmallEnemy::BurningDamage()
+{
+	if (DamagedActor && bIsBurningPlayer)
+	{
+		UGameplayStatics::ApplyDamage(DamagedActor, 1.0f, GetController(), this, UDamageType::StaticClass());
+	}
+	else
+	{
+		bIsBurningPlayer = false;
+		GetWorld()->GetTimerManager().ClearTimer(BurningTimerHandle);
 	}
 }

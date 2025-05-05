@@ -7,6 +7,7 @@
 #include "SteminaWidget.h"
 #include "CrosshairWidget.h"
 #include "HealthWidget.h"
+#include "PlayerHitWidget.h"
 #include "MainWidget.generated.h"
 
 /**
@@ -20,6 +21,10 @@ class HORRORGAME_API UMainWidget : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 	
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect", meta = (BindWidget))
+	UPlayerHitWidget* PlayerHitWidget;
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat", meta = (BindWidget))
 	USteminaWidget* SteminaWidget;

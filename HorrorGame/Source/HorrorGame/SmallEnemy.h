@@ -35,6 +35,13 @@ protected:
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 		const FHitResult& SweepResult);
 
+	UFUNCTION()
+	void OnHitAttackEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UFUNCTION()
+	void BurningDamage();
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
 	UAnimMontage* AttackMontage = nullptr;
@@ -53,4 +60,11 @@ private:
 	UNiagaraSystem* BreathFX = nullptr;
 
 	USkeletalMeshComponent* Mesh = nullptr;
+
+	UPROPERTY()
+	UNiagaraComponent* BreathEffectComp;
+
+	FTimerHandle BurningTimerHandle;
+	AActor* DamagedActor = nullptr;
+	bool bIsBurningPlayer = false;
 };
