@@ -306,60 +306,66 @@ void AMainPlayerController::InputClick(const FInputActionValue& Value)
 
 void AMainPlayerController::InputInterection(const FInputActionValue& Value)
 {
-	if (MainCharacter->CheckDrawerTag())
+	//if (MainCharacter->CheckDrawerTag())
+	//{
+	//	
+	//	if (MainCharacter->CheckDrawerTag())
+	//	{
+	//		AActor* TargetItem = MainCharacter->CheckDrawerTag();
+	//		if (TargetItem && TargetItem->ActorHasTag("Item"))
+	//		{
+	//			AItemBaseActor* ItemActor = Cast<AItemBaseActor>(TargetItem);
+	//			if (ItemActor && ItemActor->ItemDataAsset)
+	//			{
+	//				// ✅ 인벤토리에만 추가
+	//				if (MainCharacter->InventoryComponent)
+	//				{
+	//					MainCharacter->InventoryComponent->AddItem(ItemActor->ItemDataAsset);
+	//					UE_LOG(LogTemp, Warning, TEXT("인벤토리에 추가됨: %s"), *ItemActor->ItemDataAsset->ItemName.ToString());
+	//				}
+
+	//				if (!MainCharacter->CurrentItem)
+	//				{
+	//					MainCharacter->PlayHighPriorityMontage(MainCharacter->PickUpMontage);
+	//					
+	//				}
+
+	//				// ✅ 바닥에서 제거
+	//				ItemActor->Destroy();
+	//			}
+	//		}
+	//	}
+	//}
+
+	AActor* TargetItem = MainCharacter->CheckDrawerTag();
+	if (TargetItem && TargetItem->ActorHasTag("Item"))
 	{
-		AActor* TargetItem = MainCharacter->CheckDrawerTag();
-		if (TargetItem->ActorHasTag("Item") && TargetItem)
+		AItemBaseActor* ItemActor = Cast<AItemBaseActor>(TargetItem);
+		if (ItemActor && ItemActor->ItemDataAsset)
 		{
-			AItemBaseActor* ItemActor = Cast<AItemBaseActor>(TargetItem);
-			if (ItemActor && ItemActor->ItemDataAsset)
+			// ✅ 인벤토리에 빈칸이 있는지 확인
+			if (MainCharacter->InventoryComponent)
 			{
-				// ✅ 인벤토리에 추가
-				if (MainCharacter->InventoryComponent)
+				int32 EmptyIndex = MainCharacter->InventoryComponent->InventoryItems.Find(nullptr);
+				if (EmptyIndex == INDEX_NONE)
 				{
-					MainCharacter->InventoryComponent->AddItem(ItemActor->ItemDataAsset);
-
-					UE_LOG(LogTemp, Warning, TEXT("인벤토리에 추가됨: %s"), *ItemActor->ItemDataAsset->ItemName.ToString());
-
-					if (GEngine)
-					{
-						GEngine->AddOnScreenDebugMessage(
-							-1,
-							3.0f,
-							FColor::Green,
-							FString::Printf(TEXT("인벤토리에 추가됨: %s"), *ItemActor->ItemDataAsset->ItemName.ToString())
-						);
-					}
+					UE_LOG(LogTemp, Warning, TEXT("❌ 인벤토리가 가득 차서 아이템을 먹을 수 없습니다: %s"), *ItemActor->ItemDataAsset->ItemName.ToString());
+					return;
 				}
 
-				// ✅ 기존 아이템 있으면 파괴
-				if (MainCharacter->CurrentItem)
-				{
-					MainCharacter->CurrentItem->Destroy();
-					MainCharacter->CurrentItem = nullptr;
-				}
-
-				// ✅ 손이 비어있으면 들고
-				if (!MainCharacter->CurrentItem)
-				{
-					MainCharacter->PlayHighPriorityMontage(MainCharacter->PickUpMontage);
-					ItemActor->SetActorEnableCollision(false);
-					ItemActor->AttachToComponent(
-						MainCharacter->GetMesh(),
-						FAttachmentTransformRules(
-							EAttachmentRule::SnapToTarget,
-							EAttachmentRule::SnapToTarget,
-							EAttachmentRule::KeepWorld,
-							false
-						),
-						TEXT("ItemSocket"));
-
-					MainCharacter->CurrentItem = ItemActor;
-				}
-
-				// ✅ 무조건 바닥에서 제거
-				ItemActor->Destroy();
+				// ✅ 아이템 추가
+				MainCharacter->InventoryComponent->AddItem(ItemActor->ItemDataAsset);
+				UE_LOG(LogTemp, Warning, TEXT("인벤토리에 추가됨: %s"), *ItemActor->ItemDataAsset->ItemName.ToString());
 			}
+
+			// ✅ 손이 비어있을 때만 애니메이션 출력
+			if (!MainCharacter->CurrentItem)
+			{
+				MainCharacter->PlayHighPriorityMontage(MainCharacter->PickUpMontage);
+			}
+
+			// ✅ 바닥에서 제거
+			ItemActor->Destroy();
 		}
 	}
 }

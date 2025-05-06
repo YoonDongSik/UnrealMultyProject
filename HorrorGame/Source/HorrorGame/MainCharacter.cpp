@@ -76,17 +76,20 @@ void AMainCharacter::DoCrouching()
 void AMainCharacter::EquipItem(UItemDataAsset* ItemData)
 {
 	if (!ItemData || !ItemData->ItemMesh || !InventoryComponent) return;
-
 	UE_LOG(LogTemp, Warning, TEXT("🟡 EquipItem 호출됨: %s"), *ItemData->ItemName.ToString());
 
-	
+	int32 RemoveIndex = InventoryComponent->InventoryItems.Find(ItemData);
+	if (RemoveIndex != INDEX_NONE)
+	{
+		InventoryComponent->InventoryItems[RemoveIndex] = nullptr;
+	}
+
 
 	// 기존 장착 아이템 → 인벤토리로 복구
-	if (CurrentItem)
+	if (CurrentItem && CurrentItem->ItemDataAsset)
 	{
+		
 
-		if (CurrentItem->ItemDataAsset)
-		{
 			int32 EmptyIndex = InventoryComponent->InventoryItems.Find(nullptr);
 			if (EmptyIndex != INDEX_NONE)
 			{
@@ -97,14 +100,36 @@ void AMainCharacter::EquipItem(UItemDataAsset* ItemData)
 			{
 				UE_LOG(LogTemp, Warning, TEXT("🔴 인벤토리에 빈칸 없음 → 기존 아이템 유실됨: %s"), *CurrentItem->ItemDataAsset->ItemName.ToString());
 			}
-		}
+		
+
 		CurrentItem->Destroy();
 		CurrentItem = nullptr;
+
 	}
 
+	// 새 장착 아이템 생성 및 손에 부착
+	AItemBaseActor* NewItem = GetWorld()->SpawnActor<AItemBaseActor>(AItemBaseActor::StaticClass());
+	if (NewItem)
+	{
+		NewItem->SetItemData(ItemData);
+		NewItem->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("ItemSocket"));
+		NewItem->SetActorRelativeLocation(ItemData->CollisionOffset);
+		NewItem->SetActorRelativeRotation(ItemData->CollisionRotation);
+		NewItem->SetActorScale3D(ItemData->ItemScale);
+
+		
+			CurrentItem = NewItem;
+	
+		UE_LOG(LogTemp, Warning, TEXT("✅ 새 아이템 장착: %s"), *ItemData->ItemName.ToString());
+
+	}
+	
+	
+
+	// 인벤토리 UI 새로고침
 	FTimerHandle DelayHandle;
 	GetWorld()->GetTimerManager().SetTimer(DelayHandle, [this]()
-	{
+		{
 			APlayerController* PC = Cast<APlayerController>(GetController());
 			if (AMainPlayerController* MPC = Cast<AMainPlayerController>(PC))
 			{
@@ -115,32 +140,9 @@ void AMainCharacter::EquipItem(UItemDataAsset* ItemData)
 				}
 			}
 		}, 0.01f, false);
-	// 인벤토리에서 새로 장착할 아이템 제거
-	int32 RemoveIndex = InventoryComponent->InventoryItems.Find(ItemData);
-	if (RemoveIndex != INDEX_NONE)
-	{
-		InventoryComponent->InventoryItems[RemoveIndex] = nullptr;
-		UE_LOG(LogTemp, Warning, TEXT("🟠 장착 아이템 인벤토리에서 제거: Index %d"), RemoveIndex);
-	}
-
-	// 새 장착 아이템 생성 및 손에 부착
-	AItemBaseActor* NewItem = GetWorld()->SpawnActor<AItemBaseActor>(AItemBaseActor::StaticClass());
-	if (NewItem)
-	{
-		
-		NewItem->SetItemData(ItemData);
-		NewItem->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("ItemSocket"));
-		NewItem->SetActorRelativeLocation(ItemData->CollisionOffset);
-		NewItem->SetActorRelativeRotation(ItemData->CollisionRotation);
-		NewItem->SetActorScale3D(ItemData->ItemScale);
-
-		CurrentItem = NewItem;
-
-		UE_LOG(LogTemp, Warning, TEXT("✅ 새 아이템 장착: %s"), *ItemData->ItemName.ToString());
-		InventoryComponent->LogInventoryState();  // ✅ 추가
-	}
 
 
+	
 
 }
 
