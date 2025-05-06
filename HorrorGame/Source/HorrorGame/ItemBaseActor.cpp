@@ -69,7 +69,10 @@ void AItemBaseActor::BeginPlay()
 	Super::BeginPlay();
 
 	APlayerController* PC = GetWorld()->GetFirstPlayerController();
-	OwnerCharacter = Cast<AMainCharacter>(PC->GetPawn());
+	if (PC)
+	{
+		OwnerCharacter = Cast<AMainCharacter>(PC->GetPawn());
+	}
 
 }
 

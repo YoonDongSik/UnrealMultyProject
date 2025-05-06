@@ -37,9 +37,18 @@ void UHandLightComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	ItemBaseActor = Cast<AItemBaseActor>(GetOwner());
-	if (ItemBaseActor->ItemDataAsset->ItemType == EItemType::HandLight)
+	if (ItemBaseActor)
 	{
-		HandLight->AttachToComponent(ItemBaseActor->ItemMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("SporLightSocket"));
+		if (ItemBaseActor->ItemDataAsset)
+		{
+			if (ItemBaseActor->ItemDataAsset->ItemType == EItemType::HandLight)
+			{
+				if (ItemBaseActor->ItemMesh)
+				{
+					HandLight->AttachToComponent(ItemBaseActor->ItemMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("SporLightSocket"));
+				}
+			}
+		}
 	}
 }
 

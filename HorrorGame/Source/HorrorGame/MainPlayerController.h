@@ -18,6 +18,9 @@ class HORRORGAME_API AMainPlayerController : public APlayerController
 public:
 	AMainPlayerController();
 
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void SetMouseSensitivity(float NewSensitivity);
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -69,6 +72,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	bool bIsPickUp = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	float MouseSensitivity = 1.0f;
 
 private:
 	class AMainCharacter* MainCharacter = nullptr;

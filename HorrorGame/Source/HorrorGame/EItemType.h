@@ -13,4 +13,5 @@ enum class EItemType : uint8
 	ElectricOrb,
 	IceOrb,
 	HandLight,
+	Key,
 };

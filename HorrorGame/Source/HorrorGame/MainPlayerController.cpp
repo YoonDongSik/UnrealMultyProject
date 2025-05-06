@@ -15,6 +15,11 @@ AMainPlayerController::AMainPlayerController()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
+void AMainPlayerController::SetMouseSensitivity(float NewSensitivity)
+{
+	MouseSensitivity = NewSensitivity;
+}
+
 void AMainPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -126,8 +131,8 @@ void AMainPlayerController::InputLook(const FInputActionValue& Value)
 {
 	FVector2D InputValue = Value.Get<FVector2D>();
 
-	AddYawInput(InputValue.X);
-	AddPitchInput(InputValue.Y);
+	AddYawInput(InputValue.X * MouseSensitivity);
+	AddPitchInput(InputValue.Y * MouseSensitivity);
 }
 
 void AMainPlayerController::InputLookOffsetMove(const FInputActionValue& Value)
