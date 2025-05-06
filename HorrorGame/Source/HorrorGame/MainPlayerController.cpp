@@ -14,43 +14,67 @@ AMainPlayerController::AMainPlayerController()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
+void AMainPlayerController::SetMainWidget(UMainWidget* InWidget)
+{
+	MainWidget = InWidget;
+}
+
 
 
 void AMainPlayerController::ToggleInventory()
 {
-	
-	UE_LOG(LogTemp, Warning, TEXT("🟡 ToggleInventory 함수 호출됨"));
+	if (!bCanToggleInventory)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("⛔ 중복 호출 차단됨"));
+		return;
+	}
 
+	bCanToggleInventory = false;
+	GetWorldTimerManager().SetTimerForNextTick([this]()
+		{
+			bCanToggleInventory = true;
+		});
+
+	UE_LOG(LogTemp, Warning, TEXT("🟡 ToggleInventory 함수 호출됨"));
+	UE_LOG(LogTemp, Warning, TEXT("🔁 토글 실행 시간: %f"), GetWorld()->GetTimeSeconds());
 	if (!MainWidget || !MainWidget->InventoryWidget)
 	{
 		UE_LOG(LogTemp, Error, TEXT("❌ MainWidget 또는 InventoryWidget이 nullptr입니다!"));
 		return;
 	}
 
-	// 현재 인벤토리 UI의 상태를 가져옴
 	ESlateVisibility CurrentVisibility = MainWidget->InventoryWidget->GetVisibility();
 	UE_LOG(LogTemp, Warning, TEXT("현재 InventoryWidget Visibility: %d"), (int32)CurrentVisibility);
 
 	if (CurrentVisibility == ESlateVisibility::Visible)
 	{
-		MainWidget->InventoryWidget->SetVisibility(ESlateVisibility::Collapsed); // ✅ Visible → Collapsed 로 바꿔
+		
+		MainWidget->InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
 		bShowMouseCursor = false;
 		SetInputMode(FInputModeGameOnly());
 		UE_LOG(LogTemp, Warning, TEXT("🔒 인벤토리 닫힘, 마우스 커서 끔"));
+
+		UE_LOG(LogTemp, Warning, TEXT("📌 MainWidget = %s"), *GetNameSafe(MainWidget));
+		UE_LOG(LogTemp, Warning, TEXT("📌 InventoryWidget = %s"), *GetNameSafe(MainWidget ? MainWidget->InventoryWidget : nullptr));
 	}
 	else
 	{
 		MainWidget->InventoryWidget->SetVisibility(ESlateVisibility::Visible);
-		bShowMouseCursor = true;
 
+		// 새로고침
+		MainWidget->InventoryWidget->RefreshInventory();
+		UE_LOG(LogTemp, Warning, TEXT("✅ 인벤토리 새로고침 호출됨"));
+
+		bShowMouseCursor = true;
 		FInputModeUIOnly InputMode;
-		InputMode.SetWidgetToFocus(MainWidget->InventoryWidget->TakeWidget()); // ✅ 수정: InventoryWidget에 포커스 주기
+		InputMode.SetWidgetToFocus(MainWidget->InventoryWidget->TakeWidget());
 		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 		SetInputMode(InputMode);
 
 		UE_LOG(LogTemp, Warning, TEXT("📦 인벤토리 열림, 마우스 커서 켬"));
+		UE_LOG(LogTemp, Warning, TEXT("📌 MainWidget = %s"), *GetNameSafe(MainWidget));
+		UE_LOG(LogTemp, Warning, TEXT("📌 InventoryWidget = %s"), *GetNameSafe(MainWidget ? MainWidget->InventoryWidget : nullptr));
 	}
-
 }
 
 void AMainPlayerController::BeginPlay()
@@ -66,17 +90,17 @@ void AMainPlayerController::BeginPlay()
 	//		LocalPlayerSubsystem->AddMappingContext(InputMappingContext, 0);
 	//	}
 	//}
-	if (MainWidgetClass)
-	{
-		MainWidget = CreateWidget<UMainWidget>(this, MainWidgetClass);
-		if (MainWidget)
-		{
-			MainWidget->AddToViewport();
+	//if (MainWidgetClass)
+	//{
+	//	MainWidget = CreateWidget<UMainWidget>(this, MainWidgetClass);
+	//	if (MainWidget)
+	//	{
+	//		MainWidget->AddToViewport();
 
-			// 인벤토리 시작할 때 안 보이게
-			MainWidget->InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
-		}
-	}
+	//		// 인벤토리 시작할 때 안 보이게
+	//		MainWidget->InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
+	//	}
+	//}
 }
 
 void AMainPlayerController::SetupInputComponent()

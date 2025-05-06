@@ -31,6 +31,7 @@ void UMainWidget::NativeConstruct()
 	{
 		UE_LOG(LogTemp, Error, TEXT("❌ InventoryWidget 바인딩 실패"));
 	}
+
 }
 
 void UMainWidget::SetupInventorySlotClass(TSubclassOf<UItemSlotWidget> InSlotClass)

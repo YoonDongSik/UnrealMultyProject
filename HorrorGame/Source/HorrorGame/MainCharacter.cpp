@@ -102,17 +102,19 @@ void AMainCharacter::EquipItem(UItemDataAsset* ItemData)
 		CurrentItem = nullptr;
 	}
 
-	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	FTimerHandle DelayHandle;
+	GetWorld()->GetTimerManager().SetTimer(DelayHandle, [this]()
 	{
-		if (AMainPlayerController* MPC = Cast<AMainPlayerController>(PC))
-		{
-			if (MPC->MainWidget && MPC->MainWidget->InventoryWidget)
+			APlayerController* PC = Cast<APlayerController>(GetController());
+			if (AMainPlayerController* MPC = Cast<AMainPlayerController>(PC))
 			{
-				MPC->MainWidget->InventoryWidget->RefreshInventory();
+				if (MPC->MainWidget && MPC->MainWidget->InventoryWidget)
+				{
+					MPC->MainWidget->InventoryWidget->RefreshInventory();
+					UE_LOG(LogTemp, Warning, TEXT("🟢 1프레임 후 인벤토리 UI 새로고침 완료"));
+				}
 			}
-		}
-	}
-
+		}, 0.01f, false);
 	// 인벤토리에서 새로 장착할 아이템 제거
 	int32 RemoveIndex = InventoryComponent->InventoryItems.Find(ItemData);
 	if (RemoveIndex != INDEX_NONE)

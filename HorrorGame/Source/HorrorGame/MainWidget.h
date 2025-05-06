@@ -6,6 +6,7 @@
 #include "CrosshairWidget.h"
 #include "HealthWidget.h"
 #include "InventoryWidget.h"
+#include "ItemSlotWidget.h"
 #include "MainWidget.generated.h"
 
 class UInventoryWidget;

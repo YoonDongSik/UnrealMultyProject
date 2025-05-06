@@ -69,4 +69,15 @@ void UInventoryWidget::OnCloseButtonClicked()
 {
 	SetVisibility(ESlateVisibility::Collapsed);  // ✅ RemoveFromParent() 아님! 단순히 숨기는 걸로!
 	UE_LOG(LogTemp, Warning, TEXT("인벤토리 UI 닫기"));
+
+	// 🔽 커서 숨기기 + 입력 모드 되돌리기
+	if (APlayerController* PC = GetOwningPlayer())
+	{
+		PC->bShowMouseCursor = false;
+
+		FInputModeGameOnly GameInput;
+		PC->SetInputMode(GameInput);
+
+		UE_LOG(LogTemp, Warning, TEXT("🖱️ 마우스 커서 끔 + 입력모드 게임 전용으로 변경"));
+	}
 }

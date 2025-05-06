@@ -21,6 +21,7 @@ class HORRORGAME_API AMainPlayerController : public APlayerController
 	
 public:
 	AMainPlayerController();
+	void SetMainWidget(UMainWidget* InWidget);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
 	TSubclassOf<UMainWidget> MainWidgetClass;
@@ -43,7 +44,7 @@ protected:
 
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
-
+	bool bCanToggleInventory = true;
 	void InputMove(const FInputActionValue& Value);
 	void InputLook(const FInputActionValue& Value);
 	void InputLookOffsetMove(const FInputActionValue& Value);
