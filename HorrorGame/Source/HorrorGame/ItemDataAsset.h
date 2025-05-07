@@ -33,7 +33,16 @@ public:
 	class USkeletalMesh* ItemMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	EItemID ItemID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	EItemType ItemType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	TSubclassOf<AActor> AttackSpawnClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	FName ItemSocketName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
 	UNiagaraSystem* ItemParticle;

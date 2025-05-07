@@ -7,8 +7,12 @@
 #include "SteminaWidget.h"
 #include "CrosshairWidget.h"
 #include "HealthWidget.h"
+#include "InventoryWidget.h"
+#include "ItemSlotWidget.h"
 #include "PlayerHitWidget.h"
 #include "MainWidget.generated.h"
+
+class UInventoryWidget;
 
 /**
  * 
@@ -24,6 +28,15 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect", meta = (BindWidget))
 	UPlayerHitWidget* PlayerHitWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI", meta = (BindWidget))
+	UCanvasPanel* InventoryPanel;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI", meta = (BindWidget))
+	UInventoryWidget* InventoryWidget;
+
+	UFUNCTION(BlueprintCallable)
+	void SetupInventorySlotClass(TSubclassOf<UItemSlotWidget> InSlotClass);
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat", meta = (BindWidget))

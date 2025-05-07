@@ -20,6 +20,8 @@ public:
 	// Sets default values for this actor's properties
 	AItemBaseActor();
 
+	void SetItemData(UItemDataAsset* NewItemData);
+
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* ItemMesh;
 
@@ -40,6 +42,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item|Attack")
+	TSubclassOf<AActor> ItemAttackSpawnClass;
+
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Item|Collision")
 	UCapsuleComponent* CapsuleCollision;
@@ -50,8 +56,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Item|Collision")
 	USphereComponent* SphereCollision;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item|Attack")
-	TSubclassOf<AActor> ItemAttackSpawnClass;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	class UHandLightComponent* HandLightComponent;
 
 private:
 	void AttackSpawn();

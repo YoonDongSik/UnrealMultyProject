@@ -3,6 +3,7 @@
 
 #include "ItemBaseActor.h"
 #include "MainCharacter.h"
+#include "HandLightComponent.h"
 
 // Sets default values
 AItemBaseActor::AItemBaseActor()
@@ -25,12 +26,43 @@ AItemBaseActor::AItemBaseActor()
 	SphereCollision->SetupAttachment(ItemMesh);
 	SphereCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
+
+	HandLightComponent = CreateDefaultSubobject<UHandLightComponent>(TEXT("HandLightComponent"));
+	HandLightComponent->SetupAttachment(ItemMesh, FName("SpotLightSocket"));
+
 	Tags.Add(FName("Item"));
+}
+
+void AItemBaseActor::SetItemData(UItemDataAsset* NewItemData)
+{
+	if (!NewItemData) return;
+
+	ItemDataAsset = NewItemData;
+
+	if (ItemMesh && ItemDataAsset->ItemMesh)
+	{
+		ItemMesh->SetSkeletalMesh(ItemDataAsset->ItemMesh);
+		ItemMesh->SetRelativeLocation(FVector::ZeroVector); // 위치 초기화
+		ItemMesh->SetRelativeRotation(FRotator::ZeroRotator); // 회전 초기화
+		ItemMesh->SetRelativeScale3D(FVector(1.0f)); // 스케일 초기화
+	}
+
+	// 충돌 끄기 (들고 있을 땐 충돌 X)
+	ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	// 스케일 적용
+	SetActorScale3D(ItemDataAsset->ItemScale);
 }
 
 void AItemBaseActor::OnPickup(class AMainCharacter* MainCharacter)
 {
-	AttachToComponent(MainCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("hand_r"));
+	if (!MainCharacter) return;
+
+	AttachToComponent(MainCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("ItemSocket"));
+
+	SetActorRelativeLocation(ItemDataAsset->CollisionOffset);
+	SetActorRelativeRotation(ItemDataAsset->CollisionRotation);
+	SetActorScale3D(ItemDataAsset->ItemScale);
 }
 
 void AItemBaseActor::ThrowItem(AMainCharacter* MainCharacter)
@@ -73,7 +105,10 @@ void AItemBaseActor::BeginPlay()
 	{
 		OwnerCharacter = Cast<AMainCharacter>(PC->GetPawn());
 	}
-
+	if (ItemDataAsset)
+	{
+		ItemAttackSpawnClass = ItemDataAsset->AttackSpawnClass;
+	}
 }
 
 void AItemBaseActor::OnConstruction(const FTransform& Transform)

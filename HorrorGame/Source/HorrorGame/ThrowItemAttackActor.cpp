@@ -42,11 +42,11 @@ void AThrowItemAttackActor::EffectAndAttack()
 	// Spawn the particle system at the location of the actor
 	if (ElectricParticle || IceParticle)
 	{
-		if(MainCharacter->CurrentItem->ItemDataAsset->ItemType == EItemType::ElectricOrb)
+		if(MainCharacter->CurrentItem->ItemDataAsset->ItemID == EItemID::ElectricOrb)
 		{
 			AttackParticleComponent->SetAsset(ElectricParticle);
 		}
-		else if (MainCharacter->CurrentItem->ItemDataAsset->ItemType == EItemType::IceOrb)
+		else if (MainCharacter->CurrentItem->ItemDataAsset->ItemID == EItemID::IceOrb)
 		{
 			AttackParticleComponent->SetAsset(IceParticle);
 		}

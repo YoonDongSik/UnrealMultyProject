@@ -8,10 +8,17 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "PlayerHitWidget.h"
+#include "InputActionValue.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "UInventoryComponent.h"
 #include "MainCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStaminaChanged, float, NewStaminaPercent);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, NewHealthPercent);
+
+class UMainWidget;
+class AItemBaseActor;
 
 UCLASS()
 class HORRORGAME_API AMainCharacter : public ACharacter
@@ -37,6 +44,17 @@ public:
 	FOnStaminaChanged OnStaminaChanged;
 
 	FOnHealthChanged OnHealthChanged;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
+	UInventoryComponent* InventoryComponent;
+	UPROPERTY(EditAnywhere, Category = "Test")
+	UItemDataAsset* TestItemData;
+
+	UPROPERTY()
+	UMainWidget* MainWidget;
+
+	UFUNCTION()
+	void EquipItem(UItemDataAsset* ItemData);
 
 protected:
 	// Called when the game starts or when spawned
@@ -84,6 +102,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
 	class AItemBaseActor* CurrentItem;
 
+	UPROPERTY(meta = (BindWidget))
+	class UInventoryWidget* InventoryWidget;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Move")
 	float WalkSpeed = 400;
@@ -106,6 +127,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
 	UAnimMontage* ThrowMontage = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	class UInputMappingContext* InputMappingContext;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	int32 InputMappingPriority = 0;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|State")
 	bool bIsRunning = false;
@@ -127,6 +154,9 @@ protected:
 
 	UPROPERTY()
 	UPlayerHitWidget* PlayerHitWidget;
+
+	UPROPERTY()
+	class UHandLightComponent* HandLightComponent;
 
 private:
 	UPROPERTY()

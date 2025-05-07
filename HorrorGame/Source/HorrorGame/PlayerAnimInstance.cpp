@@ -20,7 +20,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		Speed = PlayerCharacter->GetVelocity().Size();
 		bIsCrouchAnim = PlayerCharacter->bIsCrouched;
-		if (PlayerCharacter->CurrentItem && PlayerCharacter->CurrentItem->ItemDataAsset->ItemType == EItemType::HandLight)
+		if (PlayerCharacter->CurrentItem && PlayerCharacter->CurrentItem->ItemDataAsset->ItemID == EItemID::HandLight)
 		{
 			FlashItem = true;
 		}

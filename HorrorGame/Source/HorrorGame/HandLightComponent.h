@@ -21,17 +21,23 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ToggleLight();
 
+	UFUNCTION()
+	void SetLightAttach(AMainCharacter* MainCharacter);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-protected:
+public:
 	UPROPERTY(EditAnywhere, Category = "Light")
 	AItemBaseActor* ItemBaseActor;
 
-private:
 	UPROPERTY(EditAnywhere, Category = "Light")
 	USpotLightComponent* HandLight;
+
+private:
+	//UPROPERTY(EditAnywhere, Category = "Light")
+	//USpotLightComponent* HandLight;
 
 	UPROPERTY(EditAnywhere, Category = "Light")
 	bool bIsLightOn = false;

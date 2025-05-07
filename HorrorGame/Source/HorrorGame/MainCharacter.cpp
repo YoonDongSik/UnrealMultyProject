@@ -9,6 +9,8 @@
 #include "Camera/CameraComponent.h"
 #include "MainHUD.h"
 #include "Kismet/GameplayStatics.h"
+#include "InventoryWidget.h"
+#include "MainPlayerController.h"
 
 
 // Sets default values
@@ -37,6 +39,7 @@ AMainCharacter::AMainCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 360.0f, 0.0f);
 
 	Tags.Add("Player");
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 }
 
 void AMainCharacter::Movement(const FVector& MoveValue)
@@ -78,6 +81,92 @@ void AMainCharacter::DoCrouching()
 	}
 }
 
+void AMainCharacter::EquipItem(UItemDataAsset* ItemData)
+{
+	if (!ItemData || !ItemData->ItemMesh || !InventoryComponent) return;
+	UE_LOG(LogTemp, Warning, TEXT("🟡 EquipItem 호출됨: %s"), *ItemData->ItemName.ToString());
+
+	int32 RemoveIndex = InventoryComponent->InventoryItems.Find(ItemData);
+	if (RemoveIndex != INDEX_NONE)
+	{
+		InventoryComponent->InventoryItems[RemoveIndex] = nullptr;
+	}
+
+
+	// 기존 장착 아이템 → 인벤토리로 복구
+	if (CurrentItem && CurrentItem->ItemDataAsset)
+	{
+
+
+		int32 EmptyIndex = InventoryComponent->InventoryItems.Find(nullptr);
+		if (EmptyIndex != INDEX_NONE)
+		{
+			InventoryComponent->InventoryItems[EmptyIndex] = CurrentItem->ItemDataAsset;
+			UE_LOG(LogTemp, Warning, TEXT("🟢 기존 아이템 복구: %s → Index %d"), *CurrentItem->ItemDataAsset->ItemName.ToString(), EmptyIndex);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("🔴 인벤토리에 빈칸 없음 → 기존 아이템 유실됨: %s"), *CurrentItem->ItemDataAsset->ItemName.ToString());
+		}
+
+
+		CurrentItem->Destroy();
+		CurrentItem = nullptr;
+
+	}
+
+	// 새 장착 아이템 생성 및 손에 부착
+	AItemBaseActor* NewItem = GetWorld()->SpawnActor<AItemBaseActor>(AItemBaseActor::StaticClass());
+	if (NewItem)
+	{
+		FName SocketName = ItemData->ItemSocketName;
+		NewItem->SetItemData(ItemData);
+		NewItem->SetActorRelativeLocation(ItemData->CollisionOffset);
+		NewItem->SetActorRelativeRotation(ItemData->CollisionRotation);
+		NewItem->SetActorScale3D(ItemData->ItemScale);
+		NewItem->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, false), SocketName);
+		//NewItem->SetActorRelativeLocation(ItemData->CollisionOffset);
+		//NewItem->SetActorRelativeRotation(ItemData->CollisionRotation);
+		//NewItem->SetActorScale3D(ItemData->ItemScale);
+
+		CurrentItem = NewItem;
+		if (CurrentItem && CurrentItem->ItemDataAsset)
+		{
+			CurrentItem->ItemAttackSpawnClass = CurrentItem->ItemDataAsset->AttackSpawnClass;
+		}
+		APlayerController* PlayerController = Cast<APlayerController>(GetController());
+		APlayerController* PC = Cast<APlayerController>(GetController());
+		if (AMainPlayerController* MPC = Cast<AMainPlayerController>(PC))
+		{
+			if (MPC->MainWidget && MPC->MainWidget->InventoryWidget)
+			{
+				MPC->bIsPickUp = true;
+			}
+		}
+		
+
+		UE_LOG(LogTemp, Warning, TEXT("✅ 새 아이템 장착: %s"), *ItemData->ItemName.ToString());
+
+	}
+
+
+
+	// 인벤토리 UI 새로고침
+	FTimerHandle DelayHandle;
+	GetWorld()->GetTimerManager().SetTimer(DelayHandle, [this]()
+		{
+			APlayerController* PC = Cast<APlayerController>(GetController());
+			if (AMainPlayerController* MPC = Cast<AMainPlayerController>(PC))
+			{
+				if (MPC->MainWidget && MPC->MainWidget->InventoryWidget)
+				{
+					MPC->MainWidget->InventoryWidget->RefreshInventory();
+					UE_LOG(LogTemp, Warning, TEXT("🟢 1프레임 후 인벤토리 UI 새로고침 완료"));
+				}
+			}
+		}, 0.01f, false);
+}
+
 // Called when the game starts or when spawned
 void AMainCharacter::BeginPlay()
 {
@@ -96,6 +185,37 @@ void AMainCharacter::BeginPlay()
 	{
 		// 직접 참조 저장해두기
 		PlayerHitWidget = HUD->MainWidget->PlayerHitWidget;
+	}
+
+	if (InventoryComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("인벤토리 컴포넌트 활성화됨"));
+
+		// 인벤토리에 들어있는 아이템들 순회해서 출력
+		for (UItemDataAsset* Item : InventoryComponent->InventoryItems)
+		{
+			if (Item)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("미리 설정된 아이템 있음: %s"), *Item->ItemName.ToString());
+			}
+		}
+	}
+
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (PC)
+	{
+
+		AMainPlayerController* MPC = Cast<AMainPlayerController>(PC);
+		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer());
+		if (Subsystem && InputMappingContext)
+		{
+			Subsystem->AddMappingContext(InputMappingContext, InputMappingPriority);
+			UE_LOG(LogTemp, Warning, TEXT("✅ 입력 매핑 컨텍스트 적용됨"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("❌ Subsystem 또는 MappingContext null"));
+		}
 	}
 }
 
@@ -127,15 +247,15 @@ void AMainCharacter::UseCurrentItem()
 		if (UserbleItem)
 		{
 			UserbleItem->UseItem(this, CurrentItem->ItemDataAsset);
-			if (CurrentItem->ItemDataAsset->ItemType == EItemType::HandLight)
+			if (CurrentItem->ItemDataAsset->ItemID == EItemID::HandLight)
 			{
-				UHandLightComponent* HandLightComponent = Cast<UHandLightComponent>(CurrentItem->GetComponentByClass(UHandLightComponent::StaticClass()));
+				HandLightComponent = Cast<UHandLightComponent>(CurrentItem->GetComponentByClass(UHandLightComponent::StaticClass()));
 				if (HandLightComponent)
 				{
 					HandLightComponent->ToggleLight();
 				}
 			}
-			else if (CurrentItem->ItemDataAsset->ItemType == EItemType::ElectricOrb || CurrentItem->ItemDataAsset->ItemType == EItemType::IceOrb)
+			else if (CurrentItem->ItemDataAsset->ItemID == EItemID::ElectricOrb || CurrentItem->ItemDataAsset->ItemID == EItemID::IceOrb)
 			{
 					PlayHighPriorityMontage(ThrowMontage);
 					CurrentItem->SetActorEnableCollision(true);

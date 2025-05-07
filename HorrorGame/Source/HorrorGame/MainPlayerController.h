@@ -5,7 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "InputActionValue.h"
+#include "MainWidget.h"
 #include "MainPlayerController.generated.h"
+
+class UInventoryWidget;
 
 /**
  * 
@@ -20,6 +23,25 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void SetMouseSensitivity(float NewSensitivity);
+
+	void SetMainWidget(UMainWidget* InWidget);
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
+	TSubclassOf<UMainWidget> MainWidgetClass;
+
+	UPROPERTY()
+	UMainWidget* MainWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	class UInputAction* IA_ToggleInventory;
+
+	UPROPERTY(meta = (BindWidget))   // 반드시 BindWidget 붙여야 됨
+	UInventoryWidget* InventoryWidget;
+
+	void ToggleInventory(); // 함수 선언
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	bool bIsPickUp = false;
 
 protected:
 	virtual void BeginPlay() override;
@@ -66,12 +88,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mapping")
 	class UInputAction* InterectionAction = nullptr;
 
+	bool bCanToggleInventory = true;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	bool bIsCrouch = false;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	bool bIsPickUp = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	float MouseSensitivity = 1.0f;

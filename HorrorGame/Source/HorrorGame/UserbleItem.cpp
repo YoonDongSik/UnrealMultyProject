@@ -8,27 +8,27 @@ void UUserbleItem::UseItem(AMainCharacter* Character, UItemDataAsset* DataAsset)
 {
 	if (!DataAsset) return;
 
-	switch (DataAsset->ItemType)
+	switch (DataAsset->ItemID)
 	{
-	case EItemType::Adrenaline:
+	case EItemID::Adrenaline:
 		Character->SetAdrenalineDuration(Character->GetAdrenalineDuration() + 20);
 		break;
-	case EItemType::Bandage:
+	case EItemID::Bandage:
 		Character->SetHealth(Character->GetHealth() + 10);
 		break;
-	case EItemType::HealthKit:
+	case EItemID::HealthKit:
 		Character->SetHealth(Character->GetHealth() + 40);
 		break;
-	case EItemType::Painkiller:
+	case EItemID::Painkiller:
 		Character->SetHealth(Character->GetHealth() + 20);
 		break;
-	case EItemType::ElectricOrb:
+	case EItemID::ElectricOrb:
 		// Logic to use electric orb item
 		break;
-	case EItemType::IceOrb:
+	case EItemID::IceOrb:
 		// Logic to use ice orb item
 		break;
-	case EItemType::HandLight:
+	case EItemID::HandLight:
 		// Logic to use hand light item
 		break;
 

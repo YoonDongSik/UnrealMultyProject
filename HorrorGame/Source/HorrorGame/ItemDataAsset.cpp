@@ -8,6 +8,8 @@ UItemDataAsset::UItemDataAsset()
 	ItemDescription = FText::FromString(TEXT("아이템 설명"));
 	ItemIcon = nullptr;
 	ItemMesh = nullptr;
+	ItemID = EItemID::None;
 	ItemType = EItemType::None;
+	AttackSpawnClass = nullptr;
 	ItemScale = FVector(1.0f, 1.0f, 1.0f);
 }

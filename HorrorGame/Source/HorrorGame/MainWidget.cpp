@@ -4,6 +4,8 @@
 #include "MainWidget.h"
 #include "MainCharacter.h"
 #include "SteminaWidget.h"
+#include "HealthWidget.h"
+#include "InventoryWidget.h"
 
 void UMainWidget::NativeConstruct()
 {
@@ -22,5 +24,18 @@ void UMainWidget::NativeConstruct()
 	{
 		MainCharacter->OnHealthChanged.AddDynamic(HealthWidget, &UHealthWidget::HealthUpdate);
 	}
+}
+
+void UMainWidget::SetupInventorySlotClass(TSubclassOf<UItemSlotWidget> InSlotClass)
+{
+	if (InventoryWidget)
+	{
+		InventoryWidget->ItemSlotClass = InSlotClass;
+		//UE_LOG(LogTemp, Warning, TEXT("✅ ItemSlotClass 전달 완료: %s"), *InSlotClass->GetName());
+	}
+	//else
+	//{
+	//	UE_LOG(LogTemp, Error, TEXT("❌ InventoryWidget가 nullptr"));
+	//}
 }
 

@@ -13,6 +13,7 @@ UHandLightComponent::UHandLightComponent()
 	// ...
 
 	HandLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("HandLight"));
+	HandLight->SetupAttachment(this);
 
 	HandLight->SetIntensity(3000.0f);
 	HandLight->SetLightColor(FLinearColor::Yellow);
@@ -31,6 +32,24 @@ void UHandLightComponent::ToggleLight()
 	}
 }
 
+void UHandLightComponent::SetLightAttach(AMainCharacter* MainCharacter)
+{
+	/*if (MainCharacter)
+	{
+		if (MainCharacter->CurrentItem)
+		{
+			if (MainCharacter->CurrentItem->ItemDataAsset->ItemID == EItemID::HandLight)
+			{
+				HandLight->AttachToComponent(MainCharacter->CurrentItem->ItemDataAsset->ItemMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("SpotLightSocket"));
+			}
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("❌ MainCharacter가 nullptr입니다!"));
+	}*/
+}
+
 
 // Called when the game starts
 void UHandLightComponent::BeginPlay()
@@ -41,11 +60,11 @@ void UHandLightComponent::BeginPlay()
 	{
 		if (ItemBaseActor->ItemDataAsset)
 		{
-			if (ItemBaseActor->ItemDataAsset->ItemType == EItemType::HandLight)
+			if (ItemBaseActor->ItemDataAsset->ItemID == EItemID::HandLight)
 			{
 				if (ItemBaseActor->ItemMesh)
 				{
-					HandLight->AttachToComponent(ItemBaseActor->ItemMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("SporLightSocket"));
+					HandLight->AttachToComponent(ItemBaseActor->ItemMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("SpotLightSocket"));
 				}
 			}
 		}

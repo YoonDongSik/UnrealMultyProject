@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
 #include "MainWidget.h"
+#include "UInventoryComponent.h"
 #include "MainHUD.generated.h"
 
 /**
@@ -21,8 +22,14 @@ protected:
 public:
 	UPROPERTY()
 	UMainWidget* MainWidget = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
+	TSubclassOf<UItemSlotWidget> WBP_ItemSlotClass;
 	
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI")
 	TSubclassOf<UUserWidget> MainWidgetClass;
+
+	UPROPERTY()
+	UInventoryComponent* InventoryComponent;
 };
