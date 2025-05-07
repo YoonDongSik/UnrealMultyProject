@@ -5,15 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "InputActionValue.h"
-#include "MainWidget.h"
 #include "MainPlayerController.generated.h"
 
 /**
  * 
  */
-
-class UInventoryWidget;  // 반드시 필요
-
 UCLASS()
 class HORRORGAME_API AMainPlayerController : public APlayerController
 {
@@ -21,22 +17,9 @@ class HORRORGAME_API AMainPlayerController : public APlayerController
 	
 public:
 	AMainPlayerController();
-	void SetMainWidget(UMainWidget* InWidget);
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
-	TSubclassOf<UMainWidget> MainWidgetClass;
-
-	UPROPERTY()
-	UMainWidget* MainWidget;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	class UInputAction* IA_ToggleInventory;
-
-	UPROPERTY(meta = (BindWidget))   // 반드시 BindWidget 붙여야 됨
-		UInventoryWidget* InventoryWidget;
-
-	void ToggleInventory(); // 함수 선언
-
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void SetMouseSensitivity(float NewSensitivity);
 
 protected:
 	virtual void BeginPlay() override;
@@ -44,7 +27,7 @@ protected:
 
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
-	bool bCanToggleInventory = true;
+
 	void InputMove(const FInputActionValue& Value);
 	void InputLook(const FInputActionValue& Value);
 	void InputLookOffsetMove(const FInputActionValue& Value);
@@ -54,7 +37,6 @@ protected:
 	void InputCrouching(const FInputActionValue& Value);
 	void InputClick(const FInputActionValue& Value);
 	void InputInterection(const FInputActionValue& Value);
-	
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mapping")
@@ -88,6 +70,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	bool bIsCrouch = false;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	bool bIsPickUp = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	float MouseSensitivity = 1.0f;
+
 private:
 	class AMainCharacter* MainCharacter = nullptr;
 
@@ -96,8 +84,6 @@ private:
 	bool bIsPressed = false;
 
 	bool bIsMoving = false;
-
-	bool bIsPickUp = false;
 
 	FVector2D MoveValue;
 };

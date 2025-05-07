@@ -2,24 +2,16 @@
 
 #pragma once
 
-#include "InputActionValue.h"
-#include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
 #include "CoreMinimal.h"
-#include "ItemBaseActor.h" 
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "UInventoryComponent.h"
+#include "PlayerHitWidget.h"
 #include "MainCharacter.generated.h"
-
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStaminaChanged, float, NewStaminaPercent);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, NewHealthPercent);
-
-class UMainWidget;
-class AItemBaseActor;
 
 UCLASS()
 class HORRORGAME_API AMainCharacter : public ACharacter
@@ -38,37 +30,23 @@ public:
 	UFUNCTION()
 	void DoCrouching();
 
+	void UseCurrentItem();
+
 	AActor* CheckDrawerTag();
 
 	FOnStaminaChanged OnStaminaChanged;
 
 	FOnHealthChanged OnHealthChanged;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
-	UInventoryComponent* InventoryComponent;
-	UPROPERTY(EditAnywhere, Category = "Test")
-	UItemDataAsset* TestItemData;
-
-	UPROPERTY()
-	UMainWidget* MainWidget;
-
-	UFUNCTION()
-	void EquipItem(UItemDataAsset* ItemData);
-
-
-
-	
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	
+	virtual float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -76,8 +54,6 @@ public:
 	void PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName = NAME_None);
 
 	USpringArmComponent* GetSpringArm() const { return SpringArm; }
-
-	
 
 	UFUNCTION(BlueprintCallable, Category = "Player Movement")
 	inline void SetRunMode() { GetCharacterMovement()->MaxWalkSpeed = RunSpeed; bIsRunning = true; };
@@ -88,30 +64,25 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player Movement")
 	inline void SetCrouchMode() { GetCharacterMovement()->MaxWalkSpeed = CrouchSpeed; bIsRunning = false; };
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
-	TSubclassOf<UMainWidget> MainWidgetClass;
-
 	inline float GetStemina() const { return Stemina; };
 
-protected:
-	void UseCurrentItem();
+	inline float GetHealth() const { return Health; };
+	inline void SetHealth(float NewHealth) { Health = NewHealth; OnHealthChanged.Broadcast(Health / MaxHealth); }
+
+	inline void SetAdrenalineDuration(float Duration) { AdrenalineDuration = Duration; }
+	inline float GetAdrenalineDuration() const { return AdrenalineDuration; }
 
 //private:
 //	UStaticMeshComponent* FindTaggedMesh(AActor* Actor, FName Tag);
 
 public:
 	bool bIsCrouched = false;
-	
-
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
 	UAnimMontage* PickUpMontage = nullptr;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
 	class AItemBaseActor* CurrentItem;
-
-	UPROPERTY(meta = (BindWidget))
-	class UInventoryWidget* InventoryWidget;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Move")
@@ -132,17 +103,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
 	UAnimMontage* JumpMontage = nullptr;
 
-	// 입력 매핑 컨텍스트
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	class UInputMappingContext* InputMappingContext;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	int32 InputMappingPriority = 0;
-
-	
-
-	/*UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
-	UAnimMontage* PickUpMontage = nullptr;*/
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
+	UAnimMontage* ThrowMontage = nullptr;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|State")
@@ -159,6 +121,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|State")
 	class UCameraComponent* CameraComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|State")
+	float AdrenalineDuration = 0;
+
+	UPROPERTY()
+	UPlayerHitWidget* PlayerHitWidget;
 
 private:
 	UPROPERTY()

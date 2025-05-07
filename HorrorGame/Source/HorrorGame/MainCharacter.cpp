@@ -2,11 +2,14 @@
 
 
 #include "MainCharacter.h"
-#include "MainWidget.h" 
 #include "PlayerAnimInstance.h"
-#include "InventoryWidget.h" // ← 너의 UInventoryWidget 헤더 필요!
-#include "MainPlayerController.h"
+#include "UserbleItem.h"
+#include "ItemBaseActor.h"
+#include "HandLightComponent.h"
 #include "Camera/CameraComponent.h"
+#include "MainHUD.h"
+#include "Kismet/GameplayStatics.h"
+
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -23,6 +26,7 @@ AMainCharacter::AMainCharacter()
 	SpringArm->TargetArmLength = 50.0f;
 	SpringArm->SocketOffset = FVector(0.0f);
 	SpringArm->bUsePawnControlRotation = true;
+	/*SpringArm->bDoCollisionTest = true;*/
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
@@ -32,10 +36,7 @@ AMainCharacter::AMainCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 360.0f, 0.0f);
 
-	
-
 	Tags.Add("Player");
-	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 }
 
 void AMainCharacter::Movement(const FVector& MoveValue)
@@ -62,88 +63,19 @@ void AMainCharacter::DoCrouching()
 	if (bIsCrouched)
 	{
 		Crouch();
-		SpringArm->SetRelativeLocation(FVector(60.0f, 0.0f, 0.0f));
+		SpringArm->SetRelativeLocation(FVector(60.0f, 0.0f, 40.0f));
+		GetCapsuleComponent()->SetCapsuleSize(45, 60);
+		GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -60.0f));
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("Crouching True")));
 	}
 	else
 	{
 		UnCrouch();
 		SpringArm->SetRelativeLocation(FVector(50.0f, 0.0f, 70.0f));
+		GetCapsuleComponent()->SetCapsuleSize(45, 90);
+		GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("Crouching false")));
 	}
-}
-
-void AMainCharacter::EquipItem(UItemDataAsset* ItemData)
-{
-	if (!ItemData || !ItemData->ItemMesh || !InventoryComponent) return;
-	UE_LOG(LogTemp, Warning, TEXT("🟡 EquipItem 호출됨: %s"), *ItemData->ItemName.ToString());
-
-	int32 RemoveIndex = InventoryComponent->InventoryItems.Find(ItemData);
-	if (RemoveIndex != INDEX_NONE)
-	{
-		InventoryComponent->InventoryItems[RemoveIndex] = nullptr;
-	}
-
-
-	// 기존 장착 아이템 → 인벤토리로 복구
-	if (CurrentItem && CurrentItem->ItemDataAsset)
-	{
-		
-
-			int32 EmptyIndex = InventoryComponent->InventoryItems.Find(nullptr);
-			if (EmptyIndex != INDEX_NONE)
-			{
-				InventoryComponent->InventoryItems[EmptyIndex] = CurrentItem->ItemDataAsset;
-				UE_LOG(LogTemp, Warning, TEXT("🟢 기존 아이템 복구: %s → Index %d"), *CurrentItem->ItemDataAsset->ItemName.ToString(), EmptyIndex);
-			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("🔴 인벤토리에 빈칸 없음 → 기존 아이템 유실됨: %s"), *CurrentItem->ItemDataAsset->ItemName.ToString());
-			}
-		
-
-		CurrentItem->Destroy();
-		CurrentItem = nullptr;
-
-	}
-
-	// 새 장착 아이템 생성 및 손에 부착
-	AItemBaseActor* NewItem = GetWorld()->SpawnActor<AItemBaseActor>(AItemBaseActor::StaticClass());
-	if (NewItem)
-	{
-		NewItem->SetItemData(ItemData);
-		NewItem->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("ItemSocket"));
-		NewItem->SetActorRelativeLocation(ItemData->CollisionOffset);
-		NewItem->SetActorRelativeRotation(ItemData->CollisionRotation);
-		NewItem->SetActorScale3D(ItemData->ItemScale);
-
-		
-			CurrentItem = NewItem;
-	
-		UE_LOG(LogTemp, Warning, TEXT("✅ 새 아이템 장착: %s"), *ItemData->ItemName.ToString());
-
-	}
-	
-	
-
-	// 인벤토리 UI 새로고침
-	FTimerHandle DelayHandle;
-	GetWorld()->GetTimerManager().SetTimer(DelayHandle, [this]()
-		{
-			APlayerController* PC = Cast<APlayerController>(GetController());
-			if (AMainPlayerController* MPC = Cast<AMainPlayerController>(PC))
-			{
-				if (MPC->MainWidget && MPC->MainWidget->InventoryWidget)
-				{
-					MPC->MainWidget->InventoryWidget->RefreshInventory();
-					UE_LOG(LogTemp, Warning, TEXT("🟢 1프레임 후 인벤토리 UI 새로고침 완료"));
-				}
-			}
-		}, 0.01f, false);
-
-
-	
-
 }
 
 // Called when the game starts or when spawned
@@ -159,38 +91,23 @@ void AMainCharacter::BeginPlay()
 	/*FString DebugMessage = FString::Printf(TEXT("bUseControllerRotationYaw: %s"), bUseControllerRotationYaw ? TEXT("true") : TEXT("false"));
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, DebugMessage);*/
 
-	if (InventoryComponent)
+	AMainHUD* HUD = Cast<AMainHUD>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
+	if (HUD && HUD->MainWidget)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("인벤토리 컴포넌트 활성화됨"));
-
-		// 인벤토리에 들어있는 아이템들 순회해서 출력
-		for (UItemDataAsset* Item : InventoryComponent->InventoryItems)
-		{
-			if (Item)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("미리 설정된 아이템 있음: %s"), *Item->ItemName.ToString());
-			}
-		}
+		// 직접 참조 저장해두기
+		PlayerHitWidget = HUD->MainWidget->PlayerHitWidget;
 	}
+}
 
-	APlayerController* PC = Cast<APlayerController>(GetController());
-	if (PC)
+float AMainCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	SetHealth(Health - Damage);
+	if (PlayerHitWidget)
 	{
-
-		AMainPlayerController* MPC = Cast<AMainPlayerController>(PC);
-		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer());
-		if (Subsystem && InputMappingContext)
-		{
-			Subsystem->AddMappingContext(InputMappingContext, InputMappingPriority);
-			UE_LOG(LogTemp, Warning, TEXT("✅ 입력 매핑 컨텍스트 적용됨"));
-		}
-		else
-		{
-			UE_LOG(LogTemp, Error, TEXT("❌ Subsystem 또는 MappingContext null"));
-		}
+		PlayerHitWidget->TakeDamageEffect();
 	}
-
-	
+	return Damage;
 }
 
 void AMainCharacter::PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName)
@@ -204,7 +121,34 @@ void AMainCharacter::PlayHighPriorityMontage(UAnimMontage* Montage, FName StartS
 
 void AMainCharacter::UseCurrentItem()
 {
-
+	if (CurrentItem)
+	{
+		UUserbleItem* UserbleItem = NewObject<UUserbleItem>();
+		if (UserbleItem)
+		{
+			UserbleItem->UseItem(this, CurrentItem->ItemDataAsset);
+			if (CurrentItem->ItemDataAsset->ItemType == EItemType::HandLight)
+			{
+				UHandLightComponent* HandLightComponent = Cast<UHandLightComponent>(CurrentItem->GetComponentByClass(UHandLightComponent::StaticClass()));
+				if (HandLightComponent)
+				{
+					HandLightComponent->ToggleLight();
+				}
+			}
+			else if (CurrentItem->ItemDataAsset->ItemType == EItemType::ElectricOrb || CurrentItem->ItemDataAsset->ItemType == EItemType::IceOrb)
+			{
+					PlayHighPriorityMontage(ThrowMontage);
+					CurrentItem->SetActorEnableCollision(true);
+					/*CurrentItem->ThrowItem(this);*/
+			}
+			else
+			{
+				CurrentItem->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+				CurrentItem->Destroy();
+				CurrentItem = nullptr;
+			}
+		}
+	}
 }
 
 AActor* AMainCharacter::CheckDrawerTag()
@@ -239,8 +183,10 @@ AActor* AMainCharacter::CheckDrawerTag()
 			{
 				return HitActor;
 			}
-
-			
+			else if (HitActor->ActorHasTag("Door"))
+			{
+				return HitActor;
+			}
 		}
 
 	//	if (bHit)
@@ -289,13 +235,21 @@ void AMainCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (AdrenalineDuration > 0.0f)
+	{
+		AdrenalineDuration -= DeltaTime;
+	}
+
 	if (bIsRunning)
 	{
-		Stemina -= 10 * DeltaTime;
-		if (Stemina < 0)
+		if (AdrenalineDuration <= 0.0f)
 		{
-			Stemina = 0;
-			SetWalkMode();
+			Stemina -= 10 * DeltaTime;
+			if (Stemina < 0)
+			{
+				Stemina = 0;
+				SetWalkMode();
+			}
 		}
 	}
 	else
@@ -322,8 +276,4 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	UE_LOG(LogTemp, Warning, TEXT("🟡 SetupPlayerInputComponent 호출됨"));
-
-
 }
-

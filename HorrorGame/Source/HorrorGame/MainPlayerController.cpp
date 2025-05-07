@@ -7,6 +7,7 @@
 #include "MainCharacter.h"
 #include "Drawer.h"
 #include "Components/SceneComponent.h"
+#include "DoorActor.h"
 #include "ItemBaseActor.h"
 
 AMainPlayerController::AMainPlayerController()
@@ -14,93 +15,24 @@ AMainPlayerController::AMainPlayerController()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-void AMainPlayerController::SetMainWidget(UMainWidget* InWidget)
+void AMainPlayerController::SetMouseSensitivity(float NewSensitivity)
 {
-	MainWidget = InWidget;
-}
-
-
-
-void AMainPlayerController::ToggleInventory()
-{
-	if (!bCanToggleInventory)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("⛔ 중복 호출 차단됨"));
-		return;
-	}
-
-	bCanToggleInventory = false;
-	GetWorldTimerManager().SetTimerForNextTick([this]()
-		{
-			bCanToggleInventory = true;
-		});
-
-	UE_LOG(LogTemp, Warning, TEXT("🟡 ToggleInventory 함수 호출됨"));
-	UE_LOG(LogTemp, Warning, TEXT("🔁 토글 실행 시간: %f"), GetWorld()->GetTimeSeconds());
-	if (!MainWidget || !MainWidget->InventoryWidget)
-	{
-		UE_LOG(LogTemp, Error, TEXT("❌ MainWidget 또는 InventoryWidget이 nullptr입니다!"));
-		return;
-	}
-
-	ESlateVisibility CurrentVisibility = MainWidget->InventoryWidget->GetVisibility();
-	UE_LOG(LogTemp, Warning, TEXT("현재 InventoryWidget Visibility: %d"), (int32)CurrentVisibility);
-
-	if (CurrentVisibility == ESlateVisibility::Visible)
-	{
-		
-		MainWidget->InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
-		bShowMouseCursor = false;
-		SetInputMode(FInputModeGameOnly());
-		UE_LOG(LogTemp, Warning, TEXT("🔒 인벤토리 닫힘, 마우스 커서 끔"));
-
-		UE_LOG(LogTemp, Warning, TEXT("📌 MainWidget = %s"), *GetNameSafe(MainWidget));
-		UE_LOG(LogTemp, Warning, TEXT("📌 InventoryWidget = %s"), *GetNameSafe(MainWidget ? MainWidget->InventoryWidget : nullptr));
-	}
-	else
-	{
-		MainWidget->InventoryWidget->SetVisibility(ESlateVisibility::Visible);
-
-		// 새로고침
-		MainWidget->InventoryWidget->RefreshInventory();
-		UE_LOG(LogTemp, Warning, TEXT("✅ 인벤토리 새로고침 호출됨"));
-
-		bShowMouseCursor = true;
-		FInputModeUIOnly InputMode;
-		InputMode.SetWidgetToFocus(MainWidget->InventoryWidget->TakeWidget());
-		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-		SetInputMode(InputMode);
-
-		UE_LOG(LogTemp, Warning, TEXT("📦 인벤토리 열림, 마우스 커서 켬"));
-		UE_LOG(LogTemp, Warning, TEXT("📌 MainWidget = %s"), *GetNameSafe(MainWidget));
-		UE_LOG(LogTemp, Warning, TEXT("📌 InventoryWidget = %s"), *GetNameSafe(MainWidget ? MainWidget->InventoryWidget : nullptr));
-	}
+	MouseSensitivity = NewSensitivity;
 }
 
 void AMainPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//ULocalPlayer* LocalPlayer = GetLocalPlayer();
-	//if (LocalPlayer)
-	//{
-	//	UEnhancedInputLocalPlayerSubsystem* LocalPlayerSubsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
-	//	if (LocalPlayerSubsystem && InputMappingContext)
-	//	{
-	//		LocalPlayerSubsystem->AddMappingContext(InputMappingContext, 0);
-	//	}
-	//}
-	//if (MainWidgetClass)
-	//{
-	//	MainWidget = CreateWidget<UMainWidget>(this, MainWidgetClass);
-	//	if (MainWidget)
-	//	{
-	//		MainWidget->AddToViewport();
-
-	//		// 인벤토리 시작할 때 안 보이게
-	//		MainWidget->InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
-	//	}
-	//}
+	ULocalPlayer* LocalPlayer = GetLocalPlayer();
+	if (LocalPlayer)
+	{
+		UEnhancedInputLocalPlayerSubsystem* LocalPlayerSubsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+		if (LocalPlayerSubsystem && InputMappingContext)
+		{
+			LocalPlayerSubsystem->AddMappingContext(InputMappingContext, 0);
+		}
+	}
 }
 
 void AMainPlayerController::SetupInputComponent()
@@ -151,16 +83,6 @@ void AMainPlayerController::SetupInputComponent()
 		{
 			EnhancedInputComponent->BindAction(InterectionAction, ETriggerEvent::Started, this, &AMainPlayerController::InputInterection);
 		}
-
-		if (IA_ToggleInventory)
-		{
-			EnhancedInputComponent->BindAction(IA_ToggleInventory, ETriggerEvent::Started, this, &AMainPlayerController::ToggleInventory);
-		}
-		if (EnhancedInputComponent && IA_ToggleInventory)
-		{
-			EnhancedInputComponent->BindAction(IA_ToggleInventory, ETriggerEvent::Started, this, &AMainPlayerController::ToggleInventory);
-			UE_LOG(LogTemp, Warning, TEXT("🟢 I 키에 인벤토리 토글 바인딩 완료"));
-		}
 	}
 }
 
@@ -209,8 +131,8 @@ void AMainPlayerController::InputLook(const FInputActionValue& Value)
 {
 	FVector2D InputValue = Value.Get<FVector2D>();
 
-	AddYawInput(InputValue.X);
-	AddPitchInput(InputValue.Y);
+	AddYawInput(InputValue.X * MouseSensitivity);
+	AddPitchInput(InputValue.Y * MouseSensitivity);
 }
 
 void AMainPlayerController::InputLookOffsetMove(const FInputActionValue& Value)
@@ -302,71 +224,53 @@ void AMainPlayerController::InputClick(const FInputActionValue& Value)
 			DrawerActor->ToggleDrawer(TargetDrawer);
 		}
 	}
-}
-
-void AMainPlayerController::InputInterection(const FInputActionValue& Value)
-{
-	//if (MainCharacter->CheckDrawerTag())
-	//{
-	//	
-	//	if (MainCharacter->CheckDrawerTag())
-	//	{
-	//		AActor* TargetItem = MainCharacter->CheckDrawerTag();
-	//		if (TargetItem && TargetItem->ActorHasTag("Item"))
-	//		{
-	//			AItemBaseActor* ItemActor = Cast<AItemBaseActor>(TargetItem);
-	//			if (ItemActor && ItemActor->ItemDataAsset)
-	//			{
-	//				// ✅ 인벤토리에만 추가
-	//				if (MainCharacter->InventoryComponent)
-	//				{
-	//					MainCharacter->InventoryComponent->AddItem(ItemActor->ItemDataAsset);
-	//					UE_LOG(LogTemp, Warning, TEXT("인벤토리에 추가됨: %s"), *ItemActor->ItemDataAsset->ItemName.ToString());
-	//				}
-
-	//				if (!MainCharacter->CurrentItem)
-	//				{
-	//					MainCharacter->PlayHighPriorityMontage(MainCharacter->PickUpMontage);
-	//					
-	//				}
-
-	//				// ✅ 바닥에서 제거
-	//				ItemActor->Destroy();
-	//			}
-	//		}
-	//	}
-	//}
-
-	AActor* TargetItem = MainCharacter->CheckDrawerTag();
-	if (TargetItem && TargetItem->ActorHasTag("Item"))
+	else if (bIsPickUp)
 	{
-		AItemBaseActor* ItemActor = Cast<AItemBaseActor>(TargetItem);
-		if (ItemActor && ItemActor->ItemDataAsset)
+		MainCharacter->UseCurrentItem();
+		if (MainCharacter->CurrentItem != nullptr && MainCharacter->CurrentItem->ItemDataAsset->ItemType == EItemType::HandLight)
 		{
-			// ✅ 인벤토리에 빈칸이 있는지 확인
-			if (MainCharacter->InventoryComponent)
-			{
-				int32 EmptyIndex = MainCharacter->InventoryComponent->InventoryItems.Find(nullptr);
-				if (EmptyIndex == INDEX_NONE)
-				{
-					UE_LOG(LogTemp, Warning, TEXT("❌ 인벤토리가 가득 차서 아이템을 먹을 수 없습니다: %s"), *ItemActor->ItemDataAsset->ItemName.ToString());
-					return;
-				}
-
-				// ✅ 아이템 추가
-				MainCharacter->InventoryComponent->AddItem(ItemActor->ItemDataAsset);
-				UE_LOG(LogTemp, Warning, TEXT("인벤토리에 추가됨: %s"), *ItemActor->ItemDataAsset->ItemName.ToString());
-			}
-
-			// ✅ 손이 비어있을 때만 애니메이션 출력
-			if (!MainCharacter->CurrentItem)
-			{
-				MainCharacter->PlayHighPriorityMontage(MainCharacter->PickUpMontage);
-			}
-
-			// ✅ 바닥에서 제거
-			ItemActor->Destroy();
+			bIsPickUp = true;
+		}
+		else
+		{
+			bIsPickUp = false;
 		}
 	}
 }
 
+void AMainPlayerController::InputInterection(const FInputActionValue& Value)
+{
+	if (MainCharacter->CheckDrawerTag())
+	{
+		AActor* TargetItem = MainCharacter->CheckDrawerTag();
+		if (TargetItem->ActorHasTag("Item") && TargetItem)
+		{
+			AItemBaseActor* ItemActor = Cast<AItemBaseActor>(TargetItem);
+			if (ItemActor && ItemActor->ItemDataAsset && !bIsPickUp)
+			{
+				MainCharacter->PlayHighPriorityMontage(MainCharacter->PickUpMontage);
+				ItemActor->SetActorEnableCollision(false);
+				ItemActor->AttachToComponent(
+					MainCharacter->GetMesh(),
+					FAttachmentTransformRules(
+						EAttachmentRule::SnapToTarget,
+						EAttachmentRule::SnapToTarget,
+						EAttachmentRule::KeepWorld,
+						false
+					),
+					ItemActor->ItemDataAsset->SocketName);
+				MainCharacter->CurrentItem = ItemActor;
+				bIsPickUp = true;
+			}
+		}
+		else if (TargetItem->ActorHasTag("Door") && TargetItem)
+		{
+			ADoorActor* DoorActor = Cast<ADoorActor>(TargetItem);
+			if (DoorActor)
+			{
+				DoorActor->ToggleDoor();
+			}
+		}
+	}
+
+}

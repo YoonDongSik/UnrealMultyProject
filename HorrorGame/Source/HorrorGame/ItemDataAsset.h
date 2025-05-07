@@ -3,24 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EItemType.h"
 #include "Engine/DataAsset.h"
 #include "EItemType.h"
 #include "EItemCollisionType.h"
+#include "NiagaraSystem.h"
 #include "ItemDataAsset.generated.h"
 
 /**
- *
+ * 
  */
 UCLASS(Blueprintable)
 class HORRORGAME_API UItemDataAsset : public UDataAsset
 {
 	GENERATED_BODY()
-
+	
 public:
 	UItemDataAsset();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	FText ItemName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
@@ -34,6 +34,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	EItemType ItemType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
+	UNiagaraSystem* ItemParticle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Visual")
 	FVector ItemScale = FVector(1.0f, 1.0f, 1.0f);
@@ -58,4 +61,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collision")
 	FVector CollisionOffset = FVector::ZeroVector;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SocketName")
+	FName SocketName = FName("None");
 };
