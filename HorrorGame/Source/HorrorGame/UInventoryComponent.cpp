@@ -5,7 +5,10 @@ void UInventoryComponent::BeginPlay()
 	Super::BeginPlay();
 
     InventoryItems.Empty(); // ✅ 혹시라도 null 들어가 있었으면 전부 제거
-    InventoryWidget->RefreshInventory();
+    if (InventoryWidget)
+    {
+        InventoryWidget->RefreshInventory();
+    }
     InventoryItems.Init(nullptr, 6);
 }
 

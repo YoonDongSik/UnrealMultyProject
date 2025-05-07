@@ -26,8 +26,7 @@ void UInventoryWidget::NativeConstruct()
 
 void UInventoryWidget::RefreshInventory()
 {
-
-	if (!InventoryPanel || !ItemSlotClass) return;
+	if (!InventoryPanel || !ItemSlotClass || !InventoryRootPanel) return;
 
 	InventoryPanel->ClearChildren();  // UI 초기화
 	ItemSlotWidgets.Empty();
@@ -35,6 +34,9 @@ void UInventoryWidget::RefreshInventory()
 	APlayerController* PC = GetWorld()->GetFirstPlayerController();
 	AMainCharacter* MainCharacter = Cast<AMainCharacter>(PC->GetPawn());
 	if (!MainCharacter || !MainCharacter->InventoryComponent) return;
+
+	if (!MainCharacter) return;
+	if (!MainCharacter->InventoryComponent) return;
 
 	const TArray<UItemDataAsset*>& Items = MainCharacter->InventoryComponent->InventoryItems;
 	const int32 MaxSlotCount = FMath::Max(6, Items.Num());
@@ -61,7 +63,7 @@ void UInventoryWidget::RefreshInventory()
 		InventoryPanel->AddChildToUniformGrid(NewSlot, i / 3, i % 3);
 		ItemSlotWidgets.Add(NewSlot);
 
-		ItemSlotWidgets.Add(NewSlot);
+		/*ItemSlotWidgets.Add(NewSlot);*/
 	}
 }
 
