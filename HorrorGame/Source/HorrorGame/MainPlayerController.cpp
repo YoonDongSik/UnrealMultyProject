@@ -6,6 +6,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "MainCharacter.h"
 #include "Drawer.h"
+#include "LadderActor.h"
 #include "Components/SceneComponent.h"
 #include "DoorActor.h"
 #include "ItemBaseActor.h"
@@ -159,7 +160,7 @@ void AMainPlayerController::SetupInputComponent()
 		if (EnhancedInputComponent && IA_ToggleInventory)
 		{
 			EnhancedInputComponent->BindAction(IA_ToggleInventory, ETriggerEvent::Started, this, &AMainPlayerController::ToggleInventory);
-			UE_LOG(LogTemp, Warning, TEXT("🟢 I 키에 인벤토리 토글 바인딩 완료"));
+			//UE_LOG(LogTemp, Warning, TEXT("🟢 I 키에 인벤토리 토글 바인딩 완료"));
 		}
 	}
 }
@@ -202,7 +203,7 @@ void AMainPlayerController::ResetMove(const FInputActionValue& Value)
 {
 	bIsMoving = false;
 	MainCharacter->SetWalkMode();
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("WalkMode")));
+	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("WalkMode")));
 }
 
 void AMainPlayerController::InputLook(const FInputActionValue& Value)
@@ -243,18 +244,18 @@ void AMainPlayerController::InputRun(const FInputActionValue& Value)
 			if (bIsMoving)
 			{
 				MainCharacter->SetRunMode();
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("RunMode")));
+				//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("RunMode")));
 			}
 			else
 			{
 				MainCharacter->SetWalkMode();
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("WalkMode")));
+				//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("WalkMode")));
 			}
 		}
 		else
 		{
 			MainCharacter->SetWalkMode();
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("WalkMode")));
+			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("WalkMode")));
 		}
 	}
 }
@@ -267,7 +268,7 @@ void AMainPlayerController::InputJump(const FInputActionValue& Value)
 		if (!bIsCrouch && !MainCharacter->GetCharacterMovement()->IsFalling() && Stemina >= 5)
 		{
 			MainCharacter->Jump();
-			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Black, FString::Printf(TEXT("Play Jump")));
+			//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Black, FString::Printf(TEXT("Play Jump")));
 			MainCharacter->PlayJumpMontage();
 		}
 	}
@@ -281,7 +282,7 @@ void AMainPlayerController::InputCrouching(const FInputActionValue& Value)
 	{
 		MainCharacter->DoCrouching();
 		MainCharacter->SetCrouchMode();
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("CrouchMode")));
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("CrouchMode")));
 	}
 	else
 	{
@@ -361,13 +362,13 @@ void AMainPlayerController::InputInterection(const FInputActionValue& Value)
 				int32 EmptyIndex = MainCharacter->InventoryComponent->InventoryItems.Find(nullptr);
 				if (EmptyIndex == INDEX_NONE)
 				{
-					UE_LOG(LogTemp, Warning, TEXT("❌ 인벤토리가 가득 차서 아이템을 먹을 수 없습니다: %s"), *ItemActor->ItemDataAsset->ItemName.ToString());
+					//UE_LOG(LogTemp, Warning, TEXT("❌ 인벤토리가 가득 차서 아이템을 먹을 수 없습니다: %s"), *ItemActor->ItemDataAsset->ItemName.ToString());
 					return;
 				}
 
 				// ✅ 아이템 추가
 				MainCharacter->InventoryComponent->AddItem(ItemActor->ItemDataAsset);
-				UE_LOG(LogTemp, Warning, TEXT("인벤토리에 추가됨: %s"), *ItemActor->ItemDataAsset->ItemName.ToString());
+				//UE_LOG(LogTemp, Warning, TEXT("인벤토리에 추가됨: %s"), *ItemActor->ItemDataAsset->ItemName.ToString());
 			}
 
 			// ✅ 손이 비어있을 때만 애니메이션 출력
@@ -380,14 +381,20 @@ void AMainPlayerController::InputInterection(const FInputActionValue& Value)
 			ItemActor->Destroy();
 		}
 	}
-		else if (TargetItem && TargetItem->ActorHasTag("Door"))
+	if (TargetItem && TargetItem->ActorHasTag("Door"))
+	{
+		ADoorActor* DoorActor = Cast<ADoorActor>(TargetItem);
+		if (DoorActor)
 		{
-			ADoorActor* DoorActor = Cast<ADoorActor>(TargetItem);
-			if (DoorActor)
-			{
-				DoorActor->ToggleDoor();
-			}
+			DoorActor->ToggleDoor();
 		}
-
-
+	}
+	if (TargetItem && TargetItem->ActorHasTag("Ladder"))
+	{
+		ALadderActor* LadderActor = Cast<ALadderActor>(TargetItem);
+		if (LadderActor)
+		{
+			LadderActor->ClimbLadder();
+		}
+	}
 }

@@ -53,7 +53,7 @@ void UInventoryComponent::AddItem(UItemDataAsset* NewItem)
     
     if (!NewItem)
     {
-        UE_LOG(LogTemp, Error, TEXT("❌ AddItem 받은 NewItem이 null입니다"));
+        //UE_LOG(LogTemp, Error, TEXT("❌ AddItem 받은 NewItem이 null입니다"));
         return;
     }
 
@@ -70,7 +70,7 @@ void UInventoryComponent::AddItem(UItemDataAsset* NewItem)
     // 가득 찼으면 추가 거부
     if (UsedSlotCount >= InventoryItems.Num())
     {
-        UE_LOG(LogTemp, Warning, TEXT("❌ 인벤토리 가득참 (실제 채워진 아이템 %d개)"), UsedSlotCount);
+        //UE_LOG(LogTemp, Warning, TEXT("❌ 인벤토리 가득참 (실제 채워진 아이템 %d개)"), UsedSlotCount);
         return;
     }
 
@@ -79,11 +79,11 @@ void UInventoryComponent::AddItem(UItemDataAsset* NewItem)
     if (EmptyIndex != INDEX_NONE)
     {
         InventoryItems[EmptyIndex] = NewItem;
-        UE_LOG(LogTemp, Warning, TEXT("인벤토리에 추가됨: %s"), *NewItem->ItemName.ToString());
+        //UE_LOG(LogTemp, Warning, TEXT("인벤토리에 추가됨: %s"), *NewItem->ItemName.ToString());
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("❌ 빈 슬롯을 찾을 수 없음"));
+        //UE_LOG(LogTemp, Error, TEXT("❌ 빈 슬롯을 찾을 수 없음"));
         return;
     }
 
@@ -105,17 +105,17 @@ void UInventoryComponent::SetInventoryWidget(UInventoryWidget* NewInventoryWidge
 void UInventoryComponent::LogInventoryState()
 {
 
-    UE_LOG(LogTemp, Warning, TEXT("🧩 [인벤토리 상태 출력] 전체 %d개 슬롯:"), InventoryItems.Num());
+    //UE_LOG(LogTemp, Warning, TEXT("🧩 [인벤토리 상태 출력] 전체 %d개 슬롯:"), InventoryItems.Num());
 
     for (int32 i = 0; i < InventoryItems.Num(); ++i)
     {
         if (InventoryItems[i])
         {
-            UE_LOG(LogTemp, Warning, TEXT("  ▸ [%d] %s"), i, *InventoryItems[i]->ItemName.ToString());
+            //UE_LOG(LogTemp, Warning, TEXT("  ▸ [%d] %s"), i, *InventoryItems[i]->ItemName.ToString());
         }
         else
         {
-            UE_LOG(LogTemp, Warning, TEXT("  ▫ [%d] (빈 슬롯)"), i);
+            //UE_LOG(LogTemp, Warning, TEXT("  ▫ [%d] (빈 슬롯)"), i);
         }
     }
 }

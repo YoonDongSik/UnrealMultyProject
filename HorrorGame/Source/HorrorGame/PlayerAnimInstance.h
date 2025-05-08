@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "LadderActor.h"
 #include "PlayerAnimInstance.generated.h"
 
 /**
@@ -24,6 +25,9 @@ public:
 
 	UFUNCTION()
 	void AnimNotify_ThrowTiming();
+
+	UFUNCTION()
+	void AnimNotify_ClimbTiming();
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")

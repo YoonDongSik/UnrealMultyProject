@@ -10,6 +10,7 @@
 #include "PlayerHitWidget.h"
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
+#include "LadderActor.h"
 #include "EnhancedInputSubsystems.h"
 #include "UInventoryComponent.h"
 #include "MainCharacter.generated.h"
@@ -96,6 +97,9 @@ public:
 public:
 	bool bIsCrouched = false;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	ALadderActor* LadderActor;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
 	UAnimMontage* PickUpMontage = nullptr;
 
@@ -104,6 +108,9 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UInventoryWidget* InventoryWidget;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Montage")
+	UAnimMontage* ClimbMontage = nullptr;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Move")

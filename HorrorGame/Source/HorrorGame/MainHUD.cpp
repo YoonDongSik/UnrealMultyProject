@@ -34,7 +34,7 @@ void AMainHUD::BeginPlay()
 			}
 			else
 			{
-				UE_LOG(LogTemp, Error, TEXT("❌ InventoryWidget가 nullptr입니다! 바인딩 확인 필요!"));
+				//UE_LOG(LogTemp, Error, TEXT("❌ InventoryWidget가 nullptr입니다! 바인딩 확인 필요!"));
 			}
 		}
 		// ✅ 인벤토리 컴포넌트 연결

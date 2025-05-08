@@ -44,13 +44,13 @@ void UContextMenu::OnUseOrEquipButtonClicked()
 	AMainCharacter* MainCharacter = Cast<AMainCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
 	if (!MainCharacter)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("플레이어 캐릭터 찾기 실패"));
+		//UE_LOG(LogTemp, Warning, TEXT("플레이어 캐릭터 찾기 실패"));
 		return;
 	}
 
 	if (TargetItemSlot->ItemDataAsset->ItemType == EItemType::E_Equipable)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("장착 실행!"));
+		//UE_LOG(LogTemp, Warning, TEXT("장착 실행!"));
 
 		// ✅ 장착 처리 함수 호출
 		MainCharacter->EquipItem(TargetItemSlot->ItemDataAsset);
@@ -84,7 +84,7 @@ void UContextMenu::OnUseOrEquipButtonClicked()
 		if (MPC->MainWidget && MPC->MainWidget->InventoryWidget)
 		{
 			MPC->MainWidget->InventoryWidget->RefreshInventory();
-			UE_LOG(LogTemp, Warning, TEXT("✅ 인벤토리 UI 새로고침 완료"));
+			//UE_LOG(LogTemp, Warning, TEXT("✅ 인벤토리 UI 새로고침 완료"));
 		}
 	}
 

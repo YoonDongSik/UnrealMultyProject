@@ -42,8 +42,8 @@ void AItemBaseActor::SetItemData(UItemDataAsset* NewItemData)
 	if (ItemMesh && ItemDataAsset->ItemMesh)
 	{
 		ItemMesh->SetSkeletalMesh(ItemDataAsset->ItemMesh);
-		ItemMesh->SetRelativeLocation(FVector::ZeroVector); // 위치 초기화
-		ItemMesh->SetRelativeRotation(FRotator::ZeroRotator); // 회전 초기화
+		//ItemMesh->SetRelativeLocation(FVector::ZeroVector); // 위치 초기화
+		//ItemMesh->SetRelativeRotation(FRotator::ZeroRotator); // 회전 초기화
 		ItemMesh->SetRelativeScale3D(FVector(1.0f)); // 스케일 초기화
 	}
 
@@ -100,6 +100,8 @@ void AItemBaseActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	RandomItemData();
+
 	APlayerController* PC = GetWorld()->GetFirstPlayerController();
 	if (PC)
 	{
@@ -114,12 +116,25 @@ void AItemBaseActor::BeginPlay()
 void AItemBaseActor::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
+
+	/*RandomItemData();*/
+}
+
+void AItemBaseActor::RandomItemData()
+{
+	if (ItemDataList.Num() > 0)
+	{
+		int32 RandomIndex = FMath::RandRange(0, ItemDataList.Num() - 1);
+		ItemDataAsset = ItemDataList[RandomIndex];
+		SetItemData(ItemDataAsset);
+	}
+
 	if (ItemDataAsset)
 	{
 		ItemMesh->SetSkeletalMesh(ItemDataAsset->ItemMesh);
 		ItemMesh->SetWorldScale3D(ItemDataAsset->ItemScale);
-		/*ItemMesh->SetSimulatePhysics(true);
-		ItemMesh->SetEnableGravity(true);*/
+		ItemMesh->SetSimulatePhysics(true);
+		ItemMesh->SetEnableGravity(true);
 		ItemMesh->SetCollisionProfileName(FName("BlockAll"));
 		ItemMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
@@ -131,6 +146,7 @@ void AItemBaseActor::OnConstruction(const FTransform& Transform)
 		{
 		case EItemCollisionType::Box:
 			BoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+			BoxCollision->SetSimulatePhysics(true);
 			BoxCollision->SetCollisionProfileName(FName("BlockAll"));
 			BoxCollision->SetBoxExtent(ItemDataAsset->BoxExtent);
 			BoxCollision->SetRelativeRotation(ItemDataAsset->CollisionRotation);
@@ -138,6 +154,7 @@ void AItemBaseActor::OnConstruction(const FTransform& Transform)
 			break;
 		case EItemCollisionType::Capsule:
 			CapsuleCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+			CapsuleCollision->SetSimulatePhysics(true);
 			CapsuleCollision->SetCollisionProfileName(FName("BlockAll"));
 			CapsuleCollision->SetCapsuleRadius(ItemDataAsset->CapsuleRadius);
 			CapsuleCollision->SetCapsuleHalfHeight(ItemDataAsset->CapsuleHalfHeight);
@@ -146,6 +163,7 @@ void AItemBaseActor::OnConstruction(const FTransform& Transform)
 			break;
 		case EItemCollisionType::Sphere:
 			SphereCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+			SphereCollision->SetSimulatePhysics(true);
 			SphereCollision->SetSphereRadius(ItemDataAsset->SphereRadius);
 			SphereCollision->SetRelativeRotation(ItemDataAsset->CollisionRotation);
 			SphereCollision->SetRelativeLocation(ItemDataAsset->CollisionOffset);

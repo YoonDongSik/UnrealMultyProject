@@ -161,7 +161,7 @@ void AEnemyBasePawn::OnAttackRangeBeginOverlap(UPrimitiveComponent* OverlappedCo
 	{
 		if (OtherActor->ActorHasTag("Player"))
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, FString::Printf(TEXT("Overlap Actor: %s, Comp: %s"), *OtherActor->GetName(), *OtherComp->GetName()));
+			//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, FString::Printf(TEXT("Overlap Actor: %s, Comp: %s"), *OtherActor->GetName(), *OtherComp->GetName()));
 			bIsPlayerInAttack = true;
 			TargetActor = OtherActor;
 			PlayAttack();
@@ -171,12 +171,12 @@ void AEnemyBasePawn::OnAttackRangeBeginOverlap(UPrimitiveComponent* OverlappedCo
 
 void AEnemyBasePawn::OnAttackRangeEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("OverlapEnd!"));
+	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("OverlapEnd!"));
 	if (OtherActor && OtherActor != this)
 	{
 		if (OtherActor->ActorHasTag("Player"))
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, FString::Printf(TEXT("OverlapEnd Actor: %s, Comp: %s"), *OtherActor->GetName(), *OtherComp->GetName()));
+			//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, FString::Printf(TEXT("OverlapEnd Actor: %s, Comp: %s"), *OtherActor->GetName(), *OtherComp->GetName()));
 			bIsPlayerInAttack = false;
 			TargetActor = nullptr;
 		}

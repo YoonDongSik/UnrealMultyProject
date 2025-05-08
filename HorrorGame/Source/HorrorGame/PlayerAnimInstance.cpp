@@ -52,3 +52,14 @@ void UPlayerAnimInstance::AnimNotify_ThrowTiming()
 		}
 	}
 }
+
+void UPlayerAnimInstance::AnimNotify_ClimbTiming()
+{
+	if (PlayerCharacter)
+	{
+		if (PlayerCharacter && PlayerCharacter->LadderActor)
+		{
+			PlayerCharacter->LadderActor->ClimbStep();
+		}
+	}
+}

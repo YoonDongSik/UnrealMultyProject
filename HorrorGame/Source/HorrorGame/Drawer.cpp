@@ -56,12 +56,12 @@ void ADrawer::ToggleDrawer(AActor* TargetDrawer)
 		if (bIsOpen)
 		{
 			EndLocation = StartLocation + FVector(0.f, 50.f, 0.f);
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, TEXT("Drawer Is Opened"));
+			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, TEXT("Drawer Is Opened"));
 		}
 		else
 		{
 			EndLocation = StartLocation - FVector(0.f, 50.f, 0.f);
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, TEXT("Drawer Is Closed"));
+			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, TEXT("Drawer Is Closed"));
 		}
 
 		// 상태 업데이트

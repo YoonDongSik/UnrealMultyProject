@@ -28,7 +28,7 @@ void ATestEnemyActor::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedCompon
 {
 	if (OtherActor && OtherActor != this)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, FString::Printf(TEXT("Overlap Actor: %s, Comp: %s"), *OtherActor->GetName(), *OtherComp->GetName()));
+		//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, FString::Printf(TEXT("Overlap Actor: %s, Comp: %s"), *OtherActor->GetName(), *OtherComp->GetName()));
 	}
 }
 
@@ -36,7 +36,7 @@ void ATestEnemyActor::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponen
 {
 	if (OtherActor && OtherActor != this)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, FString::Printf(TEXT("OverlapEnd Actor: %s, Comp: %s"), *OtherActor->GetName(), *OtherComp->GetName()));
+		//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, FString::Printf(TEXT("OverlapEnd Actor: %s, Comp: %s"), *OtherActor->GetName(), *OtherComp->GetName()));
 	}
 }
 

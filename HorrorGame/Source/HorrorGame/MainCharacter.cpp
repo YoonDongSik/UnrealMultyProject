@@ -69,7 +69,7 @@ void AMainCharacter::DoCrouching()
 		SpringArm->SetRelativeLocation(FVector(60.0f, 0.0f, 40.0f));
 		GetCapsuleComponent()->SetCapsuleSize(45, 60);
 		GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -60.0f));
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("Crouching True")));
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("Crouching True")));
 	}
 	else
 	{
@@ -77,14 +77,14 @@ void AMainCharacter::DoCrouching()
 		SpringArm->SetRelativeLocation(FVector(50.0f, 0.0f, 70.0f));
 		GetCapsuleComponent()->SetCapsuleSize(45, 90);
 		GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("Crouching false")));
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("Crouching false")));
 	}
 }
 
 void AMainCharacter::EquipItem(UItemDataAsset* ItemData)
 {
 	if (!ItemData || !ItemData->ItemMesh || !InventoryComponent) return;
-	UE_LOG(LogTemp, Warning, TEXT("🟡 EquipItem 호출됨: %s"), *ItemData->ItemName.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("🟡 EquipItem 호출됨: %s"), *ItemData->ItemName.ToString());
 
 	int32 RemoveIndex = InventoryComponent->InventoryItems.Find(ItemData);
 	if (RemoveIndex != INDEX_NONE)
@@ -102,11 +102,11 @@ void AMainCharacter::EquipItem(UItemDataAsset* ItemData)
 		if (EmptyIndex != INDEX_NONE)
 		{
 			InventoryComponent->InventoryItems[EmptyIndex] = CurrentItem->ItemDataAsset;
-			UE_LOG(LogTemp, Warning, TEXT("🟢 기존 아이템 복구: %s → Index %d"), *CurrentItem->ItemDataAsset->ItemName.ToString(), EmptyIndex);
+			//UE_LOG(LogTemp, Warning, TEXT("🟢 기존 아이템 복구: %s → Index %d"), *CurrentItem->ItemDataAsset->ItemName.ToString(), EmptyIndex);
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("🔴 인벤토리에 빈칸 없음 → 기존 아이템 유실됨: %s"), *CurrentItem->ItemDataAsset->ItemName.ToString());
+			//UE_LOG(LogTemp, Warning, TEXT("🔴 인벤토리에 빈칸 없음 → 기존 아이템 유실됨: %s"), *CurrentItem->ItemDataAsset->ItemName.ToString());
 		}
 
 
@@ -145,7 +145,7 @@ void AMainCharacter::EquipItem(UItemDataAsset* ItemData)
 		}
 		
 
-		UE_LOG(LogTemp, Warning, TEXT("✅ 새 아이템 장착: %s"), *ItemData->ItemName.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("✅ 새 아이템 장착: %s"), *ItemData->ItemName.ToString());
 
 	}
 
@@ -161,7 +161,7 @@ void AMainCharacter::EquipItem(UItemDataAsset* ItemData)
 				if (MPC->MainWidget && MPC->MainWidget->InventoryWidget)
 				{
 					MPC->MainWidget->InventoryWidget->RefreshInventory();
-					UE_LOG(LogTemp, Warning, TEXT("🟢 1프레임 후 인벤토리 UI 새로고침 완료"));
+					//UE_LOG(LogTemp, Warning, TEXT("🟢 1프레임 후 인벤토리 UI 새로고침 완료"));
 				}
 			}
 		}, 0.01f, false);
@@ -189,14 +189,14 @@ void AMainCharacter::BeginPlay()
 
 	if (InventoryComponent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("인벤토리 컴포넌트 활성화됨"));
+		//UE_LOG(LogTemp, Warning, TEXT("인벤토리 컴포넌트 활성화됨"));
 
 		// 인벤토리에 들어있는 아이템들 순회해서 출력
 		for (UItemDataAsset* Item : InventoryComponent->InventoryItems)
 		{
 			if (Item)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("미리 설정된 아이템 있음: %s"), *Item->ItemName.ToString());
+				//UE_LOG(LogTemp, Warning, TEXT("미리 설정된 아이템 있음: %s"), *Item->ItemName.ToString());
 			}
 		}
 	}
@@ -210,11 +210,11 @@ void AMainCharacter::BeginPlay()
 		if (Subsystem && InputMappingContext)
 		{
 			Subsystem->AddMappingContext(InputMappingContext, InputMappingPriority);
-			UE_LOG(LogTemp, Warning, TEXT("✅ 입력 매핑 컨텍스트 적용됨"));
+			//UE_LOG(LogTemp, Warning, TEXT("✅ 입력 매핑 컨텍스트 적용됨"));
 		}
 		else
 		{
-			UE_LOG(LogTemp, Error, TEXT("❌ Subsystem 또는 MappingContext null"));
+			//UE_LOG(LogTemp, Error, TEXT("❌ Subsystem 또는 MappingContext null"));
 		}
 	}
 }
@@ -304,6 +304,10 @@ AActor* AMainCharacter::CheckDrawerTag()
 				return HitActor;
 			}
 			else if (HitActor->ActorHasTag("Door"))
+			{
+				return HitActor;
+			}
+			else if (HitActor->ActorHasTag("Ladder"))
 			{
 				return HitActor;
 			}

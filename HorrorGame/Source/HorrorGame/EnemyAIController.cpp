@@ -76,7 +76,7 @@ void AEnemyAIController::RandomMove()
     if (NavSystem)
     {
         FVector Origin = ControlledPawn->GetActorLocation();
-        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Origin: %s"), *Origin.ToString()));
+        //GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Origin: %s"), *Origin.ToString()));
 
         FNavLocation RandomLocation;
         if (NavSystem->GetRandomReachablePointInRadius(Origin, 10000.0f, RandomLocation))
@@ -87,11 +87,11 @@ void AEnemyAIController::RandomMove()
             /*ControlledPawn->SetActorLocation(RandomLocation.Location);*/
 			MoveToLocation(NewLocation);
 			bIsMoving = true;
-            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Random Move location: %s"), *NewLocation.ToString()));
+            //GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Random Move location: %s"), *NewLocation.ToString()));
         }
         else
         {
-            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("No reachable random location found!"));
+            //GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("No reachable random location found!"));
         }
     }
 }

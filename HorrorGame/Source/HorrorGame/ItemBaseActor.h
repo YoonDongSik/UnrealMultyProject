@@ -25,6 +25,12 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* ItemMesh;
 
+	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
+	UItemDataAsset* ItemDataAsset;*/
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
+	TArray<UItemDataAsset*> ItemDataList;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
 	UItemDataAsset* ItemDataAsset;
 
@@ -37,6 +43,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void OnConstruction(const FTransform& Transform) override;
+
+	void RandomItemData();
 
 public:
 	// Called every frame

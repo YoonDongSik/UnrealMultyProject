@@ -12,7 +12,7 @@ void UItemSlotWidget::SetItem(UItemDataAsset* InItem)
 
 	if (!InItem || !ItemIcon || !ItemNameText)
 	{
-		UE_LOG(LogTemp, Error, TEXT("❌ SetItem 실패 - 누락된 참조 있음"));
+		//UE_LOG(LogTemp, Error, TEXT("❌ SetItem 실패 - 누락된 참조 있음"));
 		return;
 	}
 
@@ -27,7 +27,7 @@ void UItemSlotWidget::SetItem(UItemDataAsset* InItem)
 
 	SetVisibility(ESlateVisibility::Visible);
 
-	UE_LOG(LogTemp, Warning, TEXT("✅ SetItem: %s"), *InItem->ItemName.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("✅ SetItem: %s"), *InItem->ItemName.ToString());
 }
 
 void UItemSlotWidget::ClearItem()
@@ -53,15 +53,15 @@ void UItemSlotWidget::UpdateSlot()
 {
 	if (ItemDataAsset && ItemIcon && ItemNameText)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("✅ 아이템 슬롯에 데이터 적용: %s"), *ItemDataAsset->ItemName.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("✅ 아이템 슬롯에 데이터 적용: %s"), *ItemDataAsset->ItemName.ToString());
 		ItemIcon->SetBrushFromTexture(ItemDataAsset->ItemIcon);
 		ItemNameText->SetText(ItemDataAsset->ItemName);
 	}
 	else
 	{
-		if (!ItemDataAsset) UE_LOG(LogTemp, Warning, TEXT("⚠️ ItemDataAsset이 null입니다."));
-		if (!ItemIcon) UE_LOG(LogTemp, Warning, TEXT("⚠️ ItemIcon이 바인딩되지 않았습니다."));
-		if (!ItemNameText) UE_LOG(LogTemp, Warning, TEXT("⚠️ ItemNameText가 바인딩되지 않았습니다."));
+		//if (!ItemDataAsset) //UE_LOG(LogTemp, Warning, TEXT("⚠️ ItemDataAsset이 null입니다."));
+		//if (!ItemIcon) //UE_LOG(LogTemp, Warning, TEXT("⚠️ ItemIcon이 바인딩되지 않았습니다."));
+		//if (!ItemNameText) //UE_LOG(LogTemp, Warning, TEXT("⚠️ ItemNameText가 바인딩되지 않았습니다."));
 	}
 
 		ItemIcon->SetBrushFromTexture(nullptr);
@@ -90,7 +90,7 @@ FReply UItemSlotWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, con
 		{
 			if (LastOpenedSlot == this)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("🔁 같은 슬롯 우클릭 → 메뉴 닫기"));
+				//UE_LOG(LogTemp, Warning, TEXT("🔁 같은 슬롯 우클릭 → 메뉴 닫기"));
 				ActiveContextMenu->RemoveFromParent();
 				ActiveContextMenu = nullptr;
 				LastOpenedSlot = nullptr;
