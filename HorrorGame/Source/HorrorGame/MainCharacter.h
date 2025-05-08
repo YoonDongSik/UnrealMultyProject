@@ -42,7 +42,19 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+
 	virtual float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> DeathScreenWidgetClass;
+
+
+	UUserWidget* DeathScreenWidget;
+
+	// 죽음 처리
+	void HandleDeath();
+	bool bIsDead = false;
 
 public:	
 	// Called every frame

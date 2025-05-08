@@ -9,6 +9,12 @@
 #include "Camera/CameraComponent.h"
 #include "MainHUD.h"
 #include "Kismet/GameplayStatics.h"
+<<<<<<< Updated upstream
+=======
+#include "DeathScreen.h"
+#include "InventoryWidget.h"
+#include "MainPlayerController.h"
+>>>>>>> Stashed changes
 
 
 // Sets default values
@@ -102,13 +108,78 @@ void AMainCharacter::BeginPlay()
 float AMainCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+
 	SetHealth(Health - Damage);
+
 	if (PlayerHitWidget)
 	{
 		PlayerHitWidget->TakeDamageEffect();
 	}
+
+	// ✅ 죽음 체크 추가
+	if (Health <= 0.0f && !bIsDead)
+	{
+		HandleDeath();
+	}
+
 	return Damage;
 }
+
+void AMainCharacter::HandleDeath()
+{
+	UE_LOG(LogTemp, Warning, TEXT("플레이어 사망 - 데스 화면 띄우기"));
+
+
+
+	// 게임 일시 정지
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (PC)
+	{
+		PC->SetPause(true);
+		PC->bShowMouseCursor = true;
+	}
+
+	if (DeathScreenWidgetClass)
+	{
+		DeathScreenWidget = CreateWidget<UUserWidget>(GetWorld(), DeathScreenWidgetClass);
+		if (DeathScreenWidget)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("✅ DeathScreen 위젯 생성 성공"));
+
+			DeathScreenWidget->AddToViewport(999);
+			UE_LOG(LogTemp, Warning, TEXT("✅ DeathScreen AddToViewport 완료"));
+
+			APlayerController* PC = GetWorld()->GetFirstPlayerController();
+			if (PC)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("✅ PlayerController 가져옴"));
+
+				PC->bShowMouseCursor = true;
+				FInputModeUIOnly InputMode;
+				InputMode.SetWidgetToFocus(DeathScreenWidget->TakeWidget());
+				InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+				PC->SetInputMode(InputMode);
+
+				UE_LOG(LogTemp, Warning, TEXT("✅ PlayerController 마우스 커서 & InputMode 설정 완료"));
+			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("❌ PlayerController 가져오기 실패"));
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("❌ DeathScreen 위젯 생성 실패"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("❌ DeathScreenWidgetClass 가 NULL!"));
+	}
+}
+
+
+
 
 void AMainCharacter::PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName)
 {
