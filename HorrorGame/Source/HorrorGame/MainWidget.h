@@ -10,6 +10,7 @@
 #include "InventoryWidget.h"
 #include "ItemSlotWidget.h"
 #include "PlayerHitWidget.h"
+#include "ClearWidget.h"
 #include "MainWidget.generated.h"
 
 class UInventoryWidget;
@@ -26,6 +27,9 @@ public:
 	virtual void NativeConstruct() override;
 	
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat", meta = (BindWidget))
+	UClearWidget* ClearWidget;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect", meta = (BindWidget))
 	UPlayerHitWidget* PlayerHitWidget;
 

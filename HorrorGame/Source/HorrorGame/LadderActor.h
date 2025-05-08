@@ -22,6 +22,11 @@ public:
 
 	void ClimbStep();
 
+	UFUNCTION()
+	void GameClear(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+		bool bFromSweep, const FHitResult& SweepResult);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -30,6 +35,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+public:
+	bool bIsGameClear = false;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
 	UStaticMeshComponent* LadderMesh;
@@ -37,11 +45,19 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ladder")
 	USphereComponent* StartSphere;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ladder")
+	USphereComponent* ClearSphere;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ladder|Camera")
 	ACineCameraActor* LadderClimbCamera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Climbing")
 	float ClimbSpeed = 2.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<UUserWidget> ClearWidgetClass;
+
+	UUserWidget* ClearWidget;
 
 	bool bIsClimbing = false;
 

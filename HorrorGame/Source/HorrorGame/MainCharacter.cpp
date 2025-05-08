@@ -10,6 +10,7 @@
 #include "MainHUD.h"
 #include "Kismet/GameplayStatics.h"
 #include "InventoryWidget.h"
+#include "LadderActor.h"
 #include "MainPlayerController.h"
 
 

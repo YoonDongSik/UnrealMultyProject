@@ -18,6 +18,9 @@ ALadderActor::ALadderActor()
 	StartSphere = CreateDefaultSubobject<USphereComponent>(TEXT("StartSphere"));
 	StartSphere->SetupAttachment(LadderMesh);
 
+	ClearSphere = CreateDefaultSubobject<USphereComponent>(TEXT("ClearSphere"));
+	ClearSphere->SetupAttachment(LadderMesh);
+
 	Tags.Add(FName("Ladder"));
 
 }
@@ -54,12 +57,36 @@ void ALadderActor::ClimbStep()
 	bIsClimbing = true;
 }
 
+void ALadderActor::GameClear(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor && OtherActor != this)
+	{
+		if (OtherActor->ActorHasTag("Player"))
+		{
+			AMainCharacter* PlayerCharacter = Cast<AMainCharacter>(OtherActor);
+			if (PlayerCharacter)
+			{
+				if (ClearWidgetClass)
+				{
+					ClearWidget = CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), ClearWidgetClass);
+					if (ClearWidget)
+					{
+						ClearWidget->SetVisibility(ESlateVisibility::Visible);
+					}
+				}
+			}
+		}
+	}
+}
+
 // Called when the game starts or when spawned
 void ALadderActor::BeginPlay()
 {
 	Super::BeginPlay();
 
 	MainCharacter = Cast<AMainCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+	ClearSphere->OnComponentBeginOverlap.AddDynamic(this, &ALadderActor::GameClear);
 	
 }
 
