@@ -31,11 +31,6 @@ void UMainWidget::SetupInventorySlotClass(TSubclassOf<UItemSlotWidget> InSlotCla
 	if (InventoryWidget)
 	{
 		InventoryWidget->ItemSlotClass = InSlotClass;
-		//UE_LOG(LogTemp, Warning, TEXT("✅ ItemSlotClass 전달 완료: %s"), *InSlotClass->GetName());
 	}
-	//else
-	//{
-	//	UE_LOG(LogTemp, Error, TEXT("❌ InventoryWidget가 nullptr"));
-	//}
 }
 

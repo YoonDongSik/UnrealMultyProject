@@ -187,6 +187,7 @@ void AMainCharacter::BeginPlay()
 	{
 		// 직접 참조 저장해두기
 		PlayerHitWidget = HUD->MainWidget->PlayerHitWidget;
+		DeathScreen = HUD->MainWidget->DeathScreen;
 	}
 
 	if (InventoryComponent)
@@ -229,7 +230,42 @@ float AMainCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, 
 	{
 		PlayerHitWidget->TakeDamageEffect();
 	}
+
+	if (Health <= 0)
+	{
+		OnPlayerDie();
+	}
 	return Damage;
+}
+
+void AMainCharacter::OnPlayerDie()
+{
+	/*USkeletalMeshComponent* MeshComp = GetMesh();
+	if (!MeshComp) return;
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	MeshComp->SetCollisionProfileName(TEXT("Ragdoll"));
+	MeshComp->SetAllBodiesSimulatePhysics(true);
+	MeshComp->SetSimulatePhysics(true);
+	MeshComp->WakeAllRigidBodies();
+	MeshComp->bBlendPhysics = true;
+	DetachFromControllerPendingDestroy();
+	MeshComp->SetAnimInstanceClass(nullptr);*/
+
+	/*APlayerController* PC = Cast<APlayerController>(GetController());
+	if (PC)
+	{
+		AMainPlayerController* MPC = Cast<AMainPlayerController>(PC);
+		if (MPC)
+		{
+			MPC->UnPossess();
+		}
+	}*/
+	if (DeathScreen)
+	{
+		DeathScreen->OnDie();
+	}
 }
 
 void AMainCharacter::PlayHighPriorityMontage(UAnimMontage* Montage, FName StartSectionName)

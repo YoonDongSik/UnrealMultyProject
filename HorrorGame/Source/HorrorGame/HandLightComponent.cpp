@@ -16,7 +16,7 @@ UHandLightComponent::UHandLightComponent()
 	HandLight->SetupAttachment(this);
 
 	HandLight->SetIntensity(3000.0f);
-	HandLight->SetLightColor(FLinearColor::Yellow);
+	HandLight->SetLightColor(FLinearColor::White);
 	HandLight->SetAttenuationRadius(500.0f);
 	HandLight->SetOuterConeAngle(45.0f);
 	HandLight->SetVisibility(false);

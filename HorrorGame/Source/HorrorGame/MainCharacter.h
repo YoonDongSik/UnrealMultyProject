@@ -12,6 +12,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "UInventoryComponent.h"
+#include "DeathScreen.h"
 #include "MainCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStaminaChanged, float, NewStaminaPercent);
@@ -61,6 +62,9 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+	UFUNCTION()
+	void OnPlayerDie();
 
 public:	
 	// Called every frame
@@ -160,6 +164,9 @@ protected:
 
 	UPROPERTY()
 	UPlayerHitWidget* PlayerHitWidget;
+
+	UPROPERTY()
+	UDeathScreen* DeathScreen;
 
 	UPROPERTY()
 	class UHandLightComponent* HandLightComponent;

@@ -11,6 +11,7 @@
 #include "ItemSlotWidget.h"
 #include "PlayerHitWidget.h"
 #include "ClearWidget.h"
+#include "DeathScreen.h"
 #include "MainWidget.generated.h"
 
 class UInventoryWidget;
@@ -27,10 +28,13 @@ public:
 	virtual void NativeConstruct() override;
 	
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat", meta = (BindWidget))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI", meta = (BindWidget))
 	UClearWidget* ClearWidget;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect", meta = (BindWidget))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI", meta = (BindWidget))
+	UDeathScreen* DeathScreen;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI", meta = (BindWidget))
 	UPlayerHitWidget* PlayerHitWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI", meta = (BindWidget))
