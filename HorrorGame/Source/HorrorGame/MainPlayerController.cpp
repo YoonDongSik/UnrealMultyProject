@@ -68,17 +68,12 @@ void AMainPlayerController::ToggleInventory()
 
 		// 새로고침
 		MainWidget->InventoryWidget->RefreshInventory();
-		//UE_LOG(LogTemp, Warning, TEXT("✅ 인벤토리 새로고침 호출됨"));
 
 		bShowMouseCursor = true;
 		FInputModeUIOnly InputMode;
 		InputMode.SetWidgetToFocus(MainWidget->InventoryWidget->TakeWidget());
 		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 		SetInputMode(InputMode);
-
-		//UE_LOG(LogTemp, Warning, TEXT("📦 인벤토리 열림, 마우스 커서 켬"));
-		//UE_LOG(LogTemp, Warning, TEXT("📌 MainWidget = %s"), *GetNameSafe(MainWidget));
-		//UE_LOG(LogTemp, Warning, TEXT("📌 InventoryWidget = %s"), *GetNameSafe(MainWidget ? MainWidget->InventoryWidget : nullptr));
 	}
 }
 
@@ -160,7 +155,6 @@ void AMainPlayerController::SetupInputComponent()
 		if (EnhancedInputComponent && IA_ToggleInventory)
 		{
 			EnhancedInputComponent->BindAction(IA_ToggleInventory, ETriggerEvent::Started, this, &AMainPlayerController::ToggleInventory);
-			//UE_LOG(LogTemp, Warning, TEXT("🟢 I 키에 인벤토리 토글 바인딩 완료"));
 		}
 	}
 }
@@ -276,6 +270,8 @@ void AMainPlayerController::InputJump(const FInputActionValue& Value)
 
 void AMainPlayerController::InputCrouching(const FInputActionValue& Value)
 {
+	if (MainCharacter->GetCharacterMovement()->IsFalling()) return;
+
 	bIsCrouch = !bIsCrouch;
 
 	if (bIsCrouch)
@@ -356,28 +352,26 @@ void AMainPlayerController::InputInterection(const FInputActionValue& Value)
 		AItemBaseActor* ItemActor = Cast<AItemBaseActor>(TargetItem);
 		if (ItemActor && ItemActor->ItemDataAsset)
 		{
-			// ✅ 인벤토리에 빈칸이 있는지 확인
+			// 인벤토리에 빈칸이 있는지 확인
 			if (MainCharacter->InventoryComponent)
 			{
 				int32 EmptyIndex = MainCharacter->InventoryComponent->InventoryItems.Find(nullptr);
 				if (EmptyIndex == INDEX_NONE)
 				{
-					//UE_LOG(LogTemp, Warning, TEXT("❌ 인벤토리가 가득 차서 아이템을 먹을 수 없습니다: %s"), *ItemActor->ItemDataAsset->ItemName.ToString());
 					return;
 				}
 
-				// ✅ 아이템 추가
+				// 아이템 추가
 				MainCharacter->InventoryComponent->AddItem(ItemActor->ItemDataAsset);
-				//UE_LOG(LogTemp, Warning, TEXT("인벤토리에 추가됨: %s"), *ItemActor->ItemDataAsset->ItemName.ToString());
 			}
 
-			// ✅ 손이 비어있을 때만 애니메이션 출력
+			// 손이 비어있을 때만 애니메이션 출력
 			if (!MainCharacter->CurrentItem)
 			{
 				MainCharacter->PlayHighPriorityMontage(MainCharacter->PickUpMontage);
 			}
 
-			// ✅ 바닥에서 제거
+			// 바닥에서 제거
 			ItemActor->Destroy();
 		}
 	}

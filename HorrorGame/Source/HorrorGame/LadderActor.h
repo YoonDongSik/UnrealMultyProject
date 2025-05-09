@@ -54,10 +54,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Climbing")
 	float ClimbSpeed = 2.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TSubclassOf<UUserWidget> ClearWidgetClass;
 
-	UUserWidget* ClearWidget;
+	UUserWidget* ClearWidget;*/
 
 	bool bIsClimbing = false;
 

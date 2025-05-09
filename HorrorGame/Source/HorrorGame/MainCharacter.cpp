@@ -56,6 +56,7 @@ void AMainCharacter::PlayJumpMontage()
 
 void AMainCharacter::DoCrouching()
 {
+	if (GetCharacterMovement()->IsFalling()) return;
 	bIsCrouched = !bIsCrouched;
 
 	UPlayerAnimInstance* PlayerAnimInstance = Cast<UPlayerAnimInstance>(AnimInstance);

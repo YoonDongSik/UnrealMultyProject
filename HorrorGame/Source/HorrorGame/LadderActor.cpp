@@ -4,7 +4,7 @@
 #include "LadderActor.h"
 #include "MainCharacter.h"
 #include "Kismet/GameplayStatics.h"
-#include "AIController.h"
+#include "MainPlayerController.h"
 
 // Sets default values
 ALadderActor::ALadderActor()
@@ -59,20 +59,19 @@ void ALadderActor::ClimbStep()
 
 void ALadderActor::GameClear(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor && OtherActor != this)
+ 	if (OtherActor && OtherActor != this)
 	{
 		if (OtherActor->ActorHasTag("Player"))
 		{
-			AMainCharacter* PlayerCharacter = Cast<AMainCharacter>(OtherActor);
-			if (PlayerCharacter)
+			AMainPlayerController* PC = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+			if (PC)
 			{
-				if (ClearWidgetClass)
+				UMainWidget* MainWidget = PC->GetMainWidget();
+				if (MainWidget && MainWidget->ClearWidget)
 				{
-					ClearWidget = CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), ClearWidgetClass);
-					if (ClearWidget)
-					{
-						ClearWidget->SetVisibility(ESlateVisibility::Visible);
-					}
+					MainWidget->ClearWidget->SetVisibility(ESlateVisibility::Visible);
+					PC->bShowMouseCursor = true;
+					FInputModeUIOnly InputMode;
 				}
 			}
 		}

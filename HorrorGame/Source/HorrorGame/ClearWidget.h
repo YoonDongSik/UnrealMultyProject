@@ -20,7 +20,10 @@ public:
 	void NativeConstruct() override;
 	
 protected:
+	UFUNCTION()
 	void OnMainButtonClicked();
+
+	UFUNCTION()
 	void OnQuitButtonClicked();
 
 protected:

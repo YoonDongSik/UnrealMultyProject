@@ -26,6 +26,9 @@ public:
 
 	void SetMainWidget(UMainWidget* InWidget);
 
+	UFUNCTION(BlueprintCallable)
+	UMainWidget* GetMainWidget() const { return MainWidget; }
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
 	TSubclassOf<UMainWidget> MainWidgetClass;
 

@@ -8,6 +8,8 @@ void UClearWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	PlayerController = GetWorld()->GetFirstPlayerController();
+
 	SetVisibility(ESlateVisibility::Hidden);
 
 	if (MainButton)
